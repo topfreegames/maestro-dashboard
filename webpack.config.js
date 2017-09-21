@@ -17,11 +17,21 @@ module.exports = {
     path: BUILD_PATH,
     filename: 'bundle.js'
   },
+  resolve: {
+    modules: [
+      'node_modules',
+      path.resolve(__dirname, 'src')
+    ],
+    extensions: ['.js', '.jsx']
+  },
   module: {
     loaders: [
       { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
       { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
     ]
   },
-  plugins: [HtmlWebpackPluginConfig]
+  plugins: [HtmlWebpackPluginConfig],
+  devServer: {
+    historyApiFallback: true
+  }
 }
