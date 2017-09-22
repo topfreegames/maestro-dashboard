@@ -10,7 +10,8 @@ class Router extends React.Component {
     super(props)
 
     this.state = {
-      routeElement: { element: null }
+      route: {},
+      routeElement: { element: BlankDiv }
     }
   }
 
@@ -20,8 +21,9 @@ class Router extends React.Component {
   }
 
   resolve = location => {
-    const route = routes.lookup(location.pathname) || {}
+    const route = routes.lookup(location.pathname + location.search) || {}
     this.setState({
+      route,
       routeElement: routesElements[route.name] || routesElements['default']
     })
   }
@@ -29,9 +31,7 @@ class Router extends React.Component {
   render = () => {
     return React.cloneElement(
       React.Children.only(this.props.children),
-      {
-        element: this.state.routeElement.element || BlankDiv
-      }
+      { ...this.state }
     )
   }
 }
