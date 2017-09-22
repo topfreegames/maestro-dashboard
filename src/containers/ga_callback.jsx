@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 const exchangeCode = async (code) => {
   const redirectUri = encodeURIComponent('http://localhost:8080/ga_callback')
@@ -20,11 +21,15 @@ class GACallback extends React.Component {
     const { code } = this.props.route.options
 
     const token = await exchangeCode(code)
+    this.props.dispatch({ type: 'SESSION/SUCCESS', token })
   }
 
   render () {
+    console.log(this.props)
     return <div />
   }
 }
 
-export default GACallback
+export default connect(state => ({
+  session: state.session
+}))(GACallback)
