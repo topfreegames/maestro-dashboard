@@ -16,7 +16,7 @@ const exchangeCode = async (code) => {
 
 class GACallback extends React.Component {
   async componentWillMount () {
-    if (!this.props.route.options) return
+    if (!this.props.route.options || this.props.session.token) return
 
     const { code } = this.props.route.options
 
