@@ -5,7 +5,7 @@ import Scheduler from './scheduler'
 
 const Schedulers = props => (
   <div {...Schedulers.styles}>
-    {props.schedulers.map(s => <Scheduler key={s.name} {...s} />)}
+    {!props.fetching && props.schedulers.map(s => <Scheduler key={s.name} {...s} />)}
   </div>
 )
 
