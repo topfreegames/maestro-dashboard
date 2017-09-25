@@ -6,11 +6,16 @@ const maestroAuth = new ClientOAuth2({
   authorizationUri: 'https://accounts.google.com/o/oauth2/v2/auth',
   redirectUri: 'http://localhost:8080/ga_callback',
   scopes: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
-  state: 'asdf'
+  state: 'asdf',
+  query: {
+    access_type: 'offline',
+    prompt: 'consent'
+  }
 })
 
 class Home extends React.Component {
   render () {
+    console.log(maestroAuth.code.getUri())
     return <div onClick={() => (window.location = maestroAuth.code.getUri())}>SIGN IN</div>
   }
 }

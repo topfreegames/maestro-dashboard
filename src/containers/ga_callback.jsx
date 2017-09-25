@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import history from 'constants/history'
 
 const exchangeCode = async (code) => {
   const redirectUri = encodeURIComponent('http://localhost:8080/ga_callback')
@@ -22,6 +23,13 @@ class GACallback extends React.Component {
 
     const token = await exchangeCode(code)
     this.props.dispatch({ type: 'SESSION/SUCCESS', token })
+  }
+
+  componentDidMount = () => this.maybeRedirectToDashboard()
+  componentDidUpdate = () => this.maybeRedirectToDashboard()
+
+  maybeRedirectToDashboard = () => {
+    if (this.props.session.token) history.push('dashboard')
   }
 
   render () {
