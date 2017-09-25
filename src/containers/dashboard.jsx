@@ -2,8 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
 import Header from 'components/common/header'
+import Schedulers from 'components/dashboard/schedulers'
+import Clusters from 'components/dashboard/clusters'
 
 class Dashboard extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      activeTab: 'schedulers'
+    }
+  }
+
   componentDidMount = async () => {
     const response = await fetch(`${process.env.MAESTRO_URL}/scheduler`, {
       headers: {
@@ -16,15 +26,23 @@ class Dashboard extends React.Component {
     console.log(json)
   }
 
+  switchTab = (event, tab) => {
+    event.preventDefault()
+
+    this.setState({
+      ...this.state,
+      activeTab: tab
+    })
+  }
+
   render = () => {
+    const { activeTab } = this.state
+
     return (
       <div {...Dashboard.styles}>
-        <Header />
-        <div>
-          <div>Search</div>
-          <div>Scheduler #1</div>
-          <div>Scheduler #2</div>
-        </div>
+        <Header switchTab={this.switchTab} activeTab={activeTab} />
+        {activeTab === 'schedulers' && <Schedulers />}
+        {activeTab === 'clusters' && <Clusters />}
       </div>
     )
   }

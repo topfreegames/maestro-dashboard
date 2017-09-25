@@ -2,12 +2,20 @@ import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
 
-const Header = props => (
+const Header = ({ switchTab, activeTab }) => (
   <div {...Header.styles}>
     <div>Maestro</div>
     <div>
-      <div className='active'>Clusters</div>
-      <div>Schedulers</div>
+      <div
+        className={activeTab === 'clusters' && 'active'}
+        onClick={event => switchTab(event, 'clusters')}>
+        Clusters
+      </div>
+      <div
+        className={activeTab === 'schedulers' && 'active'}
+        onClick={event => switchTab(event, 'schedulers')}>
+        Schedulers
+      </div>
     </div>
   </div>
 )
@@ -48,6 +56,10 @@ Header.styles = css({
 
   // Clusters & Schedulers
   '> div:nth-of-type(2)': {
+    '& div': {
+      cursor: 'pointer'
+    },
+
     [`@media (min-width: ${styles.minWidth}) and (max-width: ${styles.maxWidth})`]: {
       display: 'inline-flex',
       marginLeft: 'auto',
