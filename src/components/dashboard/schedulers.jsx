@@ -1,10 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
-
-const Scheduler = props => (
-  <div>{props.name}</div>
-)
+import Scheduler from './scheduler'
 
 const Schedulers = props => (
   <div {...Schedulers.styles}>
@@ -27,12 +24,12 @@ Schedulers.styles = css({
     flexDirection: 'column',
     padding: '16px',
 
-    '& div + div': {
+    '> div + div': {
       marginTop: '16px'
     }
   },
 
-  '& div': {
+  '> div': {
     display: 'flex',
     boxSizing: 'border-box',
     border: `1px solid ${styles.colors.gray_25}`,
