@@ -35,6 +35,11 @@ Schedulers.styles = css({
     boxSizing: 'border-box',
     border: `1px solid ${styles.colors.gray_25}`,
 
+    [`@media (min-width: ${styles.minWidth}) and (max-width: ${styles.maxWidth})`]: {
+      backgroundColor: styles.colors.white,
+      padding: '10px 20px'
+    },
+
     [`@media (min-width: 1200px)`]: {
       minWidth: '32%',
       maxWidth: '32%',
@@ -54,6 +59,8 @@ Schedulers.styles = css({
     },
 
     [`@media(max-width: ${styles.minWidth})`]: {
+      border: 'none',
+      boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
       padding: '10px'
     }
   }
