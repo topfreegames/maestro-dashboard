@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import history from 'constants/history'
 
 const exchangeCode = async (code) => {
-  const redirectUri = encodeURIComponent('http://localhost:8080/ga_callback')
+  const redirectUri = encodeURIComponent(process.env.GA_CALLBACK)
   const response =
-    await fetch(`http://localhost:5001/access?code=${code}&redirect_uri=${redirectUri}`)
+    await fetch(`${process.env.MAESTRO_URL}/access?code=${code}&redirect_uri=${redirectUri}`)
 
   if (response.status !== 200) {
     // handle error

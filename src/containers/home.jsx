@@ -2,9 +2,9 @@ import React from 'react'
 import ClientOAuth2 from 'client-oauth2'
 
 const maestroAuth = new ClientOAuth2({
-  clientId: '868448437295-joa51hkm334scbll4vuodn59de3pofgu.apps.googleusercontent.com',
+  clientId: process.env.GA_CLIENT_ID,
   authorizationUri: 'https://accounts.google.com/o/oauth2/v2/auth',
-  redirectUri: 'http://localhost:8080/ga_callback',
+  redirectUri: process.env.GA_CALLBACK,
   scopes: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
   state: 'asdf',
   query: {
@@ -15,7 +15,6 @@ const maestroAuth = new ClientOAuth2({
 
 class Home extends React.Component {
   render () {
-    console.log(maestroAuth.code.getUri())
     return <div onClick={() => (window.location = maestroAuth.code.getUri())}>SIGN IN</div>
   }
 }

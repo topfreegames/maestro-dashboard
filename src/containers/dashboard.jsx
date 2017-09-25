@@ -4,7 +4,7 @@ import { css } from 'glamor'
 
 class Dashboard extends React.Component {
   componentDidMount = async () => {
-    const response = await fetch('http://localhost:5001/scheduler', {
+    const response = await fetch(`${process.env.MAESTRO_URL}/scheduler`, {
       headers: {
         'Authorization': `Bearer ${this.props.session.token}`
       }
