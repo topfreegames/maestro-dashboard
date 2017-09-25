@@ -2,11 +2,13 @@ import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
 
+const Scheduler = props => (
+  <div>{props.name}</div>
+)
+
 const Schedulers = props => (
   <div {...Schedulers.styles}>
-    <div>Scheduler #1</div>
-    <div>Scheduler #2</div>
-    <div>Scheduler #3</div>
+    {props.schedulers.map(s => <Scheduler key={s.name} {...s} />)}
   </div>
 )
 

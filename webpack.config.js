@@ -28,11 +28,15 @@ module.exports = {
     path: BUILD_PATH,
     filename: 'bundle.js'
   },
+  node: {
+    fs: 'empty'
+  },
   resolve: {
     modules: [
       'node_modules',
       path.resolve(__dirname, 'src')
     ],
+    mainFiles: ['index'],
     extensions: ['.js', '.jsx']
   },
   module: {

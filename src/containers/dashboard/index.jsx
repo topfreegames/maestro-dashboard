@@ -2,8 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
 import Header from 'components/common/header'
-import Schedulers from 'components/dashboard/schedulers'
+import Schedulers from 'containers/dashboard/schedulers'
 import Clusters from 'components/dashboard/clusters'
+import { client } from 'actions/common'
 
 class Dashboard extends React.Component {
   constructor (props) {
@@ -12,18 +13,6 @@ class Dashboard extends React.Component {
     this.state = {
       activeTab: 'schedulers'
     }
-  }
-
-  componentDidMount = async () => {
-    const response = await fetch(`${process.env.MAESTRO_URL}/scheduler`, {
-      headers: {
-        'Authorization': `Bearer ${this.props.session.token}`
-      }
-    })
-
-    console.log(response)
-    const json = await response.json()
-    console.log(json)
   }
 
   switchTab = (event, tab) => {
