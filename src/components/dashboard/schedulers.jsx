@@ -5,7 +5,8 @@ import Scheduler from './scheduler'
 
 const Schedulers = props => (
   <div {...Schedulers.styles}>
-    {!props.fetching && props.schedulers.map(s => <Scheduler key={s.name} {...s} />)}
+    {(!props.fetching || props.schedulers.length > 0) &&
+      props.schedulers.map(s => <Scheduler key={s.name} {...s} />)}
   </div>
 )
 
@@ -32,10 +33,10 @@ Schedulers.styles = css({
   '> div': {
     display: 'flex',
     boxSizing: 'border-box',
-    border: `1px solid ${styles.colors.gray_25}`,
 
     [`@media (min-width: ${styles.minWidth}) and (max-width: ${styles.maxWidth})`]: {
       backgroundColor: styles.colors.white,
+      boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
       padding: '10px 20px'
     },
 
@@ -58,9 +59,8 @@ Schedulers.styles = css({
     },
 
     [`@media(max-width: ${styles.minWidth})`]: {
-      border: 'none',
       boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
-      padding: '10px'
+      padding: '10px 16px'
     }
   }
 })
