@@ -13,7 +13,10 @@ const Scheduler = ({
   handleSubmit
 }) => (
   <div {...Scheduler.styles}>
-    <div>{name}</div>
+    <div>
+      {name}
+      <button onClick={() => (window.location = `schedulers/${name}/edit`)}>...</button>
+    </div>
     <div><label>Game</label>{game}</div>
     <div>
       <label>Minimum</label>

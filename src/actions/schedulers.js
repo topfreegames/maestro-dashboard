@@ -34,6 +34,17 @@ export const getSchedulers = () => {
   }
 }
 
+export const getScheduler = name => {
+  return async dispatch => {
+    dispatch({ type: actions.schedulers.showFetch, name })
+
+    const config = await getSchedulerConfig(name)
+    config.status = await getSchedulerStatus(name)
+
+    dispatch({ type: actions.schedulers.showFetchSuccess, scheduler: config })
+  }
+}
+
 const updateSchedulerMinimum = async (name, payload) => {
   const response = await client.put(`scheduler/${name}/min`, {
     min: payload.newMinimum

@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const htmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: 'index.html',
   filename: 'index.html',
-  inject: 'body'
+  inject: false
 })
 
 const envVars = ['MAESTRO_URL', 'GA_CALLBACK', 'GA_CLIENT_ID']
