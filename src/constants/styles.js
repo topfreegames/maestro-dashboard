@@ -9,7 +9,8 @@ export const colors = {
   gray_100: '#27242f',
   yellow: '#fed26c',
   red: '#f57e5f',
-  white: '#ffffff'
+  white: '#ffffff',
+  brandPrimary: '#6E4AF3'
 }
 
 export const fontSizes = {

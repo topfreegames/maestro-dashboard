@@ -33,3 +33,29 @@ export const getSchedulers = () => {
     dispatch({ type: actions.schedulers.indexFetchSuccess, schedulers })
   }
 }
+
+const updateSchedulerMinimum = async (name, payload) => {
+  const response = await client.put(`scheduler/${name}/min`, {
+    min: payload.newMinimum
+  })
+  console.log(response)
+  console.log(await response.json())
+}
+
+const updateSchedulerReplicas = async (name, payload) => {
+  const response = await client.post(`scheduler/${name}`, {
+    replicas: payload.replicas
+  })
+  console.log(response)
+  console.log(await response.json())
+}
+
+const sleep = time =>
+  new Promise((resolve) => setTimeout(resolve, time))
+
+export const updateScheduler = async (name, payload) => {
+  if (payload.newMinimum) updateSchedulerMinimum(name, payload)
+  if (payload.replicas) updateSchedulerReplicas(name, payload)
+
+  await sleep(1200)
+}

@@ -4,7 +4,6 @@ import { css } from 'glamor'
 import Header from 'components/common/header'
 import Schedulers from 'containers/dashboard/schedulers'
 import Clusters from 'components/dashboard/clusters'
-import { client } from 'actions/common'
 
 class Dashboard extends React.Component {
   constructor (props) {

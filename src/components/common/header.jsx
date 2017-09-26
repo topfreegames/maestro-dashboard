@@ -94,9 +94,11 @@ Header.styles = css({
         height: '48px',
         paddingLeft: '16px',
         borderBottom: `3px ${styles.colors.gray_0} solid`,
+        color: styles.colors.gray_75,
 
         '&.active': {
-          borderColor: styles.colors.red
+          color: styles.colors.gray_100,
+          borderColor: styles.colors.brandPrimary
         }
       }
     }

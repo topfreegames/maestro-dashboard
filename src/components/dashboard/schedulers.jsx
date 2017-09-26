@@ -60,7 +60,8 @@ Schedulers.styles = css({
       minWidth: '48%',
       maxWidth: '48%',
       boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
-      padding: '10px 16px'
+      padding: '10px 16px',
+      marginBottom: '16px'
     }
   }
 })
