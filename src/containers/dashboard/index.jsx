@@ -10,7 +10,7 @@ class Dashboard extends React.Component {
     super(props)
 
     this.state = {
-      activeTab: 'schedulers'
+      activeTab: 'Schedulers'
     }
   }
 
@@ -28,9 +28,9 @@ class Dashboard extends React.Component {
 
     return (
       <div {...Dashboard.styles}>
-        <Header switchTab={this.switchTab} activeTab={activeTab} />
-        {activeTab === 'schedulers' && <Schedulers />}
-        {activeTab === 'clusters' && <Clusters />}
+        <Header title={'Maestro'} switchTab={this.switchTab} activeTab={activeTab} />
+        {activeTab === 'Schedulers' && <Schedulers />}
+        {activeTab === 'Clusters' && <Clusters />}
       </div>
     )
   }
