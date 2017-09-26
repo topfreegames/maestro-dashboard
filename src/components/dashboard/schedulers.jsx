@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
-import Scheduler from './scheduler'
+import Scheduler from 'containers/dashboard/scheduler'
 
 const Schedulers = props => (
   <div {...Schedulers.styles}>
@@ -22,12 +22,10 @@ Schedulers.styles = css({
   },
 
   [`@media(max-width: ${styles.minWidth})`]: {
-    flexDirection: 'column',
-    padding: '16px',
-
-    '> div + div': {
-      marginTop: '16px'
-    }
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    padding: '16px'
   },
 
   '> div': {
@@ -59,6 +57,8 @@ Schedulers.styles = css({
     },
 
     [`@media(max-width: ${styles.minWidth})`]: {
+      minWidth: '48%',
+      maxWidth: '48%',
       boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
       padding: '10px 16px'
     }

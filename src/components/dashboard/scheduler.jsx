@@ -2,98 +2,71 @@ import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
 
-const Scheduler = props => (
+const Scheduler = ({ name, game, ready, occupied, minimum, current, handleChange }) => (
   <div {...Scheduler.styles}>
+    <div>{name}</div>
+    <div><label>Game</label>{game}</div>
     <div>
-      <div><label>Scheduler</label>{props.name}</div>
-      <div><label>Game</label>{props.game}</div>
-      <div>Save</div>
+      <label>Minimum</label>
+      <input name='minimum' type='text' value={minimum} onChange={handleChange} />
     </div>
     <div>
-      <div>Replicas</div>
-      <div><label>Minimum</label><input type='text' value={props.autoscaling.min} /></div>
-      <div><label>Current</label><input type='text' value={props.autoscaling.min} /></div>
+      <label>Current</label>
+      <input name='current' type='text' value={current} onChange={handleChange} />
     </div>
-    <div>
-      <div>Room Status</div>
-      <div><label>Ready</label>{props.status.roomsAtReady}</div>
-      <div><label>Occupied</label>{props.status.roomsAtOccupied}</div>
-    </div>
+    <div><label>Ready</label>{ready}</div>
+    <div><label>Occupied</label>{occupied}</div>
+    <button>Save</button>
   </div>
 )
 
 Scheduler.styles = css({
   flexDirection: 'column',
-  fontSize: styles.fontSizes['3'],
 
   '> div': {
-    alignItems: 'center',
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
+    justifyContent: 'space-between',
+    fontSize: styles.fontSizes['3'],
+    color: styles.colors.gray_100,
+    marginBottom: '4px',
 
-  '> div + div': {
-    marginTop: '10px',
-    paddingTop: '10px',
-    borderTop: `1px solid ${styles.colors.gray_0}`
+    '> label': {
+      marginRight: '8px',
+      textTransform: 'uppercase',
+      fontSize: styles.fontSizes['1'],
+      fontWeight: 700,
+      color: styles.colors.gray_50
+    },
+
+    '> input': {
+      textAlign: 'center',
+      display: 'inline-block',
+      border: 'none',
+      borderBottom: `2px solid ${styles.colors.gray_25}`,
+      width: '30%',
+
+      '&:focus': {
+        borderColor: styles.colors.yellow,
+        fontWeight: 700
+      }
+    }
   },
 
   '> div:nth-of-type(1)': {
-    '> div:nth-of-type(1)': {
-      color: styles.colors.red
-    },
-
-    '& label': {
-      display: 'block',
-      fontSize: styles.fontSizes['2'],
-      fontWeight: 700,
-      textTransform: 'uppercase',
-      color: styles.colors.gray_100
-    },
-
-    '> div:nth-of-type(3)': {
-      fontSize: styles.fontSizes['3'],
-      fontWeight: 700,
-      background: styles.colors.yellow,
-      padding: '8px 30px',
-      borderRadius: '4px',
-      cursor: 'pointer'
-    }
+    marginBottom: '12px',
+    fontSize: styles.fontSizes['4'],
+    color: styles.colors.red
   },
 
-  '> div:nth-of-type(2), > div:nth-of-type(3)': {
-    '> div': {
-      width: '33.333333%'
-    },
-
-    '> div:nth-of-type(1)': {
-      textTransform: 'uppercase',
-      fontSize: styles.fontSizes['2'],
-      fontWeight: 700
-    },
-
-    '& label': {
-      display: 'block',
-      fontSize: styles.fontSizes['1'],
-      fontWeight: 700,
-      textTransform: 'uppercase',
-      color: styles.colors.gray_50
-    }
-  },
-
-  '& input': {
-    width: '90%',
-    boxSizing: 'border-box',
+  '> button': {
     fontSize: styles.fontSizes['3'],
+    fontWeight: 700,
+    backgroundColor: styles.colors.yellow,
     border: 'none',
-    borderBottom: `2px solid ${styles.colors.gray_25}`,
-    padding: '4px 8px',
-
-    '&:focus': {
-      fontWeight: 700,
-      borderColor: styles.colors.yellow
-    }
+    borderRadius: '4px',
+    cursor: 'pointer',
+    padding: '8px 0',
+    marginTop: '8px'
   }
 })
 
