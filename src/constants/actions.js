@@ -7,6 +7,13 @@ export const schedulers = {
   showFetchFailure: 'SCHEDULERS/SHOW_FETCH_FAILURE'
 }
 
+export const clusters = {
+  createCluster: 'CLUSTERS/CREATE',
+  createClusterSuccess: 'CLUSTERS/CREATE_SUCCESS',
+  createClusterFailure: 'CLUSTERS/CREATE_FAILURE'
+}
+
 export default {
-  schedulers
+  schedulers,
+  clusters
 }

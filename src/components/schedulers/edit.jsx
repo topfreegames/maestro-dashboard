@@ -24,36 +24,7 @@ SchedulersEdit.styles = css({
     display: 'flex',
     boxSizing: 'border-box',
     flexDirection: 'column',
-    padding: '16px',
-
-    '> div': {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%'
-    },
-
-    '> div + div': {
-      marginTop: '16px'
-    },
-
-    '& label': {
-      marginLeft: '8px',
-      textTransform: 'uppercase',
-      fontSize: styles.fontSizes['2'],
-      color: styles.colors.gray_75
-    },
-
-    '& input': {
-      fontSize: styles.fontSizes['3'],
-      padding: '6px 12px',
-      border: 'none',
-      borderBottom: `2px solid ${styles.colors.gray_50}`,
-
-      '&:focus': {
-        fontWeight: 600,
-        borderColor: styles.colors.brandPrimary
-      }
-    }
+    padding: '16px'
   },
 
   '& .section': {

@@ -1,4 +1,5 @@
 import React from 'react'
+import { TextInput } from 'components/common'
 
 export const template = {
   name: {
@@ -87,15 +88,13 @@ const getValue = (path, origin) =>
 
 export const renderScheduler = (scheduler, handleChange) => {
   const renderSimple = ([name, data], prefix) => (
-    <div key={makePath(prefix, name)}>
-      <label htmlFor={name}>{name}</label>
-      <input
-        name={makePath(prefix, name)}
-        type='text'
-        value={getValue(makePath(prefix, name), scheduler)}
-        onChange={handleChange}
-      />
-    </div>
+    <TextInput
+      key={makePath(prefix, name)}
+      id={makePath(prefix, name)}
+      label={name}
+      value={getValue(makePath(prefix, name), scheduler)}
+      onChange={handleChange}
+    />
   )
 
   const renderCompose = ([name, { children }], prefix) => (
