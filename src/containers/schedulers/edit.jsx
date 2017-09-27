@@ -1,11 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Header from 'components/common/header'
+import SchedulersEditComponent from 'components/schedulers/edit'
 import { getScheduler, updateScheduler } from 'actions/schedulers'
 import history from 'constants/history'
-import styles from 'constants/styles'
-import { template, parseScheduler, renderScheduler } from 'constants/scheduler_yaml'
-import { css } from 'glamor'
+import { parseScheduler, getType } from 'constants/scheduler_template'
 
 class SchedulersEdit extends React.Component {
   constructor (props) {
@@ -17,6 +15,7 @@ class SchedulersEdit extends React.Component {
   }
 
   componentWillReceiveProps = nextProps => {
+    // deep diff this.props and nextProps
     if (this.state.scheduler !== null || !nextProps.name) return
 
     this.setState({
@@ -36,19 +35,16 @@ class SchedulersEdit extends React.Component {
   )
 
   handleChange = event => {
-    const isInt = path =>
-      path.split('.').reduce((acc, x, i, arr) => {
-        if (i === arr.length - 1) {
-          return acc[x].varType === 'integer'
-        } else {
-          return acc[x]
-        }
-      }, template)
-
     const setInPath = path =>
       path.split('.').reduce((acc, x, i, arr) => {
         if (i === arr.length - 1) {
-          acc[x] = isInt(path) ? parseInt(event.target.value) : event.target.value
+          if (event.target.value === '') {
+            acc[x] = ''
+          } else {
+            acc[x] = getType(path) === 'integer'
+              ? parseInt(event.target.value)
+              : event.target.value
+          }
         } else {
           return acc[x]
         }
@@ -64,65 +60,14 @@ class SchedulersEdit extends React.Component {
   }
 
   render = () => (
-    <div {...SchedulersEdit.styles}>
-      <Header title={this.headerTitle()} />
-      <section role='main'>
-        {renderScheduler(this.state.scheduler, this.handleChange)}
-        <button onClick={this.handleSubmit}>Save</button>
-      </section>
-    </div>
+    <SchedulersEditComponent
+      headerTitle={this.headerTitle}
+      scheduler={this.state.scheduler}
+      handleChange={this.handleChange}
+      handleSubmit={this.handleSubmit}
+    />
   )
 }
-
-SchedulersEdit.styles = css({
-  '> section[role="main"], .section': {
-    display: 'flex',
-    boxSizing: 'border-box',
-    flexDirection: 'column',
-    padding: '16px',
-
-    '> div': {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%'
-    },
-
-    '> div + div': {
-      marginTop: '16px'
-    },
-
-    '& label': {
-      marginLeft: '8px',
-      textTransform: 'uppercase',
-      fontSize: styles.fontSizes['2'],
-      color: styles.colors.gray_75
-    },
-
-    '& input': {
-      fontSize: styles.fontSizes['3'],
-      padding: '6px 12px',
-      border: 'none',
-      borderBottom: `2px solid ${styles.colors.gray_50}`,
-
-      '&:focus': {
-        fontWeight: 600,
-        borderColor: styles.colors.brandPrimary
-      }
-    }
-  },
-
-  '& .section': {
-    marginTop: '8px',
-    border: `1px solid ${styles.colors.gray_25}`,
-
-    '> label': {
-      color: `${styles.colors.gray_100} !important`,
-      margin: '0 0 8px -4px !important',
-      fontSize: `${styles.fontSizes[`3`]} !important`,
-      fontWeight: 600
-    }
-  }
-})
 
 export default connect((state, ownProps) => ({
   ...state.schedulers.show[ownProps.route.options.name]

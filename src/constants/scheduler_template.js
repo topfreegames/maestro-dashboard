@@ -75,6 +75,11 @@ export const template = {
   }
 }
 
+export const getType = path =>
+  path.split('.').reduce((acc, x) => {
+    return acc[x].children || acc[x].type
+  }, template)
+
 const makePath = (prefix, name) => `${prefix}${name}`
 
 const getValue = (path, origin) =>
