@@ -116,7 +116,7 @@ export const renderScheduler = (scheduler, handleChange) => {
 
 export const parseScheduler = scheduler => {
   const parseSimple = ([name, data], prefix) => ({
-    [name]: getValue(makePath(prefix, name), scheduler)
+    [name]: (scheduler && getValue(makePath(prefix, name), scheduler)) || ''
   })
 
   const parseCompose = ([name, { children }], prefix) => ({
@@ -134,3 +134,19 @@ export const parseScheduler = scheduler => {
 
   return parseObject(template)
 }
+
+export const setInPath = (scheduler, path, value) =>
+  path.split('.').reduce((acc, x, i, arr) => {
+    if (i === arr.length - 1) {
+      if (value === '') {
+        acc[x] = ''
+      } else {
+        acc[x] = getType(path) === 'integer'
+          ? parseInt(value)
+          : value
+        return scheduler
+      }
+    } else {
+      return acc[x]
+    }
+  }, scheduler)

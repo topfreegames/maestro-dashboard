@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import SchedulersEditComponent from 'components/schedulers/edit'
 import { BackButton } from 'components/common'
 import { getScheduler, updateScheduler } from 'actions/schedulers'
-import { parseScheduler, getType } from 'constants/scheduler_template'
+import { parseScheduler, setInPath } from 'constants/scheduler_template'
 
 class SchedulersEdit extends React.Component {
   constructor (props) {
@@ -35,28 +35,17 @@ class SchedulersEdit extends React.Component {
   )
 
   handleChange = event => {
-    const setInPath = path =>
-      path.split('.').reduce((acc, x, i, arr) => {
-        if (i === arr.length - 1) {
-          if (event.target.value === '') {
-            acc[x] = ''
-          } else {
-            acc[x] = getType(path) === 'integer'
-              ? parseInt(event.target.value)
-              : event.target.value
-          }
-        } else {
-          return acc[x]
-        }
-      }, this.state.scheduler)
-
-    setInPath(event.target.name)
-    this.setState({...this.state})
+    this.setState({
+      ...this.state,
+      scheduler: setInPath(this.state.scheduler,
+        event.target.name,
+        event.target.value)
+    })
   }
 
   handleSubmit = async event => {
     event.preventDefault()
-    await updateScheduler(this.state.scheduler.name, this.state.scheduler)
+    await updateScheduler(this.state.scheduler)
   }
 
   render = () => (

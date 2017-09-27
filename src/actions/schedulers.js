@@ -71,8 +71,14 @@ export const updateSchedulerMinimumAndReplicas = async (name, payload) => {
   await sleep(1200)
 }
 
-export const updateScheduler = async(name, payload) => {
-  const response = await client.put(`scheduler/${name}?maxsurge=25`, payload)
+export const updateScheduler = async(payload) => {
+  const response = await client.put(`scheduler/${payload.name}?maxsurge=25`, payload)
+  console.log(response)
+  console.log(await response.json())
+}
+
+export const createScheduler = async(payload) => {
+  const response = await client.post('scheduler', payload)
   console.log(response)
   console.log(await response.json())
 }

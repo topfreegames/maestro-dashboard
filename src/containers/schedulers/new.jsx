@@ -1,6 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Header, BackButton } from 'components/common'
+import { BackButton } from 'components/common'
+import SchedulersNewComponent from 'components/schedulers/new'
+import { createScheduler } from 'actions/schedulers'
+import { parseScheduler, setInPath } from 'constants/scheduler_template'
 
 class SchedulersNew extends React.Component {
   constructor (props) {
@@ -11,15 +14,40 @@ class SchedulersNew extends React.Component {
     }
   }
 
+  componentDidMount = () => {
+    this.setState({
+      scheduler: parseScheduler()
+    })
+  }
+
   headerTitle = () => (
     <div>
       <BackButton />
-      {this.props.name}
+      New Scheduler
     </div>
   )
 
+  handleChange = event => {
+    this.setState({
+      ...this.state,
+      scheduler: setInPath(this.state.scheduler,
+        event.target.name,
+        event.target.value)
+    })
+  }
+
+  handleSubmit = async event => {
+    event.preventDefault()
+    await createScheduler(this.state.scheduler)
+  }
+
   render = () => (
-    <Header title={this.headerTitle()} />
+    <SchedulersNewComponent
+      headerTitle={this.headerTitle()}
+      scheduler={this.state.scheduler}
+      handleChange={this.handleChange}
+      handleSubmit={this.handleSubmit}
+    />
   )
 }
 
