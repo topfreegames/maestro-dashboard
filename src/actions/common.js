@@ -1,4 +1,5 @@
 import store from 'reducers'
+import history from 'constants/history'
 
 export const client = {}
 
@@ -34,3 +35,5 @@ client.put = async (endpoint, payload) =>
 
 client.post = async (endpoint, payload) =>
   client.fetch('POST', endpoint, payload)
+
+export const back = () => history.go(-1)

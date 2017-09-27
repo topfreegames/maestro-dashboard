@@ -4,5 +4,6 @@ export default uniloc({
   home: 'GET /',
   gACallback: 'GET /ga_callback',
   dashboard: 'GET /dashboard',
-  schedulersEdit: 'GET /schedulers/:name/edit'
+  schedulersEdit: 'GET /schedulers/:name/edit',
+  schedulersNew: 'GET /schedulers/new'
 })

@@ -23,18 +23,31 @@ class Dashboard extends React.Component {
     })
   }
 
+  headerTitle = () => (
+    <div {...headerStyles}>
+      Maestro
+      <button onClick={() => (window.location = 'schedulers/new')}>create</button>
+    </div>
+  )
+
   render = () => {
     const { activeTab } = this.state
 
     return (
       <div {...Dashboard.styles}>
-        <Header title={'Maestro'} switchTab={this.switchTab} activeTab={activeTab} />
+        <Header title={this.headerTitle()} switchTab={this.switchTab} activeTab={activeTab} />
         {activeTab === 'Schedulers' && <Schedulers />}
         {activeTab === 'Clusters' && <Clusters />}
       </div>
     )
   }
 }
+
+const headerStyles = css({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between'
+})
 
 Dashboard.styles = css({
   '> div:nth-of-type(2)': {

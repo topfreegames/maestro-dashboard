@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import SchedulersEditComponent from 'components/schedulers/edit'
+import { BackButton } from 'components/common'
 import { getScheduler, updateScheduler } from 'actions/schedulers'
-import history from 'constants/history'
 import { parseScheduler, getType } from 'constants/scheduler_template'
 
 class SchedulersEdit extends React.Component {
@@ -29,7 +29,7 @@ class SchedulersEdit extends React.Component {
 
   headerTitle = () => (
     <div>
-      <button onClick={() => history.go(-1)}>Back</button>
+      <BackButton />
       {this.props.name}
     </div>
   )

@@ -18,7 +18,7 @@ const smallStyles = css({
     boxSizing: 'border-box',
     width: '100%',
     height: '48px',
-    paddingLeft: '16px',
+    padding: '0 16px',
     borderBottom: `1px ${styles.colors.gray_0} solid`
   }
 })
