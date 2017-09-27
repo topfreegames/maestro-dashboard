@@ -9,7 +9,8 @@ const BlankDiv = () => (<div />)
 
 export default {
   home: {
-    element: Home
+    element: Home,
+    public: true
   },
   dashboard: {
     element: Dashboard
@@ -21,9 +22,11 @@ export default {
     element: SchedulersNew
   },
   gACallback: {
-    element: GACallback
+    element: GACallback,
+    public: true
   },
   default: {
-    element: BlankDiv
+    element: BlankDiv,
+    public: true
   }
 }
