@@ -4,7 +4,7 @@ import Header from 'components/common/header'
 import { getScheduler, updateScheduler } from 'actions/schedulers'
 import history from 'constants/history'
 import styles from 'constants/styles'
-import schedulerYaml from 'constants/scheduler_yaml'
+import { template, parseScheduler, renderScheduler } from 'constants/scheduler_yaml'
 import { css } from 'glamor'
 
 class SchedulersEdit extends React.Component {
@@ -20,34 +20,8 @@ class SchedulersEdit extends React.Component {
     if (this.state.scheduler !== null || !nextProps.name) return
 
     this.setState({
-      scheduler: this.parseScheduler(nextProps)
+      scheduler: parseScheduler(nextProps)
     })
-  }
-
-  parseScheduler = props => {
-    const parseSimple = (f, prefix) => ({
-      [f.name]: this.getInputValue(this.makePath(prefix, f.name), props)
-    })
-
-    const parseSection = (f, prefix) => ({
-      [f.name]: f.children.reduce((acc, x) => ({
-        ...acc,
-        ...parseField(x, `${this.makePath(prefix, f.name)}.`)
-      }), {})
-    })
-
-    const parseField = (f, prefix) => {
-      if (f.type === 'simple') {
-        return parseSimple(f, prefix)
-      } else if (f.type === 'section') {
-        return parseSection(f, prefix)
-      }
-    }
-
-    return schedulerYaml.reduce((acc, x) => ({
-      ...acc,
-      ...parseField(x, '')
-    }), {})
   }
 
   componentDidMount = async () => {
@@ -61,35 +35,6 @@ class SchedulersEdit extends React.Component {
     </div>
   )
 
-  getInputValue = (path, origin) =>
-    path.split('.').reduce((acc, x) => acc[x], origin)
-
-  makePath = (prefix, name) => `${prefix}${name}`
-
-  renderSimple = (name, prefix) => (
-    <div key={this.makePath(prefix, name)}>
-      <label htmlFor={name}>{name}</label>
-      <input
-        name={this.makePath(prefix, name)}
-        type='text'
-        value={this.getInputValue(this.makePath(prefix, name), this.state.scheduler)}
-        onChange={this.handleChange}
-      />
-    </div>
-  )
-
-  renderSection = ({ name, children }, prefix) => (
-    <div className='section' key={this.makePath(prefix, name)}>
-      <label>{name}</label>
-      {children.map(x => this.renderInput(x, `${this.makePath(prefix, name)}.`))}
-    </div>
-  )
-
-  renderInput = (input, prefix) => {
-    if (input.type === 'simple') return this.renderSimple(input.name, prefix)
-    else if (input.type === 'section') return this.renderSection(input, prefix)
-  }
-
   handleChange = event => {
     const isInt = path =>
       path.split('.').reduce((acc, x, i, arr) => {
@@ -98,7 +43,7 @@ class SchedulersEdit extends React.Component {
         } else {
           return acc[x]
         }
-      }, schedulerYaml)
+      }, template)
 
     const setInPath = path =>
       path.split('.').reduce((acc, x, i, arr) => {
@@ -122,7 +67,7 @@ class SchedulersEdit extends React.Component {
     <div {...SchedulersEdit.styles}>
       <Header title={this.headerTitle()} />
       <section role='main'>
-        {this.state.scheduler && schedulerYaml.map(x => this.renderInput(x, ''))}
+        {renderScheduler(this.state.scheduler, this.handleChange)}
         <button onClick={this.handleSubmit}>Save</button>
       </section>
     </div>

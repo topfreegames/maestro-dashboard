@@ -1,113 +1,131 @@
-export default [
-  {
-    name: 'name',
-    type: 'simple'
+import React from 'react'
+
+export const template = {
+  name: {
+    type: 'string'
   },
-  {
-    name: 'game',
-    type: 'simple'
+  game: {
+    type: 'string'
   },
-  {
-    name: 'image',
-    type: 'simple'
+  image: {
+    type: 'string'
   },
-  {
-    name: 'shutdownTimeout',
-    type: 'simple',
-    varType: 'integer'
+  shutdownTimeout: {
+    type: 'integer'
   },
-  {
-    name: 'occupiedTimeout',
-    type: 'simple',
-    varType: 'integer'
+  occupiedTimeout: {
+    type: 'integer'
   },
-  {
-    name: 'limits',
-    type: 'section',
-    children: [
-      {
-        name: 'memory',
-        type: 'simple'
+  limits: {
+    children: {
+      memory: {
+        type: 'string'
       },
-      {
-        name: 'cpu',
-        type: 'simple'
+      cpu: {
+        type: 'string'
       }
-    ]
+    }
   },
-  {
-    name: 'autoscaling',
-    type: 'section',
-    children: [
-      {
-        name: 'min',
-        type: 'simple',
-        varType: 'integer'
+  autoscaling: {
+    children: {
+      min: {
+        type: 'integer'
       },
-      {
-        name: 'up',
-        type: 'section',
-        children: [
-          {
-            name: 'delta',
-            type: 'simple',
-            varType: 'integer'
+      up: {
+        children: {
+          delta: {
+            type: 'integer'
           },
-          {
-            name: 'trigger',
-            type: 'section',
-            children: [
-              {
-                name: 'usage',
-                type: 'simple',
-                varType: 'integer'
+          trigger: {
+            children: {
+              usage: {
+                type: 'integer'
               },
-              {
-                name: 'time',
-                type: 'simple',
-                varType: 'integer'
+              time: {
+                type: 'integer'
               }
-            ]
+            }
           },
-          {
-            name: 'cooldown',
-            type: 'simple',
-            varType: 'integer'
+          cooldown: {
+            type: 'integer'
           }
-        ]
+        }
       },
-      {
-        name: 'down',
-        type: 'section',
-        children: [
-          {
-            name: 'delta',
-            type: 'simple',
-            varType: 'integer'
+      down: {
+        children: {
+          delta: {
+            type: 'integer'
           },
-          {
-            name: 'trigger',
-            type: 'section',
-            children: [
-              {
-                name: 'usage',
-                type: 'simple',
-                varType: 'integer'
+          trigger: {
+            children: {
+              usage: {
+                type: 'integer'
               },
-              {
-                name: 'time',
-                type: 'simple',
-                varType: 'integer'
+              time: {
+                type: 'integer'
               }
-            ]
+            }
           },
-          {
-            name: 'cooldown',
-            type: 'simple',
-            varType: 'integer'
+          cooldown: {
+            type: 'integer'
           }
-        ]
+        }
       }
-    ]
+    }
   }
-]
+}
+
+const makePath = (prefix, name) => `${prefix}${name}`
+
+const getValue = (path, origin) =>
+  path.split('.').reduce((acc, x) => acc[x], origin)
+
+export const renderScheduler = (scheduler, handleChange) => {
+  const renderSimple = ([name, data], prefix) => (
+    <div key={makePath(prefix, name)}>
+      <label htmlFor={name}>{name}</label>
+      <input
+        name={makePath(prefix, name)}
+        type='text'
+        value={getValue(makePath(prefix, name), scheduler)}
+        onChange={handleChange}
+      />
+    </div>
+  )
+
+  const renderCompose = ([name, { children }], prefix) => (
+    <div className='section' key={makePath(prefix, name)}>
+      <label>{name}</label>
+      {renderObject(children, `${makePath(prefix, name)}.`)}
+    </div>
+  )
+
+  const renderEntry = (e, prefix = '') =>
+    e[1].children ? renderCompose(e, prefix) : renderSimple(e, prefix)
+
+  const renderObject = (o, prefix = '') =>
+    Object.entries(o).map(e => renderEntry(e, prefix))
+
+  return scheduler && renderObject(template)
+}
+
+export const parseScheduler = scheduler => {
+  const parseSimple = ([name, data], prefix) => ({
+    [name]: getValue(makePath(prefix, name), scheduler)
+  })
+
+  const parseCompose = ([name, { children }], prefix) => ({
+    [name]: parseObject(children, `${makePath(prefix, name)}.`)
+  })
+
+  const parseEntry = (e, prefix) =>
+    e[1].children ? parseCompose(e, prefix) : parseSimple(e, prefix)
+
+  const parseObject = (o, prefix = '') =>
+    Object.entries(o).reduce((acc, e) => ({
+      ...acc,
+      ...parseEntry(e, prefix)
+    }), {})
+
+  return parseObject(template)
+}
