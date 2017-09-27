@@ -64,9 +64,15 @@ const updateSchedulerReplicas = async (name, payload) => {
 const sleep = time =>
   new Promise((resolve) => setTimeout(resolve, time))
 
-export const updateScheduler = async (name, payload) => {
+export const updateSchedulerMinimumAndReplicas = async (name, payload) => {
   if (payload.newMinimum) updateSchedulerMinimum(name, payload)
   if (payload.replicas) updateSchedulerReplicas(name, payload)
 
   await sleep(1200)
+}
+
+export const updateScheduler = async(name, payload) => {
+  const response = await client.put(`scheduler/${name}?maxsurge=25`, payload)
+  console.log(response)
+  console.log(await response.json())
 }

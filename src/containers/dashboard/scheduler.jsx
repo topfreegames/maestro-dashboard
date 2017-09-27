@@ -1,6 +1,6 @@
 import React from 'react'
 import SchedulerComponent from 'components/dashboard/scheduler'
-import { updateScheduler } from 'actions/schedulers'
+import { updateSchedulerMinimumAndReplicas } from 'actions/schedulers'
 
 class Scheduler extends React.Component {
   constructor (props) {
@@ -49,7 +49,7 @@ class Scheduler extends React.Component {
       fetching: true
     })
 
-    await updateScheduler(this.props.name, updatePayload)
+    await updateSchedulerMinimumAndReplicas(this.props.name, updatePayload)
 
     this.setState({
       ...this.state,
