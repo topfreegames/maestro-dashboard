@@ -35,5 +35,3 @@ client.put = async (endpoint, payload) =>
 
 client.post = async (endpoint, payload) =>
   client.fetch('POST', endpoint, payload)
-
-export const back = () => history.go(-1)
