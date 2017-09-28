@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import SchedulersComponent from 'components/dashboard/schedulers'
+import SchedulersComponent from 'components/schedulers'
 import { getSchedulers } from 'actions/schedulers'
 
 class Schedulers extends React.Component {

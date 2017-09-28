@@ -1,12 +1,17 @@
 import { session } from 'constants/actions'
 
+const initialState = {
+  code: null,
+  token: null
+}
+
 const sessionReducer = (state = {}, action) => {
-  console.log(action)
   switch (action.type) {
     case session.setToken:
       return {
         ...state,
-        token: action.token
+        token: action.token,
+        code: null
       }
     case session.setCode:
       return {

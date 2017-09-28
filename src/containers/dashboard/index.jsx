@@ -2,20 +2,24 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
 import Header from 'components/common/header'
-import Schedulers from 'containers/dashboard/schedulers'
-import Clusters from 'components/dashboard/clusters'
+import Schedulers from 'containers/schedulers'
+import Clusters from 'containers/clusters'
 
 class Dashboard extends React.Component {
   constructor (props) {
     super(props)
 
+    const activeTab = this.props.session.token ? 'Schedulers' : 'Clusters'
+
     this.state = {
-      activeTab: 'Schedulers'
+      activeTab
     }
   }
 
   switchTab = (event, tab) => {
     event.preventDefault()
+
+    if (!this.props.session.token) return
 
     this.setState({
       ...this.state,
@@ -25,7 +29,7 @@ class Dashboard extends React.Component {
 
   headerTitle = () => (
     <div {...headerStyles}>
-      Maestro
+      Maestro {this.props.cluster.name}
       <button onClick={() => (window.location = 'schedulers/new')}>create</button>
     </div>
   )
@@ -57,5 +61,7 @@ Dashboard.styles = css({
 })
 
 export default connect(state => ({
+  cluster: (state.clusters.current && state.clusters[state.clusters.current]) ||
+  {},
   session: state.session
 }))(Dashboard)

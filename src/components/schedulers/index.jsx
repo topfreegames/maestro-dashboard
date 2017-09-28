@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
-import Scheduler from 'containers/dashboard/scheduler'
+import Scheduler from 'containers/schedulers/scheduler'
 
 const Schedulers = props => (
   <div {...Schedulers.styles}>

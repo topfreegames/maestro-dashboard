@@ -1,5 +1,5 @@
 import React from 'react'
-import SchedulerComponent from 'components/dashboard/scheduler'
+import SchedulerComponent from 'components/schedulers/scheduler'
 import { updateSchedulerMinimumAndReplicas } from 'actions/schedulers'
 
 class Scheduler extends React.Component {

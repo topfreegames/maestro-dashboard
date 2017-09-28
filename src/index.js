@@ -1,51 +1,53 @@
 import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Router from 'containers/router'
+import { persistStore } from 'redux-persist'
 import { connect, Provider } from 'react-redux'
+import Router from 'containers/router'
 import store from 'reducers'
 require('es6-promise').polyfill()
 require('isomorphic-fetch')
 
 class App extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      canRender: false
-    }
-  }
-
   componentWillReceiveProps = nextProps => {
-    if (nextProps.rehydrated &&
-      !nextProps.session.token &&
+    if (!(nextProps.session.code || nextProps.session.token) &&
       !nextProps.routeElement.public) {
       window.location = '/'
-    } else if (nextProps.rehydrated) {
-      this.setState({
-        ...this.state,
-        canRender: true
-      })
     }
   }
 
   render () {
     const { route, routeElement } = this.props
-    const { canRender } = this.state
-    return canRender ? <routeElement.element route={route} /> : <div />
+    return <routeElement.element route={route} />
   }
 }
 
 const AppWithProps = connect(state => ({
-  rehydrated: state.storage.rehydrated,
   session: state.session
 }))(App)
 
+class Bootloader extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { rehydrated: false }
+  }
+
+  componentWillMount = () =>
+    persistStore(store, {}, () => this.setState({ rehydrated: true }))
+
+  render = () => {
+    const { rehydrated } = this.state
+    return !rehydrated ? <div /> : (
+      <Provider store={store}>
+        <Router>
+          <AppWithProps />
+        </Router>
+      </Provider>
+    )
+  }
+}
+
 ReactDOM.render(
-  <Provider store={store}>
-    <Router>
-      <AppWithProps />
-    </Router>
-  </Provider>,
+  <Bootloader />,
   document.getElementById('app')
 )
