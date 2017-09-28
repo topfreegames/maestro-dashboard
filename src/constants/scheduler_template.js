@@ -16,10 +16,12 @@ export const template = {
     optional: true
   },
   shutdownTimeout: {
-    type: 'integer'
+    type: 'integer',
+    label: 'shutdown timeout'
   },
   occupiedTimeout: {
-    type: 'integer'
+    type: 'integer',
+    label: 'occupied timeout'
   },
   limits: {
     children: {
@@ -80,8 +82,8 @@ export const template = {
   }
 }
 
-export const getType = path =>
-  path.split('.').reduce((acc, x) => acc[x].children || acc[x].type, template)
+export const getField = path =>
+  path.split('.').reduce((acc, x) => acc[x].children || acc[x], template)
 
 const makePath = (prefix, name) => `${prefix}${name}`
 
@@ -89,11 +91,17 @@ const getValue = (path, origin) =>
   path.split('.').reduce((acc, x) => acc[x], origin)
 
 export const renderScheduler = (scheduler, handleChange) => {
+  const makeLabel = (prefix, name) => {
+    const f = getField(makePath(prefix, name))
+    const suffix = f.optional ? ' (OPTIONAL)' : ''
+    return (f.label ? f.label : name) + suffix
+  }
+
   const renderSimple = ([name, data], prefix) => (
     <TextInput
       key={makePath(prefix, name)}
       id={makePath(prefix, name)}
-      label={name}
+      label={makeLabel(prefix, name)}
       value={getValue(makePath(prefix, name), scheduler)}
       handleChange={handleChange}
     />
@@ -142,7 +150,8 @@ export const setInPath = (scheduler, path, value) =>
       if (value === '') {
         acc[x] = ''
       } else {
-        acc[x] = getType(path) === 'integer'
+        const field = getField(path)
+        acc[x] = field.type === 'integer'
           ? parseInt(value)
           : value
       }
