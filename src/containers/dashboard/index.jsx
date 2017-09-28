@@ -4,6 +4,7 @@ import { css } from 'glamor'
 import Header from 'components/common/header'
 import Schedulers from 'containers/schedulers'
 import Clusters from 'containers/clusters'
+import { navigate } from 'actions/common'
 
 class Dashboard extends React.Component {
   constructor (props) {
@@ -30,7 +31,7 @@ class Dashboard extends React.Component {
   headerTitle = () => (
     <div {...headerStyles}>
       Maestro {this.props.cluster.name}
-      <button onClick={() => (window.location = 'schedulers/new')}>create</button>
+      <button onClick={() => navigate('schedulers/new')}>create</button>
     </div>
   )
 

@@ -35,3 +35,11 @@ client.put = async (endpoint, payload) =>
 
 client.post = async (endpoint, payload) =>
   client.fetch('POST', endpoint, payload)
+
+export const navigate = (path, { isExternal } = {}) => {
+  if (isExternal) {
+    window.location = path
+  } else {
+    history.push(path)
+  }
+}

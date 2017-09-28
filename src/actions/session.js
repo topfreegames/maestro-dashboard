@@ -1,4 +1,5 @@
 import ClientOAuth2 from 'client-oauth2'
+import { navigate } from 'actions/common'
 
 const maestroAuth = new ClientOAuth2({
   clientId: process.env.GA_CLIENT_ID,
@@ -13,7 +14,7 @@ const maestroAuth = new ClientOAuth2({
 })
 
 export const getCode = () => (
-  window.location = maestroAuth.code.getUri()
+  navigate(maestroAuth.code.getUri(), { isExternal: true })
 )
 
 export const exchangeCode = async (code, host) => {

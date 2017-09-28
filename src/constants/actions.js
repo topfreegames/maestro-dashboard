@@ -10,7 +10,7 @@ export const schedulers = {
 export const clusters = {
   select: 'CLUSTERS/SELECT',
   selectSuccess: 'CLUSTERS/SELECT_SUCCESS',
-  selectFailure: 'CLUSTERS/SELECT_FAILURE',
+  selectFailure: 'CLUSTERS/SELECT_FAILURE'
 }
 
 export const session = {

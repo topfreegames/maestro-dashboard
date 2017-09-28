@@ -5,6 +5,7 @@ import { persistStore } from 'redux-persist'
 import { connect, Provider } from 'react-redux'
 import Router from 'containers/router'
 import store from 'reducers'
+import { navigate } from 'actions/common'
 require('es6-promise').polyfill()
 require('isomorphic-fetch')
 
@@ -12,7 +13,7 @@ class App extends React.Component {
   componentWillReceiveProps = nextProps => {
     if (!(nextProps.session.code || nextProps.session.token) &&
       !nextProps.routeElement.public) {
-      window.location = '/'
+      navigate('/')
     }
   }
 

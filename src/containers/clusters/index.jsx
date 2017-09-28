@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { selectCluster } from 'actions/clusters'
+import { navigate } from 'actions/common'
 
 const clusters = [
   {
@@ -30,7 +31,7 @@ class ClustersIndex extends React.Component {
   handleClick = (event, cluster) => {
     event.preventDefault()
     if (cluster.name === this.props.cluster.name) {
-      window.location = 'dashboard'
+      navigate('dashboard')
     } else {
       this.props.dispatch(selectCluster(cluster))
     }
@@ -38,7 +39,7 @@ class ClustersIndex extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     if (this.props.cluster.name !== nextProps.cluster.name) {
-      window.location = 'dashboard'
+      navigate('dashboard')
     }
   }
 

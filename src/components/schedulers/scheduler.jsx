@@ -1,5 +1,6 @@
 import React from 'react'
 import { css } from 'glamor'
+import { navigate } from 'actions/common'
 import styles from 'constants/styles'
 
 const Scheduler = ({
@@ -15,7 +16,7 @@ const Scheduler = ({
   <div {...Scheduler.styles}>
     <div>
       {name}
-      <button onClick={() => (window.location = `schedulers/${name}/edit`)}>...</button>
+      <button onClick={() => navigate(`schedulers/${name}/edit`)}>...</button>
     </div>
     <div><label>Game</label>{game}</div>
     <div>
