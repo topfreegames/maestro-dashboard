@@ -13,7 +13,13 @@ export const clusters = {
   createClusterFailure: 'CLUSTERS/CREATE_FAILURE'
 }
 
+export const session = {
+  setToken: 'SESSION/SET_TOKEN',
+  setCode: 'SESSION/SET_CODE'
+}
+
 export default {
   schedulers,
-  clusters
+  clusters,
+  session
 }
