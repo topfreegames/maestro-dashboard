@@ -32,6 +32,7 @@ SchedulersEdit.styles = css({
     border: `1px solid ${styles.colors.gray_25}`,
 
     '> label': {
+      textTransform: 'uppercase',
       color: `${styles.colors.gray_100} !important`,
       margin: '0 0 8px -4px !important',
       fontSize: `${styles.fontSizes[`3`]} !important`,

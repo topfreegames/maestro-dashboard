@@ -15,6 +15,21 @@ export const template = {
     type: 'string',
     optional: true
   },
+  ports: {
+    type: 'array',
+    format: {
+      containerPort: {
+        type: 'integer'
+      },
+      protocol: {
+        type: 'string'
+      },
+      name: {
+        type: 'string'
+      }
+    },
+    optional: true
+  },
   shutdownTimeout: {
     type: 'integer',
     label: 'shutdown timeout'
@@ -83,7 +98,9 @@ export const template = {
 }
 
 export const getField = path =>
-  path.split('.').reduce((acc, x) => acc[x].children || acc[x], template)
+  path.split('.').reduce((acc, x) => {
+    return acc.format || acc[x].children || acc[x]
+  }, template)
 
 const makePath = (prefix, name) => `${prefix}${name}`
 
@@ -107,6 +124,17 @@ export const renderScheduler = (scheduler, handleChange) => {
     />
   )
 
+  const renderArray = ([name, { format }], prefix) => {
+    const arr = getValue(makePath(prefix, name), scheduler)
+
+    return (
+      <div className='section' key={makePath(prefix, name)}>
+        <label>{name}</label>
+        {arr.map((e, i) => renderObject(format, `${makePath(prefix, name)}.${i}.`))}
+      </div>
+    )
+  }
+
   const renderCompose = ([name, { children }], prefix) => (
     <div className='section' key={makePath(prefix, name)}>
       <label>{name}</label>
@@ -114,8 +142,11 @@ export const renderScheduler = (scheduler, handleChange) => {
     </div>
   )
 
-  const renderEntry = (e, prefix = '') =>
-    e[1].children ? renderCompose(e, prefix) : renderSimple(e, prefix)
+  const renderEntry = (e, prefix = '') => {
+    if (e[1].children) return renderCompose(e, prefix)
+    else if (e[1].type === 'array') return renderArray(e, prefix)
+    else return renderSimple(e, prefix)
+  }
 
   const renderObject = (o, prefix = '') =>
     Object.entries(o).map(e => renderEntry(e, prefix))
