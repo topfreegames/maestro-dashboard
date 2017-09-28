@@ -38,7 +38,7 @@ class SchedulersEdit extends React.Component {
     this.setState({
       ...this.state,
       scheduler: setInPath(this.state.scheduler,
-        event.target.name,
+        event.target.id,
         event.target.value)
     })
   }

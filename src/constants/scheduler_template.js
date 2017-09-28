@@ -11,6 +11,10 @@ export const template = {
   image: {
     type: 'string'
   },
+  affinity: {
+    type: 'string',
+    optional: true
+  },
   shutdownTimeout: {
     type: 'integer'
   },
@@ -77,9 +81,7 @@ export const template = {
 }
 
 export const getType = path =>
-  path.split('.').reduce((acc, x) => {
-    return acc[x].children || acc[x].type
-  }, template)
+  path.split('.').reduce((acc, x) => acc[x].children || acc[x].type, template)
 
 const makePath = (prefix, name) => `${prefix}${name}`
 
@@ -93,7 +95,7 @@ export const renderScheduler = (scheduler, handleChange) => {
       id={makePath(prefix, name)}
       label={name}
       value={getValue(makePath(prefix, name), scheduler)}
-      onChange={handleChange}
+      handleChange={handleChange}
     />
   )
 
@@ -143,8 +145,9 @@ export const setInPath = (scheduler, path, value) =>
         acc[x] = getType(path) === 'integer'
           ? parseInt(value)
           : value
-        return scheduler
       }
+
+      return scheduler
     } else {
       return acc[x]
     }

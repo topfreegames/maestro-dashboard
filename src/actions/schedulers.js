@@ -71,8 +71,25 @@ export const updateSchedulerMinimumAndReplicas = async (name, payload) => {
   await sleep(1200)
 }
 
+const removeEmptyFields = payload =>
+  Object.keys(payload).reduce((acc, key) => {
+    if (payload[key] === null ||
+      payload[key] === undefined ||
+      payload[key] === '') {
+      return acc
+    } else {
+      return {
+        ...acc,
+        [key]: payload[key]
+      }
+    }
+  }, {})
+
 export const updateScheduler = async(payload) => {
-  const response = await client.put(`scheduler/${payload.name}?maxsurge=25`, payload)
+  const normalizedPayload = removeEmptyFields(payload)
+  console.log(normalizedPayload)
+  const response =
+    await client.put(`scheduler/${payload.name}?maxsurge=25`, normalizedPayload)
   console.log(response)
   console.log(await response.json())
 }
