@@ -19,10 +19,6 @@ const HeaderTabs = ({ switchTab, activeTab }) => (
 
 const smallStyles = css({
   [`@media(max-width: ${styles.minWidth})`]: {
-    '& div': {
-      cursor: 'pointer'
-    },
-
     display: 'flex',
     width: '100%',
 
@@ -35,6 +31,7 @@ const smallStyles = css({
       paddingLeft: '16px',
       borderBottom: `3px ${styles.colors.gray_0} solid`,
       color: styles.colors.gray_75,
+      cursor: 'pointer',
 
       '&.active': {
         color: styles.colors.gray_100,

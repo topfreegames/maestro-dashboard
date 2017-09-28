@@ -13,13 +13,19 @@ const commonStyles = css({
 
 const smallStyles = css({
   [`@media(max-width: ${styles.minWidth})`]: {
+    position: 'fixed',
     display: 'flex',
     alignItems: 'center',
     boxSizing: 'border-box',
     width: '100%',
     height: '48px',
     padding: '0 16px',
-    borderBottom: `1px ${styles.colors.gray_0} solid`
+    borderBottom: `1px ${styles.colors.gray_0} solid`,
+    backgroundColor: styles.colors.white,
+
+    '& + div': {
+      marginTop: '48px'
+    }
   }
 })
 

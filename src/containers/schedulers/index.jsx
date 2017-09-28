@@ -16,7 +16,10 @@ class Schedulers extends React.Component {
   )
 }
 
+const sortSchedulers = schedulers =>
+  schedulers.sort((a, b) => a.name < b.name ? -1 : 1)
+
 export default connect(state => ({
-  schedulers: state.schedulers.index.schedulers,
+  schedulers: sortSchedulers(state.schedulers.index.schedulers),
   fetching: state.schedulers.index.fetching
 }))(Schedulers)

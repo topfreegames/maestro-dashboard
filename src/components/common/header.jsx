@@ -9,6 +9,7 @@ const Header = ({ title, switchTab, activeTab }) => (
     <HeaderBar title={title} />
     {switchTab && activeTab &&
       <HeaderTabs switchTab={switchTab} activeTab={activeTab} />}
+    {!switchTab && !activeTab && <div />}
   </div>
 )
 
