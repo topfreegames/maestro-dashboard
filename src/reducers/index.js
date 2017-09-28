@@ -5,11 +5,21 @@ import sessionReducer from 'reducers/session'
 import schedulersReducer from 'reducers/schedulers'
 import clustersReducer from 'reducers/clusters'
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   session: sessionReducer,
   schedulers: schedulersReducer,
   clusters: clustersReducer
 })
+
+const rootReducer = (state = {}, action) => {
+  let statePrime = state
+
+  if (action.type === 'PURGE') {
+    statePrime = {}
+  }
+
+  return appReducer(statePrime, action)
+}
 
 const store = createStore(rootReducer, undefined, compose(applyMiddleware(thunk), autoRehydrate()))
 

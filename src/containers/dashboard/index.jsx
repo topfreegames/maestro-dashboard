@@ -32,6 +32,7 @@ class Dashboard extends React.Component {
     <div {...headerStyles}>
       Maestro {this.props.cluster.name}
       <button onClick={() => navigate('schedulers/new')}>create</button>
+      <button onClick={() => this.props.dispatch({ type: 'PURGE' })}>sign-out</button>
     </div>
   )
 

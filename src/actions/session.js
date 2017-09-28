@@ -18,7 +18,6 @@ export const getCode = () => (
 )
 
 export const exchangeCode = async (code, host) => {
-  console.log(code, host)
   const redirectUri = encodeURIComponent(process.env.GA_CALLBACK)
   const response =
     await fetch(`${host}/access?code=${code}&redirect_uri=${redirectUri}`)
