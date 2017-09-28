@@ -107,14 +107,14 @@ const makePath = (prefix, name) => `${prefix}${name}`
 const getValue = (path, origin) =>
   path.split('.').reduce((acc, x) => acc[x], origin)
 
-export const renderScheduler = (scheduler, handleChange) => {
+export const renderScheduler = (scheduler, handleChange, handleAdd) => {
   const makeLabel = (prefix, name) => {
     const f = getField(makePath(prefix, name))
     const suffix = f.optional ? ' (OPTIONAL)' : ''
     return (f.label ? f.label : name) + suffix
   }
 
-  const renderSimple = ([name, data], prefix) => (
+  const renderSimple = ([name, _], prefix) => (
     <TextInput
       key={makePath(prefix, name)}
       id={makePath(prefix, name)}
@@ -125,12 +125,22 @@ export const renderScheduler = (scheduler, handleChange) => {
   )
 
   const renderArray = ([name, { format }], prefix) => {
-    const arr = getValue(makePath(prefix, name), scheduler)
+    const arrayPath = makePath(prefix, name)
+    const arr = getValue(arrayPath, scheduler)
+    const len = arr.length
 
     return (
       <div className='section' key={makePath(prefix, name)}>
-        <label>{name}</label>
-        {arr.map((e, i) => renderObject(format, `${makePath(prefix, name)}.${i}.`))}
+        <div><label>{name}</label><button onClick={e => handleAdd(e, `${arrayPath}.${len}`, parseFormat(format))}>+ add</button></div>
+        {arr.map((e, i) => {
+          const newPrefix = `${arrayPath}.${i}.`
+
+          return (
+            <div key={newPrefix} className='section'>
+              {renderObject(format, newPrefix)}
+            </div>
+          )
+        })}
       </div>
     )
   }
@@ -154,8 +164,29 @@ export const renderScheduler = (scheduler, handleChange) => {
   return scheduler && renderObject(template)
 }
 
+const parseFormat = format => {
+  const parseSimple = ([name, _]) => ({
+    [name]: ''
+  })
+
+  const parseCompose = ([name, { children }]) => ({
+    [name]: parseObject(children)
+  })
+
+  const parseEntry = e =>
+    e[1].children ? parseCompose(e) : parseSimple(e)
+
+  const parseObject = o =>
+    Object.entries(o).reduce((acc, e) => ({
+      ...acc,
+      ...parseEntry(e)
+    }), {})
+
+  return parseObject(format)
+}
+
 export const parseScheduler = scheduler => {
-  const parseSimple = ([name, data], prefix) => ({
+  const parseSimple = ([name, _], prefix) => ({
     [name]: (scheduler && getValue(makePath(prefix, name), scheduler)) || ''
   })
 

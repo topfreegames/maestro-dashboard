@@ -8,12 +8,13 @@ const SchedulersEdit = ({
   headerTitle,
   scheduler,
   handleChange,
+  handleAdd,
   handleSubmit
 }) => (
   <div {...SchedulersEdit.styles}>
     <Header title={headerTitle()} />
     <section role='main'>
-      {renderScheduler(scheduler, handleChange)}
+      {renderScheduler(scheduler, handleChange, handleAdd)}
       <button onClick={handleSubmit}>Save</button>
     </section>
   </div>

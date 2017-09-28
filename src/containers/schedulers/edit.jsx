@@ -48,11 +48,22 @@ class SchedulersEdit extends React.Component {
     await updateScheduler(this.state.scheduler)
   }
 
+  handleAdd = (event, path, format) => {
+    this.setState({
+      ...this.state,
+      scheduler: setInPath(this.state.scheduler,
+        path,
+        format
+      )
+    })
+  }
+
   render = () => (
     <SchedulersEditComponent
       headerTitle={this.headerTitle}
       scheduler={this.state.scheduler}
       handleChange={this.handleChange}
+      handleAdd={this.handleAdd}
       handleSubmit={this.handleSubmit}
     />
   )
