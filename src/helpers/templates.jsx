@@ -3,7 +3,7 @@ import { TextInput } from 'components/common'
 
 const getField = (template, path) =>
   path.split('.').reduce((acc, x) => {
-    return acc.format || acc[x]
+    return acc._format || acc[x]
   }, template)
 
 const makePath = (prefix, name) => `${prefix}${name}`
@@ -28,20 +28,23 @@ export const render = (template, object, handleChange, handleAdd) => {
     />
   )
 
-  const renderArray = ([name, { format }], prefix) => {
+  const renderArray = ([name, { _format }], prefix) => {
     const arrayPath = makePath(prefix, name)
-    const arr = getValue(arrayPath, object)
+    const arr = getValue(arrayPath, object) || []
     const len = arr.length
 
     return (
       <div className='section' key={makePath(prefix, name)}>
-        <div><label>{name}</label><button onClick={e => handleAdd(e, `${arrayPath}.${len}`, parseFormat(format))}>+ add</button></div>
+        <div>
+          <label>{name}</label>
+          <button onClick={e => handleAdd(e, `${arrayPath}.${len}`, parse(_format))}>+ add</button>
+        </div>
         {arr.map((e, i) => {
           const newPrefix = `${arrayPath}.${i}.`
 
           return (
             <div key={newPrefix} className='section'>
-              {renderObject(format, newPrefix)}
+              {renderObject(_format, newPrefix)}
             </div>
           )
         })}
@@ -75,44 +78,37 @@ export const render = (template, object, handleChange, handleAdd) => {
   return object && renderObject(template)
 }
 
-const parseFormat = format => {
-  const parseSimple = ([name, _]) => ({
-    [name]: ''
-  })
-
-  const parseCompose = ([name, { children }]) => ({
-    [name]: parseObject(children)
-  })
-
-  const parseEntry = e =>
-    e[1].children ? parseCompose(e) : parseSimple(e)
-
-  const parseObject = o =>
-    Object.entries(o).reduce((acc, e) => ({
-      ...acc,
-      ...parseEntry(e)
-    }), {})
-
-  return parseObject(format)
-}
-
 export const parse = (template, object) => {
   const parseSimple = ([name, _], prefix) => ({
     [name]: (object && getValue(makePath(prefix, name), object)) || ''
   })
 
-  const parseCompose = ([name, { children }], prefix) => ({
+  const parseArray = ([name, _], prefix) => ({
+    [name]: (object && getValue(makePath(prefix, name), object)) || []
+  })
+
+  const parseCompose = ([name, children], prefix) => ({
     [name]: parseObject(children, `${makePath(prefix, name)}.`)
   })
 
-  const parseEntry = (e, prefix) =>
-    e[1].children ? parseCompose(e, prefix) : parseSimple(e, prefix)
+  const parseEntry = (e, prefix) => {
+    switch (e[1]._type) {
+      case 'compose':
+        return parseCompose(e, prefix)
+      case 'array':
+        return parseArray(e, prefix)
+      default:
+        return parseSimple(e, prefix)
+    }
+  }
 
   const parseObject = (o, prefix = '') =>
-    Object.entries(o).reduce((acc, e) => ({
-      ...acc,
-      ...parseEntry(e, prefix)
-    }), {})
+    Object.entries(o)
+      .filter(e => e[0][0] !== '_')
+      .reduce((acc, e) => ({
+        ...acc,
+        ...parseEntry(e, prefix)
+      }), {})
 
   return parseObject(template)
 }

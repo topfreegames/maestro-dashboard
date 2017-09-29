@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { BackButton } from 'components/common'
 import SchedulersNewComponent from 'components/schedulers/new'
 import { createScheduler } from 'actions/schedulers'
-import { parseScheduler, setInPath } from 'constants/scheduler_template'
+import { parse , setInPath } from 'helpers/templates'
+import schedulerTemplate from 'constants/scheduler_template'
 
 class SchedulersNew extends React.Component {
   constructor (props) {
@@ -16,7 +17,7 @@ class SchedulersNew extends React.Component {
 
   componentDidMount = () => {
     this.setState({
-      scheduler: parseScheduler()
+      scheduler: parse(schedulerTemplate)
     })
   }
 
@@ -30,9 +31,23 @@ class SchedulersNew extends React.Component {
   handleChange = event => {
     this.setState({
       ...this.state,
-      scheduler: setInPath(this.state.scheduler,
+      scheduler: setInPath(
+        schedulerTemplate,
+        this.state.scheduler,
         event.target.id,
         event.target.value)
+    })
+  }
+
+  handleAdd = (event, path, format) => {
+    this.setState({
+      ...this.state,
+      scheduler: setInPath(
+        schedulerTemplate,
+        this.state.scheduler,
+        path,
+        format
+      )
     })
   }
 
@@ -46,6 +61,7 @@ class SchedulersNew extends React.Component {
       headerTitle={this.headerTitle()}
       scheduler={this.state.scheduler}
       handleChange={this.handleChange}
+      handleAdd={this.handleAdd}
       handleSubmit={this.handleSubmit}
     />
   )

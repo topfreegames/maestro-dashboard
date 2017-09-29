@@ -1,4 +1,5 @@
 export default {
+  _type: 'compose',
   name: {
     _type: 'string'
   },
@@ -14,7 +15,8 @@ export default {
   },
   ports: {
     _type: 'array',
-    format: {
+    _format: {
+      _type: 'compose',
       containerPort: {
         _type: 'integer'
       },
