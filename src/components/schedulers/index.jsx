@@ -13,57 +13,8 @@ const Schedulers = props => (
 Schedulers.styles = css({
   display: 'flex',
   boxSizing: 'border-box',
-
-  [`@media (min-width: ${styles.minWidth}) and (max-width: ${styles.maxWidth})`]: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    padding: '0 30px 30px'
-  },
-
-  [`@media(max-width: ${styles.minWidth})`]: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    padding: '16px'
-  },
-
-  '> div': {
-    display: 'flex',
-    boxSizing: 'border-box',
-
-    [`@media (min-width: ${styles.minWidth}) and (max-width: ${styles.maxWidth})`]: {
-      backgroundColor: styles.colors.white,
-      boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
-      padding: '10px 20px'
-    },
-
-    [`@media (min-width: 1200px)`]: {
-      minWidth: '32%',
-      maxWidth: '32%',
-      marginBottom: '20px'
-    },
-
-    [`@media (min-width: 800px) and (max-width: 1200px)`]: {
-      minWidth: '48%',
-      maxWidth: '48%',
-      marginBottom: '20px'
-    },
-
-    [`@media (min-width: ${styles.minWidth}) and (max-width: 800px)`]: {
-      minWidth: '100%',
-      maxWidth: '100%',
-      marginBottom: '20px'
-    },
-
-    [`@media(max-width: ${styles.minWidth})`]: {
-      minWidth: '48%',
-      maxWidth: '48%',
-      boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
-      padding: '10px 16px',
-      marginBottom: '16px'
-    }
-  }
+  flexDirection: 'column',
+  padding: '16px'
 })
 
 export default Schedulers

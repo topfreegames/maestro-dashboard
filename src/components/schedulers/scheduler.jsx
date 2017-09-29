@@ -1,5 +1,6 @@
 import React from 'react'
 import { css } from 'glamor'
+import { TextInput, Button } from 'components/common'
 import { navigate } from 'actions/common'
 import styles from 'constants/styles'
 
@@ -16,72 +17,118 @@ const Scheduler = ({
   <div {...Scheduler.styles}>
     <div>
       {name}
-      <button onClick={() => navigate(`schedulers/${name}/edit`)}>...</button>
+      <button onClick={() => navigate(`schedulers/${name}/edit`)}>
+        <i className='fa fa-ellipsis-v' aria-hidden='true' />
+      </button>
     </div>
-    <div><label>Game</label>{game}</div>
+    <div>{game}</div>
     <div>
-      <label>Minimum</label>
-      <input name='minimum' type='text' value={minimum} onChange={handleChange} />
+      <div>
+        <label>Ready</label>
+        <i className='fa fa-play-circle' aria-hidden='true' />
+        {ready}
+      </div>
+      <div>
+        <label>Occupied</label>
+        <i className='fa fa-ban' aria-hidden='true' />
+        {occupied}
+      </div>
     </div>
     <div>
-      <label>Replicas</label>
-      <input name='replicas' type='text' value={replicas} onChange={handleChange} />
+      <TextInput id='minimum' label='Minimum' value={minimum} onChange={handleChange} />
+      <TextInput id='replicas' label='Replicas' value={replicas} onChange={handleChange} />
+      <Button>Save</Button>
     </div>
-    <div><label>Ready</label>{ready}</div>
-    <div><label>Occupied</label>{occupied}</div>
-    <button onClick={handleSubmit}>Save</button>
   </div>
 )
 
 Scheduler.styles = css({
+  display: 'flex',
   flexDirection: 'column',
+  boxSizing: 'border-box',
+  width: '100%',
+  boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
+  padding: '10px',
+
+  '& label': {
+    fontSize: styles.fontSizes['2'],
+    color: styles.colors.gray_50,
+    textTransform: 'uppercase'
+  },
+
+  '& + &': {
+    marginTop: '16px'
+  },
 
   '> div': {
     display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: styles.fontSizes['3'],
     color: styles.colors.gray_100,
-    marginBottom: '4px',
 
-    '> label': {
-      marginRight: '8px',
-      textTransform: 'uppercase',
-      fontSize: styles.fontSizes['2'],
-      fontWeight: 600,
-      color: styles.colors.gray_50
-    },
-
-    '> input': {
-      textAlign: 'center',
-      fontSize: styles.fontSizes['3'],
-      display: 'inline-block',
-      border: 'none',
-      borderBottom: `2px solid ${styles.colors.gray_25}`,
-      width: '30%',
-
-      '&:focus': {
-        borderColor: styles.colors.brandPrimary,
-        fontWeight: 700
-      }
+    '& + div': {
+      marginTop: '16px'
     }
   },
 
   '> div:nth-of-type(1)': {
-    marginBottom: '16px',
+    justifyContent: 'space-between',
     fontSize: styles.fontSizes['4'],
-    color: styles.colors.brandPrimary
+    fontWeight: 500,
+    color: styles.colors.brandSecondary,
+
+    '> button': {
+      color: styles.colors.gray_75,
+      fontSize: styles.fontSizes['3']
+    }
   },
 
-  '> button': {
+  '> div:nth-of-type(2)': {
     fontSize: styles.fontSizes['3'],
-    fontWeight: 400,
-    backgroundColor: styles.colors.brandPrimary,
-    color: styles.colors.white,
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    padding: '8px 0',
-    marginTop: '8px'
+    color: styles.colors.gray_100
+  },
+
+  '> div:nth-of-type(3)': {
+    fontSize: styles.fontSizes['3'],
+    color: styles.colors.gray_100,
+
+    '> div': {
+      display: 'flex',
+      alignItems: 'center',
+
+      '& + div': {
+        marginLeft: '20px'
+      }
+    },
+
+    '& label': {
+      marginRight: '10px'
+    },
+
+    '& .fa': {
+      marginRight: '4px'
+    }
+  },
+
+  '> div:nth-of-type(4)': {
+    borderTop: `1px solid ${styles.colors.gray_0}`,
+    paddingTop: '16px',
+
+    '> div': {
+      display: 'flex',
+      justifyContent: 'center',
+      width: '25%',
+
+      '& input': {
+        textAlign: 'center'
+      },
+
+      '& + div': {
+        marginLeft: '20px'
+      }
+    },
+
+    '> button': {
+      marginLeft: 'auto'
+    }
   }
 })
 

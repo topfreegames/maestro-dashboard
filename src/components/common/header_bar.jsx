@@ -26,7 +26,7 @@ const smallStyles = css({
     height: '48px',
     padding: '0 16px',
     borderBottom: `1px ${styles.colors.gray_0} solid`,
-    backgroundColor: styles.colors.brandBackground,
+    backgroundColor: styles.colors.background,
 
     '> div:nth-of-type(2)': {
       position: 'absolute',

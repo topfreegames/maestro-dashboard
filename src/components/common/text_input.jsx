@@ -15,16 +15,10 @@ const TextInput = ({ id, label, value, handleChange }) => (
 )
 
 TextInput.styles = css({
-  display: 'flex',
+  display: 'inline-flex',
   flexDirection: 'column',
-  width: '100%',
-
-  '& + &': {
-    marginTop: '16px'
-  },
 
   '& label': {
-    marginLeft: '8px',
     textTransform: 'uppercase',
     fontSize: styles.fontSizes['2'],
     color: styles.colors.gray_75
@@ -32,13 +26,14 @@ TextInput.styles = css({
 
   '& input': {
     fontSize: styles.fontSizes['3'],
-    padding: '6px 12px',
+    padding: '6px 0 6px',
     border: 'none',
-    borderBottom: `2px solid ${styles.colors.gray_50}`,
+    borderBottom: `1px solid ${styles.colors.gray_50}`,
 
     '&:focus': {
-      fontWeight: 600,
-      borderColor: styles.colors.brandPrimary
+      fontWeight: 500,
+      padding: '6px 0 5px',
+      borderBottom: `2px solid ${styles.colors.brandPrimary}`
     }
   }
 })
