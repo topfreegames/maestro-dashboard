@@ -18,6 +18,7 @@ const SchedulersEdit = ({
   scheduler,
   handleChange,
   handleAdd,
+  handleRemove,
   handleSubmit
 }) => (
   <div {...SchedulersEdit.styles}>
@@ -26,8 +27,13 @@ const SchedulersEdit = ({
       right={headerRight()}
     />
     <section role='main'>
-      {render(schedulerTemplate, scheduler, handleChange, handleAdd)}
-      <button onClick={handleSubmit}>Save</button>
+      {render(schedulerTemplate, scheduler, handleChange, handleAdd, handleRemove)}
+      <Button
+        handleClick={handleSubmit}
+        customStyles={{ width: '100%' }}
+      >
+        Save
+      </Button>
     </section>
   </div>
 )
@@ -37,20 +43,40 @@ SchedulersEdit.styles = css({
     display: 'flex',
     boxSizing: 'border-box',
     flexDirection: 'column',
-    padding: '16px'
+    padding: '16px',
+
+    '> * + *': {
+      marginTop: '8px'
+    }
   },
 
   '& .section': {
-    marginTop: '8px',
+    marginTop: '16px !important',
+    marginBottom: '8px',
     border: `1px solid ${styles.colors.gray_25}`,
 
-    '> label': {
+    '& + .section': {
+      marginTop: '8px !important'
+    },
+
+    '> *:first-child:not(button)': {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       textTransform: 'uppercase',
-      color: `${styles.colors.gray_100} !important`,
-      margin: '0 0 8px -4px !important',
-      fontSize: `${styles.fontSizes[`3`]} !important`,
-      fontWeight: 600
+      color: `${styles.colors.gray_100}`,
+      fontSize: `${styles.fontSizes[`3`]}`,
+      fontWeight: 500
+    },
+
+    '> button': {
+      color: 'auto'
     }
+  },
+
+  '> button': {
+    marginTop: '20px'
   }
 })
 

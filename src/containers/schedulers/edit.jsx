@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import SchedulersEditComponent from 'components/schedulers/edit'
 import { getScheduler, updateScheduler } from 'actions/schedulers'
-import { parse, setInPath } from 'helpers/templates'
+import { parse, setInPath, removeInPath } from 'helpers/templates'
 import schedulerTemplate from 'constants/scheduler_template'
 
 class SchedulersEdit extends React.Component {
@@ -44,6 +44,8 @@ class SchedulersEdit extends React.Component {
   }
 
   handleAdd = (event, path, format) => {
+    event.preventDefault()
+
     this.setState({
       ...this.state,
       scheduler: setInPath(
@@ -55,11 +57,25 @@ class SchedulersEdit extends React.Component {
     })
   }
 
+  handleRemove = (event, path, index) => {
+    event.preventDefault()
+
+    this.setState({
+      ...this.state,
+      scheduler: removeInPath(
+        this.state.scheduler,
+        path,
+        index
+      )
+    })
+  }
+
   render = () => (
     <SchedulersEditComponent
       scheduler={this.state.scheduler}
       handleChange={this.handleChange}
       handleAdd={this.handleAdd}
+      handleRemove={this.handleRemove}
       handleSubmit={this.handleSubmit}
     />
   )

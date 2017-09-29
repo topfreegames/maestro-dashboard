@@ -25,8 +25,8 @@ const smallStyles = css({
     width: '100%',
     height: '48px',
     padding: '0 16px',
-    borderBottom: `1px ${styles.colors.gray_0} solid`,
     backgroundColor: styles.colors.background,
+    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
 
     '> * > div, > div': {
       display: 'flex',

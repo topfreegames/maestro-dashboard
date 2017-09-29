@@ -32,6 +32,7 @@ Button.styles = css({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  alignSelf: 'flex-end',
   padding: '0 20px',
   height: '36px',
   background: styles.colors.brandPrimary,

@@ -47,7 +47,7 @@ Scheduler.styles = css({
   flexDirection: 'column',
   boxSizing: 'border-box',
   width: '100%',
-  boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
+  boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.2)',
   padding: '10px',
 
   '& label': {

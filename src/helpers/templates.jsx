@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput } from 'components/common'
+import { Button, TextInput } from 'components/common'
 
 const getField = (template, path) =>
   path.split('.').reduce((acc, x) => {
@@ -11,7 +11,7 @@ const makePath = (prefix, name) => `${prefix}${name}`
 const getValue = (path, origin) =>
   path.split('.').reduce((acc, x) => acc[x], origin)
 
-export const render = (template, object, handleChange, handleAdd) => {
+export const render = (template, object, handleChange, handleAdd, handleRemove) => {
   const makeLabel = (prefix, name) => {
     const f = getField(template, makePath(prefix, name))
     const suffix = f.optional ? ' (OPTIONAL)' : ''
@@ -37,13 +37,21 @@ export const render = (template, object, handleChange, handleAdd) => {
       <div className='section' key={makePath(prefix, name)}>
         <div>
           <label>{name}</label>
-          <button onClick={e => handleAdd(e, `${arrayPath}.${len}`, parse(_format))}>+ add</button>
+          <Button size='small' handleClick={e => handleAdd(e, `${arrayPath}.${len}`, parse(_format))}>Add</Button>
         </div>
         {arr.map((e, i) => {
           const newPrefix = `${arrayPath}.${i}.`
 
           return (
             <div key={newPrefix} className='section'>
+              <Button
+                size='small'
+                variant='secondary'
+                customStyles={{ display: 'inline-flex' }}
+                handleClick={e => handleRemove(e, arrayPath, i)}
+              >
+                Remove
+              </Button>
               {renderObject(_format, newPrefix)}
             </div>
           )
@@ -121,6 +129,16 @@ export const setInPath = (template, object, path, value) =>
         ? (parseInt(value) || '')
         : value
 
+      return object
+    } else {
+      return acc[x]
+    }
+  }, object)
+
+export const removeInPath = (object, path, index) =>
+  path.split('.').reduce((acc, x, i, arr) => {
+    if (i === arr.length - 1) {
+      acc[x] = acc[x].filter((e, i) => i !== parseInt(index))
       return object
     } else {
       return acc[x]
