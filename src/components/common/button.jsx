@@ -2,13 +2,14 @@ import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
 
-const Button = ({ children, handleSubmit }) => (
-  <button {...Button.styles} onClick={handleSubmit}>{children}</button>
+const Button = ({ children, handleClick }) => (
+  <button {...Button.styles} onClick={handleClick}>{children}</button>
 )
 
 Button.styles = css({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
   padding: '0 20px',
   height: '36px',
   background: styles.colors.brandPrimary,

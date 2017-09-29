@@ -1,5 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { css } from 'glamor'
+import { Button } from 'components/common'
 import { selectCluster } from 'actions/clusters'
 import { navigate } from 'actions/common'
 
@@ -20,12 +22,12 @@ const clusters = [
 
 class ClustersIndex extends React.Component {
   renderCluster = ({ name, host }) => (
-    <button
+    <Button
       key={name}
-      onClick={e => this.handleClick(e, { name, host })}
+      handleClick={e => this.handleClick(e, { name, host })}
     >
       {name}
-    </button>
+    </Button>
   )
 
   handleClick = (event, cluster) => {
@@ -44,11 +46,25 @@ class ClustersIndex extends React.Component {
   }
 
   render = () => (
-    <div>
+    <div {...ClustersIndex.styles}>
       {clusters.map(c => this.renderCluster(c))}
     </div>
   )
 }
+
+ClustersIndex.styles = css({
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '16px',
+
+  '& button': {
+    width: '100%',
+
+    '& + button': {
+      marginTop: '16px'
+    }
+  }
+})
 
 export default connect(state => ({
   cluster: (state.clusters.current && state.clusters[state.clusters.current]) || {}
