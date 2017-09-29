@@ -6,6 +6,21 @@ import Schedulers from 'containers/schedulers'
 import Clusters from 'containers/clusters'
 import styles from 'constants/styles'
 
+class SearchTextInput extends React.Component {
+  componentDidMount = () => this.input.focus()
+
+  render = () => (
+    <input
+      {...SearchTextInput.styles}
+      ref={e => (this.input = e)}
+      type='text'
+      placeholder='Search schedulers'
+      value={this.props.value}
+      onChange={this.props.handleChange}
+    />
+  )
+}
+
 class Dashboard extends React.Component {
   constructor (props) {
     super(props)
@@ -13,7 +28,9 @@ class Dashboard extends React.Component {
     const activeTab = this.props.session.token ? 'Schedulers' : 'Clusters'
 
     this.state = {
-      activeTab
+      activeTab,
+      schedulerFilter: '',
+      header: this.headerNormal
     }
   }
 
@@ -30,34 +47,80 @@ class Dashboard extends React.Component {
 
   switchToSchedulers = () => this.switchTab(null, 'Schedulers')
 
-  headerLeft = () => (
-    <div {...headerLeftStyles}>M</div>
-  )
+  headerNormal = () => ({
+    left: <div {...headerLeftStyles}>M</div>,
+    title: this.props.cluster.name,
+    right: (
+      <i
+        onClick={() => this.setState({ ...this.state, header: this.headerSearch })}
+        className='fa fa-search'
+        aria-hidden='true'
+        {...headerRightStyles}
+      />
+    )
+  })
 
-  headerRight = () => (
-    <i className='fa fa-search' aria-hidden='true' {...headerRightStyles} />
-  )
+  headerSearch = () => ({
+    left: (
+      <div>
+        <i
+          onClick={() => this.setState({
+            ...this.state,
+            schedulerFilter: '',
+            header: this.headerNormal
+          })}
+          className='fa fa-arrow-left'
+          aria-hidden='true'
+        />
+        <SearchTextInput
+          value={this.state.schedulerFilter}
+          handleChange={this.handleChangeSchedulerFilter}
+        />
+      </div>
+    ),
+    title: null,
+    right: <i className='fa fa-search' aria-hidden='true' {...headerRightStyles} />
+  })
+
+  handleChangeSchedulerFilter = event => {
+    event.preventDefault()
+
+    this.setState({
+      ...this.state,
+      schedulerFilter: event.target.value
+    })
+  }
 
   render = () => {
     const { activeTab } = this.state
+    const header = this.state.header()
 
     return (
       <div {...Dashboard.styles}>
         <Header
-          left={this.headerLeft()}
-          title={this.props.cluster.name}
-          right={this.headerRight()}
+          left={header.left}
+          title={header.title}
+          right={header.right}
           tabs={['Clusters', 'Schedulers']}
           switchTab={this.switchTab}
           activeTab={activeTab}
         />
-        {activeTab === 'Schedulers' && <Schedulers />}
+        {activeTab === 'Schedulers' &&
+          <Schedulers filter={this.state.schedulerFilter} />}
         {activeTab === 'Clusters' &&
           <Clusters switchToSchedulers={this.switchToSchedulers} />}
       </div>
     )
   }
 }
+
+SearchTextInput.styles = css({
+  fontSize: styles.fontSizes['4'],
+
+  '&::placeholder': {
+    color: styles.colors.gray_50
+  }
+})
 
 const headerLeftStyles = css({
   color: styles.colors.brandPrimary,
