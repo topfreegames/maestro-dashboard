@@ -18,7 +18,7 @@ class Dashboard extends React.Component {
   }
 
   switchTab = (event, tab) => {
-    event.preventDefault()
+    event && event.preventDefault()
 
     if (!this.props.session.token) return
 
@@ -27,6 +27,8 @@ class Dashboard extends React.Component {
       activeTab: tab
     })
   }
+
+  switchToSchedulers = () => this.switchTab(null, 'Schedulers')
 
   headerLeft = () => (
     <div {...headerLeftStyles}>M</div>
@@ -50,7 +52,8 @@ class Dashboard extends React.Component {
           activeTab={activeTab}
         />
         {activeTab === 'Schedulers' && <Schedulers />}
-        {activeTab === 'Clusters' && <Clusters />}
+        {activeTab === 'Clusters' &&
+          <Clusters switchToSchedulers={this.switchToSchedulers} />}
       </div>
     )
   }

@@ -25,6 +25,8 @@ class ClustersIndex extends React.Component {
     <Button
       key={name}
       handleClick={e => this.handleClick(e, { name, host })}
+      variant={(this.props.cluster.name !== name) && 'ghost'}
+      customStyles={buttonCustomStyles}
     >
       {name}
     </Button>
@@ -41,7 +43,7 @@ class ClustersIndex extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     if (this.props.cluster.name !== nextProps.cluster.name) {
-      navigate('dashboard')
+      this.props.switchToSchedulers()
     }
   }
 
@@ -52,18 +54,18 @@ class ClustersIndex extends React.Component {
   )
 }
 
+const buttonCustomStyles = css({
+  width: '100%',
+
+  '& + button': {
+    marginTop: '16px'
+  }
+})
+
 ClustersIndex.styles = css({
   display: 'flex',
   flexDirection: 'column',
-  padding: '16px',
-
-  '& button': {
-    width: '100%',
-
-    '& + button': {
-      marginTop: '16px'
-    }
-  }
+  padding: '16px'
 })
 
 export default connect(state => ({
