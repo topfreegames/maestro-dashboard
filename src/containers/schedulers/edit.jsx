@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import SchedulersEditComponent from 'components/schedulers/edit'
-import { BackButton } from 'components/common'
 import { getScheduler, updateScheduler } from 'actions/schedulers'
 import { parse, setInPath } from 'helpers/templates'
 import schedulerTemplate from 'constants/scheduler_template'
@@ -27,13 +26,6 @@ class SchedulersEdit extends React.Component {
   componentDidMount = async () => {
     this.props.dispatch(getScheduler(this.props.route.options.name))
   }
-
-  headerTitle = () => (
-    <div>
-      <BackButton />
-      {this.props.name}
-    </div>
-  )
 
   handleChange = event => {
     this.setState({
@@ -65,7 +57,6 @@ class SchedulersEdit extends React.Component {
 
   render = () => (
     <SchedulersEditComponent
-      headerTitle={this.headerTitle}
       scheduler={this.state.scheduler}
       handleChange={this.handleChange}
       handleAdd={this.handleAdd}

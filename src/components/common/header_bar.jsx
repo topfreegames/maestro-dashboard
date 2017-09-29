@@ -28,15 +28,23 @@ const smallStyles = css({
     borderBottom: `1px ${styles.colors.gray_0} solid`,
     backgroundColor: styles.colors.background,
 
-    '> div:nth-of-type(2)': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      height: '48px',
-      width: '100%',
+    '> * > div, > div': {
       display: 'flex',
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center'
+
+      '> * + *': {
+        marginLeft: '10px'
+      }
+    },
+
+    '> div:nth-of-type(2)': {
+      display: 'flex',
+      position: 'absolute',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      height: '48px',
+      alignItems: 'center'
     },
 
     '& + div': {

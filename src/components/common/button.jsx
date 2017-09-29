@@ -2,9 +2,21 @@ import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
 
-const Button = ({ children, handleClick, variant, customStyles }) => (
-  <button {...css(Button.styles, variants[variant], css(customStyles))} onClick={handleClick}>{children}</button>
+const Button = ({ children, handleClick, variant, size, customStyles }) => (
+  <button
+    {...css(Button.styles, variants[variant], sizes[size], css(customStyles))}
+    onClick={handleClick}
+  >
+    {children}
+  </button>
 )
+
+const sizes = {
+  small: css({
+    height: '24px',
+    fontSize: styles.fontSizes['2']
+  })
+}
 
 const variants = {
   ghost: css({

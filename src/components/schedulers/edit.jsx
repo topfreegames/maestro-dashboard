@@ -1,19 +1,30 @@
 import React from 'react'
 import { css } from 'glamor'
 import Header from 'components/common/header'
+import { Button, BackButton } from 'components/common'
 import styles from 'constants/styles'
 import { render } from 'helpers/templates'
 import schedulerTemplate from 'constants/scheduler_template'
 
+const headerLeft = scheduler =>
+  <div>
+    <BackButton />
+    <span>{scheduler && scheduler.name}</span>
+  </div>
+
+const headerRight = () => <Button variant='secondary' size='small'>Remove</Button>
+
 const SchedulersEdit = ({
-  headerTitle,
   scheduler,
   handleChange,
   handleAdd,
   handleSubmit
 }) => (
   <div {...SchedulersEdit.styles}>
-    <Header title={headerTitle()} />
+    <Header
+      left={headerLeft(scheduler)}
+      right={headerRight()}
+    />
     <section role='main'>
       {render(schedulerTemplate, scheduler, handleChange, handleAdd)}
       <button onClick={handleSubmit}>Save</button>
