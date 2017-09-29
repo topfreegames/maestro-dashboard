@@ -1,8 +1,9 @@
 import React from 'react'
+import { css } from 'glamor'
 import Header from 'components/common/header'
 import styles from 'constants/styles'
-import { renderScheduler } from 'constants/scheduler_template'
-import { css } from 'glamor'
+import { render } from 'helpers/templates'
+import schedulerTemplate from 'constants/scheduler_template'
 
 const SchedulersEdit = ({
   headerTitle,
@@ -14,7 +15,7 @@ const SchedulersEdit = ({
   <div {...SchedulersEdit.styles}>
     <Header title={headerTitle()} />
     <section role='main'>
-      {renderScheduler(scheduler, handleChange, handleAdd)}
+      {render(schedulerTemplate, scheduler, handleChange, handleAdd)}
       <button onClick={handleSubmit}>Save</button>
     </section>
   </div>

@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import SchedulersEditComponent from 'components/schedulers/edit'
 import { BackButton } from 'components/common'
 import { getScheduler, updateScheduler } from 'actions/schedulers'
-import { parseScheduler, setInPath } from 'constants/scheduler_template'
+import { parse, setInPath } from 'helpers/templates'
+import schedulerTemplate from 'constants/scheduler_template'
 
 class SchedulersEdit extends React.Component {
   constructor (props) {
@@ -19,7 +20,7 @@ class SchedulersEdit extends React.Component {
     if (this.state.scheduler !== null || !nextProps.name) return
 
     this.setState({
-      scheduler: parseScheduler(nextProps)
+      scheduler: parse(schedulerTemplate, nextProps)
     })
   }
 
@@ -37,7 +38,9 @@ class SchedulersEdit extends React.Component {
   handleChange = event => {
     this.setState({
       ...this.state,
-      scheduler: setInPath(this.state.scheduler,
+      scheduler: setInPath(
+        schedulerTemplate,
+        this.state.scheduler,
         event.target.id,
         event.target.value)
     })
