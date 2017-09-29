@@ -4,7 +4,7 @@ import { css } from 'glamor'
 import Header from 'components/common/header'
 import Schedulers from 'containers/schedulers'
 import Clusters from 'containers/clusters'
-import { navigate } from 'actions/common'
+import styles from 'constants/styles'
 
 class Dashboard extends React.Component {
   constructor (props) {
@@ -28,12 +28,12 @@ class Dashboard extends React.Component {
     })
   }
 
-  headerTitle = () => (
-    <div {...headerStyles}>
-      Maestro {this.props.cluster.name}
-      <button onClick={() => navigate('schedulers/new')}>create</button>
-      <button onClick={() => this.props.dispatch({ type: 'PURGE' })}>sign-out</button>
-    </div>
+  headerLeft = () => (
+    <div {...headerLeftStyles}>M</div>
+  )
+
+  headerRight = () => (
+    <i className='fa fa-search' aria-hidden='true' {...headerRightStyles} />
   )
 
   render = () => {
@@ -41,7 +41,14 @@ class Dashboard extends React.Component {
 
     return (
       <div {...Dashboard.styles}>
-        <Header title={this.headerTitle()} switchTab={this.switchTab} activeTab={activeTab} />
+        <Header
+          left={this.headerLeft()}
+          title={this.props.cluster.name}
+          right={this.headerRight()}
+          tabs={['Clusters', 'Schedulers']}
+          switchTab={this.switchTab}
+          activeTab={activeTab}
+        />
         {activeTab === 'Schedulers' && <Schedulers />}
         {activeTab === 'Clusters' && <Clusters />}
       </div>
@@ -49,10 +56,14 @@ class Dashboard extends React.Component {
   }
 }
 
-const headerStyles = css({
-  display: 'flex',
-  width: '100%',
-  justifyContent: 'space-between'
+const headerLeftStyles = css({
+  color: styles.colors.brandPrimary,
+  fontWeight: 700,
+  fontSize: styles.fontSizes['6']
+})
+
+const headerRightStyles = css({
+  color: styles.colors.gray_75
 })
 
 Dashboard.styles = css({

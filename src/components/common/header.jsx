@@ -4,12 +4,12 @@ import HeaderBar from 'components/common/header_bar'
 import HeaderTabs from 'components/common/header_tabs'
 import styles from 'constants/styles'
 
-const Header = ({ title, switchTab, activeTab }) => (
+const Header = ({ left, title, right, tabs, switchTab, activeTab }) => (
   <div {...Header.styles}>
-    <HeaderBar title={title} />
-    {switchTab && activeTab &&
-      <HeaderTabs switchTab={switchTab} activeTab={activeTab} />}
-    {!switchTab && !activeTab && <div />}
+    <HeaderBar left={left} title={title} right={right} />
+    {tabs &&
+      <HeaderTabs tabs={tabs} switchTab={switchTab} activeTab={activeTab} />}
+    {!tabs && <div />}
   </div>
 )
 

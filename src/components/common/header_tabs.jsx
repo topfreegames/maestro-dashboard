@@ -4,16 +4,16 @@ import styles from 'constants/styles'
 
 const renderTab = (name, activeTab, switchTab) => (
   <div
+    key={name}
     className={activeTab === name && 'active'}
     onClick={event => switchTab(event, name)}>
     {name}
   </div>
 )
 
-const HeaderTabs = ({ switchTab, activeTab }) => (
+const HeaderTabs = ({ tabs, switchTab, activeTab }) => (
   <div {...HeaderTabs.styles}>
-    {renderTab('Clusters', activeTab, switchTab)}
-    {renderTab('Schedulers', activeTab, switchTab)}
+    {tabs.map(t => renderTab(t, activeTab, switchTab))}
   </div>
 )
 
@@ -24,17 +24,18 @@ const smallStyles = css({
 
     '& div': {
       display: 'flex',
+      justifyContent: 'center',
       alignItems: 'center',
       boxSizing: 'border-box',
       width: '50%',
       height: '48px',
-      paddingLeft: '16px',
-      borderBottom: `3px ${styles.colors.gray_0} solid`,
-      color: styles.colors.gray_75,
+      borderBottom: `2px ${styles.colors.gray_0} solid`,
+      fontSize: styles.fontSizes['3'],
+      color: styles.colors.gray_50,
       cursor: 'pointer',
 
       '&.active': {
-        color: styles.colors.gray_100,
+        color: styles.colors.brandPrimary,
         borderColor: styles.colors.brandPrimary
       }
     }
