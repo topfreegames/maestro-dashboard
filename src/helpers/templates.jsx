@@ -3,7 +3,7 @@ import { TextInput } from 'components/common'
 
 const getField = (template, path) =>
   path.split('.').reduce((acc, x) => {
-    return acc.format || acc[x].children || acc[x]
+    return acc.format || acc[x]
   }, template)
 
 const makePath = (prefix, name) => `${prefix}${name}`
@@ -15,7 +15,7 @@ export const render = (template, object, handleChange, handleAdd) => {
   const makeLabel = (prefix, name) => {
     const f = getField(template, makePath(prefix, name))
     const suffix = f.optional ? ' (OPTIONAL)' : ''
-    return (f.label ? f.label : name) + suffix
+    return (f._label ? f._label : name) + suffix
   }
 
   const renderSimple = ([name, _], prefix) => (
@@ -49,7 +49,7 @@ export const render = (template, object, handleChange, handleAdd) => {
     )
   }
 
-  const renderCompose = ([name, { children }], prefix) => (
+  const renderCompose = ([name, children], prefix) => (
     <div className='section' key={makePath(prefix, name)}>
       <label>{name}</label>
       {renderObject(children, `${makePath(prefix, name)}.`)}
@@ -57,13 +57,20 @@ export const render = (template, object, handleChange, handleAdd) => {
   )
 
   const renderEntry = (e, prefix = '') => {
-    if (e[1].children) return renderCompose(e, prefix)
-    else if (e[1].type === 'array') return renderArray(e, prefix)
-    else return renderSimple(e, prefix)
+    switch (e[1]._type) {
+      case 'compose':
+        return renderCompose(e, prefix)
+      case 'array':
+        return renderArray(e, prefix)
+      default:
+        return renderSimple(e, prefix)
+    }
   }
 
   const renderObject = (o, prefix = '') =>
-    Object.entries(o).map(e => renderEntry(e, prefix))
+    Object.entries(o)
+      .filter(e => e[0][0] !== '_')
+      .map(e => renderEntry(e, prefix))
 
   return object && renderObject(template)
 }
@@ -113,14 +120,10 @@ export const parse = (template, object) => {
 export const setInPath = (template, object, path, value) =>
   path.split('.').reduce((acc, x, i, arr) => {
     if (i === arr.length - 1) {
-      if (value === '') {
-        acc[x] = ''
-      } else {
-        const field = getField(template, path)
-        acc[x] = field.type === 'integer'
-          ? parseInt(value)
-          : value
-      }
+      const field = getField(template, path)
+      acc[x] = field._type === 'integer'
+        ? (parseInt(value) || '')
+        : value
 
       return object
     } else {

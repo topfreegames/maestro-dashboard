@@ -54,7 +54,9 @@ class SchedulersEdit extends React.Component {
   handleAdd = (event, path, format) => {
     this.setState({
       ...this.state,
-      scheduler: setInPath(this.state.scheduler,
+      scheduler: setInPath(
+        schedulerTemplate,
+        this.state.scheduler,
         path,
         format
       )

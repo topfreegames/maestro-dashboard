@@ -1,94 +1,88 @@
 export default {
   name: {
-    type: 'string'
+    _type: 'string'
   },
   game: {
-    type: 'string'
+    _type: 'string'
   },
   image: {
-    type: 'string'
+    _type: 'string'
   },
   affinity: {
-    type: 'string',
-    optional: true
+    _type: 'string',
+    _optional: true
   },
   ports: {
-    type: 'array',
+    _type: 'array',
     format: {
       containerPort: {
-        type: 'integer'
+        _type: 'integer'
       },
       protocol: {
-        type: 'string'
+        _type: 'string'
       },
       name: {
-        type: 'string'
+        _type: 'string'
       }
     },
-    optional: true
+    _optional: true
   },
   shutdownTimeout: {
-    type: 'integer',
-    label: 'shutdown timeout'
+    _type: 'integer',
+    _label: 'shutdown timeout'
   },
   occupiedTimeout: {
-    type: 'integer',
-    label: 'occupied timeout'
+    _type: 'integer',
+    _label: 'occupied timeout'
   },
   limits: {
-    children: {
-      memory: {
-        type: 'string'
-      },
-      cpu: {
-        type: 'string'
-      }
+    _type: 'compose',
+    memory: {
+      _type: 'string'
+    },
+    cpu: {
+      _type: 'string'
     }
   },
   autoscaling: {
-    children: {
-      min: {
-        type: 'integer'
+    _type: 'compose',
+    min: {
+      _type: 'integer'
+    },
+    up: {
+      _type: 'compose',
+      delta: {
+        _type: 'integer'
       },
-      up: {
-        children: {
-          delta: {
-            type: 'integer'
-          },
-          trigger: {
-            children: {
-              usage: {
-                type: 'integer'
-              },
-              time: {
-                type: 'integer'
-              }
-            }
-          },
-          cooldown: {
-            type: 'integer'
-          }
+      trigger: {
+        _type: 'compose',
+        usage: {
+          _type: 'integer'
+        },
+        time: {
+          _type: 'integer'
         }
       },
-      down: {
-        children: {
-          delta: {
-            type: 'integer'
-          },
-          trigger: {
-            children: {
-              usage: {
-                type: 'integer'
-              },
-              time: {
-                type: 'integer'
-              }
-            }
-          },
-          cooldown: {
-            type: 'integer'
-          }
+      cooldown: {
+        _type: 'integer'
+      }
+    },
+    down: {
+      _type: 'compose',
+      delta: {
+        _type: 'integer'
+      },
+      trigger: {
+        _type: 'compose',
+        usage: {
+          _type: 'integer'
+        },
+        time: {
+          _type: 'integer'
         }
+      },
+      cooldown: {
+        _type: 'integer'
       }
     }
   }
