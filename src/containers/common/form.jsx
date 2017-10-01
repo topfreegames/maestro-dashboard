@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button } from 'components/common'
 import {
   render,
   parse,
@@ -16,14 +15,21 @@ class Form extends React.Component {
     }
   }
 
-  componentWillReceiveProps = nextProps => {
-    if (this.state.formFor !== null || !nextProps.formFor) return
+  maybeUpdateFormFor = newForm => {
+    const { formFor, template } = this.props
+
+    // deep diff
+    if (formFor && newForm && formFor.length !== newForm.length) return
 
     this.setState({
       ...this.state,
-      formFor: parse(this.props.template, nextProps.formFor)
+      formFor: parse(template, newForm)
     })
   }
+
+  componentDidMount = () => this.maybeUpdateFormFor()
+  componentWillReceiveProps =
+    nextProps => this.maybeUpdateFormFor(nextProps.formFor)
 
   handleChange = event => {
     this.setState({

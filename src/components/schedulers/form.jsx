@@ -1,27 +1,20 @@
 import React from 'react'
 import { css } from 'glamor'
 import Header from 'components/common/header'
-import { Button, BackButton } from 'components/common'
+import { Button } from 'components/common'
 import styles from 'constants/styles'
 import schedulerTemplate from 'constants/scheduler_template'
 import Form from 'containers/common/form'
 
-const headerLeft = scheduler =>
-  <div>
-    <BackButton />
-    <span>{scheduler && scheduler.name}</span>
-  </div>
-
-const headerRight = () => <Button variant='secondary' size='small'>Remove</Button>
-
 const SchedulersEdit = ({
+  header,
   scheduler,
   handleSubmit
 }) => (
   <div {...SchedulersEdit.styles}>
     <Header
-      left={headerLeft(scheduler)}
-      right={headerRight()}
+      left={header.left}
+      right={header.right}
     />
     <section role='main'>
       <Form
