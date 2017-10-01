@@ -1,6 +1,6 @@
 import React from 'react'
 import { css } from 'glamor'
-import { TextInput, Button } from 'components/common'
+import { Spinner, TextInput, Button } from 'components/common'
 import { navigate } from 'actions/common'
 import styles from 'constants/styles'
 
@@ -11,10 +11,12 @@ const Scheduler = ({
   occupied,
   minimum,
   replicas,
+  fetching,
   handleChange,
   handleSubmit
 }) => (
   <div {...Scheduler.styles}>
+    {fetching && <span className='fetching'><Spinner /></span>}
     <div>
       {name}
       <button onClick={() => navigate(`schedulers/${name}/edit`)}>
@@ -35,20 +37,49 @@ const Scheduler = ({
       </div>
     </div>
     <div>
-      <TextInput id='minimum' label='Minimum' value={minimum} onChange={handleChange} />
-      <TextInput id='replicas' label='Replicas' value={replicas} onChange={handleChange} />
-      <Button>Save</Button>
+      <TextInput
+        id='minimum'
+        label='Minimum'
+        value={minimum}
+        handleChange={handleChange}
+      />
+      <TextInput
+        id='replicas'
+        label='Replicas'
+        value={replicas}
+        handleChange={handleChange}
+      />
+      <Button
+        variant={fetching && 'inverse'}
+        handleClick={handleSubmit}
+      >
+        {fetching && 'Saving'}
+        {!fetching && 'Save'}
+      </Button>
     </div>
   </div>
 )
 
 Scheduler.styles = css({
   display: 'flex',
+  position: 'relative',
   flexDirection: 'column',
   boxSizing: 'border-box',
   width: '100%',
   boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.2)',
   padding: '10px',
+
+  '> .fetching': {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)'
+  },
 
   '& label': {
     fontSize: styles.fontSizes['2'],

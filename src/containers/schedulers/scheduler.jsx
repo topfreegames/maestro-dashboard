@@ -21,7 +21,7 @@ class Scheduler extends React.Component {
   handleChange = event => {
     this.setState({
       ...this.state,
-      [event.target.name]: event.target.value
+      [event.target.id]: event.target.value
     })
   }
 
@@ -57,20 +57,19 @@ class Scheduler extends React.Component {
     })
   }
 
-  render = () => {
-    return this.state.fetching
-      ? <div>...</div>
-      : <SchedulerComponent
-        name={this.props.name}
-        game={this.props.game}
-        ready={this.props.status.roomsAtReady}
-        occupied={this.props.status.roomsAtOccupied}
-        minimum={this.state.minimum}
-        replicas={this.state.replicas}
-        handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-      />
-  }
+  render = () => (
+    <SchedulerComponent
+      name={this.props.name}
+      game={this.props.game}
+      ready={this.props.status.roomsAtReady}
+      occupied={this.props.status.roomsAtOccupied}
+      minimum={this.state.minimum}
+      replicas={this.state.replicas}
+      fetching={this.state.fetching}
+      handleChange={this.handleChange}
+      handleSubmit={this.handleSubmit}
+    />
+  )
 }
 
 export default Scheduler

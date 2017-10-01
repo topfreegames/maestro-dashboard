@@ -3,8 +3,8 @@ import { css } from 'glamor'
 import Header from 'components/common/header'
 import { Button, BackButton } from 'components/common'
 import styles from 'constants/styles'
-import { render } from 'helpers/templates'
 import schedulerTemplate from 'constants/scheduler_template'
+import Form from 'containers/common/form'
 
 const headerLeft = scheduler =>
   <div>
@@ -16,9 +16,6 @@ const headerRight = () => <Button variant='secondary' size='small'>Remove</Butto
 
 const SchedulersEdit = ({
   scheduler,
-  handleChange,
-  handleAdd,
-  handleRemove,
   handleSubmit
 }) => (
   <div {...SchedulersEdit.styles}>
@@ -27,19 +24,22 @@ const SchedulersEdit = ({
       right={headerRight()}
     />
     <section role='main'>
-      {render(schedulerTemplate, scheduler, handleChange, handleAdd, handleRemove)}
-      <Button
-        handleClick={handleSubmit}
-        customStyles={{ width: '100%' }}
-      >
-        Save
-      </Button>
+      <Form
+        formFor={scheduler}
+        handleSubmit={handleSubmit}
+        template={schedulerTemplate}
+        button={
+          <Button customStyles={{ width: '100%' }} >
+            Save
+          </Button>
+        }
+      />
     </section>
   </div>
 )
 
 SchedulersEdit.styles = css({
-  '> section[role="main"], .section': {
+  '> section[role="main"] > form, & .section': {
     display: 'flex',
     boxSizing: 'border-box',
     flexDirection: 'column',

@@ -25,6 +25,10 @@ const variants = {
   }),
   secondary: css({
     backgroundColor: styles.colors.brandSecondary
+  }),
+  inverse: css({
+    backgroundColor: styles.colors.brandInverse,
+    color: styles.colors.gray_100
   })
 }
 
