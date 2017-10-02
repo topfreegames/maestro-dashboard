@@ -63,6 +63,9 @@ export default {
         },
         time: {
           _type: 'integer'
+        },
+        threshold: {
+          _type: 'integer'
         }
       },
       cooldown: {
@@ -80,6 +83,9 @@ export default {
           _type: 'integer'
         },
         time: {
+          _type: 'integer'
+        },
+        threshold: {
           _type: 'integer'
         }
       },
