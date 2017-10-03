@@ -17,18 +17,18 @@ class Graph extends React.Component {
     super()
 
     this.state = {
+      imagesReady: false,
       occupiedSnapshotUrl: null,
       readySnapshotUrl: null
     }
   }
 
   componentDidMount = async () => {
-    const sleep = time =>
-      new Promise((resolve) => setTimeout(resolve, time))
-
     const readySnapshotUrl = await getSnapshot('tanks-blue-d-con', 'ready')
     const occupiedSnapshotUrl = await getSnapshot('tanks-blue-d-con', 'occupied')
-    await sleep(5000)
+
+    this.maybeForceUpdate()
+
     this.setState({
       ...this.state,
       readySnapshotUrl,
@@ -36,13 +36,38 @@ class Graph extends React.Component {
     })
   }
 
-  render = () => (
-    <div {...Graph.styles}>
-      {!this.state.readySnapshotUrl && <Spinner />}
-      {this.state.readySnapshotUrl && <img src={this.state.readySnapshotUrl} />}
-      {this.state.occupiedSnapshotUrl && <img src={this.state.occupiedSnapshotUrl} />}
-    </div>
-  )
+  maybeForceUpdate = async () => {
+    if ((!this.readyImg && this.state.readySnapshotUrl) ||
+      (this.readyImg && this.readyImg.naturalWidth <= 1)) {
+      this.forceUpdate()
+      setTimeout(this.maybeForceUpdate(), 500)
+    } else {
+      this.setState({
+        ...this.state,
+        imagesReady: true
+      })
+    }
+  }
+
+  render = () => {
+    return (
+      <div {...Graph.styles}>
+        {!this.state.imagesReady && <Spinner />}
+        {this.state.imagesReady &&
+          <img
+            ref={img => (this.readyImg = img)}
+            src={this.state.readySnapshotUrl}
+          />
+        }
+        {this.state.imagesReady &&
+          <img
+            ref={img => (this.occupiedImg = img)}
+            src={this.state.occupiedSnapshotUrl}
+          />
+        }
+      </div>
+    )
+  }
 }
 
 Graph.styles = css({
