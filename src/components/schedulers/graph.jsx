@@ -2,6 +2,7 @@ import React from 'react'
 import { css } from 'glamor'
 import { Spinner } from 'components/common'
 import styles from 'constants/styles'
+import { randomString } from 'helpers/common'
 
 const end = Math.round(new Date() / 1000)
 const start = end - 1000*60*60
@@ -37,10 +38,15 @@ class Graph extends React.Component {
   }
 
   maybeForceUpdate = async () => {
-    if ((!this.readyImg && this.state.readySnapshotUrl) ||
-      (this.readyImg && this.readyImg.naturalWidth <= 1)) {
+    const { readyImg, occupiedImg } = this
+    const { readySnapshotUrl, occupiedSnapshotUrl } = this.state
+
+    if (!readyImg || !readySnapshotUrl ||
+      !occupiedImg || !occupiedSnapshotUrl ||
+      (readyImg.naturalWidth <= 1) ||
+      (occupiedImg.naturalWidth <= 1)) {
       this.forceUpdate()
-      setTimeout(this.maybeForceUpdate(), 500)
+      setTimeout(() => this.maybeForceUpdate(), 1000)
     } else {
       this.setState({
         ...this.state,
@@ -49,22 +55,23 @@ class Graph extends React.Component {
     }
   }
 
+  imgStyle = ready =>
+    ready ? {} : { position: 'absolute', top: '-1000px', left: '-1000px' }
+
   render = () => {
     return (
       <div {...Graph.styles}>
         {!this.state.imagesReady && <Spinner />}
-        {this.state.imagesReady &&
-          <img
-            ref={img => (this.readyImg = img)}
-            src={this.state.readySnapshotUrl}
-          />
-        }
-        {this.state.imagesReady &&
-          <img
-            ref={img => (this.occupiedImg = img)}
-            src={this.state.occupiedSnapshotUrl}
-          />
-        }
+        <img
+          ref={img => (this.readyImg = img)}
+          src={`${this.state.readySnapshotUrl}?${randomString(10)}`}
+          style={this.imgStyle(this.state.imagesReady)}
+        />
+        <img
+          ref={img => (this.occupiedImg = img)}
+          src={`${this.state.occupiedSnapshotUrl}?${randomString(10)}`}
+          style={this.imgStyle(this.state.imagesReady)}
+        />
       </div>
     )
   }

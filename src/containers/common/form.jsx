@@ -3,7 +3,8 @@ import {
   render,
   parse,
   setInPath,
-  removeInPath
+  removeInPath,
+  validate
 } from 'helpers/templates'
 
 class Form extends React.Component {
@@ -11,7 +12,8 @@ class Form extends React.Component {
     super(props)
 
     this.state = {
-      formFor: null
+      formFor: null,
+      errors: {}
     }
   }
 
@@ -44,7 +46,17 @@ class Form extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    this.props.handleSubmit(this.state.formFor)
+
+    const errors = validate(this.state.formFor, this.props.template)
+
+    if (Object.keys(errors).length === 0) {
+      this.props.handleSubmit(this.state.formFor)
+    } else {
+      this.setState({
+        ...this.state,
+        errors
+      })
+    }
   }
 
   handleAdd = (event, path, format) => {
@@ -79,6 +91,7 @@ class Form extends React.Component {
       <form onSubmit={this.handleSubmit}>
         {render(this.props.template,
           this.state.formFor,
+          this.state.errors,
           this.handleChange,
           this.handleAdd,
           this.handleRemove)

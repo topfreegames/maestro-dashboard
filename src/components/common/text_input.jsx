@@ -2,7 +2,7 @@ import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
 
-const TextInput = ({ id, label, value, handleChange }) => (
+const TextInput = ({ id, label, value, handleChange, error }) => (
   <div {...TextInput.styles}>
     <label htmlFor={id}>{label}</label>
     <input
@@ -10,7 +10,9 @@ const TextInput = ({ id, label, value, handleChange }) => (
       type='text'
       value={value}
       onChange={handleChange}
+      className={error && 'error'}
     />
+    {error && error.map(e => <div key={e.msg}>{e.msg}</div>)}
   </div>
 )
 
@@ -34,7 +36,18 @@ TextInput.styles = css({
       fontWeight: 500,
       padding: '6px 0 5px',
       borderBottom: `2px solid ${styles.colors.brandPrimary}`
+    },
+
+    '&.error': {
+      borderColor: styles.colors.brandSecondary
     }
+  },
+
+  '> div': {
+    marginTop: '6px',
+    textAlign: 'right',
+    fontSize: styles.fontSizes['1'],
+    color: styles.colors.brandSecondary
   }
 })
 

@@ -1,6 +1,13 @@
 import React from 'react'
 import { Button, TextInput } from 'components/common'
 
+export const validations = {
+  required: {
+    msg: 'Required',
+    func: value => value !== ''
+  }
+}
+
 const getField = (template, path) =>
   path.split('.').reduce((acc, x) => {
     return acc._format || acc[x]
@@ -11,7 +18,7 @@ const makePath = (prefix, name) => `${prefix}${name}`
 const getValue = (path, origin) =>
   path.split('.').reduce((acc, x) => acc[x], origin)
 
-export const render = (template, object, handleChange, handleAdd, handleRemove) => {
+export const render = (template, object, errors, handleChange, handleAdd, handleRemove) => {
   const makeLabel = (prefix, name) => {
     const f = getField(template, makePath(prefix, name))
     const suffix = f.optional ? ' (OPTIONAL)' : ''
@@ -25,6 +32,7 @@ export const render = (template, object, handleChange, handleAdd, handleRemove) 
       label={makeLabel(prefix, name)}
       value={getValue(makePath(prefix, name), object)}
       handleChange={handleChange}
+      error={errors[makePath(prefix, name)]}
     />
   )
 
@@ -144,3 +152,54 @@ export const removeInPath = (object, path, index) =>
       return acc[x]
     }
   }, object)
+
+export const validate = (object, template) => {
+  const doValidations = (validations, prefix, name) => {
+    if (!validations) return {}
+    const value = getValue(makePath(prefix, name), object) || ''
+
+    const errors = validations.reduce((acc, v) => {
+      const pass = v.func(value)
+      return !pass ? [...acc, v] : [...acc]
+    }, [])
+
+    return errors.length > 0 ? { [makePath(prefix, name)]: errors } : {}
+  }
+
+  const validateSimple = ([name, _], prefix) => {
+    const validations = getField(template, makePath(prefix, name))._validations
+    return doValidations(validations, prefix, name)
+  }
+
+  const validateArray = ([name, { _format }], prefix) => {
+    const array = getValue(makePath(prefix, name), object) || []
+    return array.reduce((acc, _, i) => ({
+      ...acc,
+      ...validateObject(_format, `${makePath(prefix, name)}.${i}.`)
+    }), {})
+  }
+
+  const validateCompose = ([name, children], prefix) =>
+    validateObject(children, `${makePath(prefix, name)}.`)
+
+  const validateEntry = (e, prefix) => {
+    switch (e[1]._type) {
+      case 'compose':
+        return validateCompose(e, prefix)
+      case 'array':
+        return validateArray(e, prefix)
+      default:
+        return validateSimple(e, prefix)
+    }
+  }
+
+  const validateObject = (object, prefix) =>
+    Object.entries(object)
+      .filter(e => e[0][0] !== '_')
+      .reduce((acc, e) => ({
+        ...acc,
+        ...validateEntry(e, prefix)
+      }), {})
+
+  return validateObject(template, '')
+}
