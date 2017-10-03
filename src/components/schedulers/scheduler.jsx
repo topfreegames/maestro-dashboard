@@ -1,6 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import { Spinner, TextInput, Button } from 'components/common'
+import Graph from './graph'
 import { navigate } from 'actions/common'
 import styles from 'constants/styles'
 
@@ -11,12 +12,14 @@ const Scheduler = ({
   occupied,
   minimum,
   replicas,
+  showGraphs,
   fetching,
   handleChange,
-  handleSubmit
+  handleSubmit,
+  toggleGraphs
 }) => (
   <div {...Scheduler.styles}>
-    {fetching && <span className='fetching'><Spinner /></span>}
+    {fetching && <span className='fetching'><Spinner r={255} g={255} b={255} /></span>}
     <div>
       {name}
       <button onClick={() => navigate(`schedulers/${name}/edit`)}>
@@ -26,17 +29,27 @@ const Scheduler = ({
     <div>{game}</div>
     <div>
       <div>
-        <label>Ready</label>
-        <i className='fa fa-play-circle' aria-hidden='true' />
-        {ready}
+        <div>
+          <label>Ready</label>
+          <i className='fa fa-play-circle' aria-hidden='true' />
+          {ready}
+        </div>
+        <div>
+          <label>Occupied</label>
+          <i className='fa fa-ban' aria-hidden='true' />
+          {occupied}
+        </div>
       </div>
-      <div>
-        <label>Occupied</label>
-        <i className='fa fa-ban' aria-hidden='true' />
-        {occupied}
-      </div>
+      <Button
+        variant={!showGraphs && 'ghost'}
+        size='small'
+        handleClick={toggleGraphs}
+      >
+        <i className='fa fa-area-chart' aria-hidden='true' />
+      </Button>
     </div>
-    <div>
+    {showGraphs && <Graph scheduler={name} />}
+    <div className='footer'>
       <TextInput
         id='minimum'
         label='Minimum'
@@ -118,28 +131,33 @@ Scheduler.styles = css({
   },
 
   '> div:nth-of-type(3)': {
+    justifyContent: 'space-between',
     fontSize: styles.fontSizes['3'],
     color: styles.colors.gray_100,
 
     '> div': {
       display: 'flex',
-      alignItems: 'center',
 
-      '& + div': {
-        marginLeft: '20px'
+      '> div': {
+        display: 'flex',
+        alignItems: 'center',
+
+        '& + div': {
+          marginLeft: '20px'
+        }
+      },
+
+      '& label': {
+        marginRight: '10px'
+      },
+
+      '& .fa': {
+        marginRight: '4px'
       }
-    },
-
-    '& label': {
-      marginRight: '10px'
-    },
-
-    '& .fa': {
-      marginRight: '4px'
     }
   },
 
-  '> div:nth-of-type(4)': {
+  '> div.footer': {
     borderTop: `1px solid ${styles.colors.gray_0}`,
     paddingTop: '16px',
 

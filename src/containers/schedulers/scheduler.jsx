@@ -9,6 +9,7 @@ class Scheduler extends React.Component {
     this.state = {
       minimum: this.props.autoscaling.min,
       replicas: this.reduceRoomsStatuses(),
+      showGraphs: false,
       fetching: false
     }
   }
@@ -16,6 +17,14 @@ class Scheduler extends React.Component {
   reduceRoomsStatuses = () => {
     const statuses = ['Creating', 'Occupied', 'Ready', 'Terminating']
     return statuses.reduce((acc, x) => acc + this.props.status[`roomsAt${x}`], 0)
+  }
+
+  toggleGraphs = event => {
+    event.preventDefault()
+    this.setState({
+      ...this.state,
+      showGraphs: !this.state.showGraphs
+    })
   }
 
   handleChange = event => {
@@ -65,9 +74,11 @@ class Scheduler extends React.Component {
       occupied={this.props.status.roomsAtOccupied}
       minimum={this.state.minimum}
       replicas={this.state.replicas}
+      showGraphs={this.state.showGraphs}
       fetching={this.state.fetching}
       handleChange={this.handleChange}
       handleSubmit={this.handleSubmit}
+      toggleGraphs={this.toggleGraphs}
     />
   )
 }

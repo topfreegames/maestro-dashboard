@@ -1,8 +1,8 @@
 import React from 'react'
 import { css } from 'glamor'
 
-const Spinner = () => (
-  <div {...Spinner.styles} className='loader'>Loading...</div>
+const Spinner = ({ r, g, b }) => (
+  <div {...Spinner.styles(r, g, b)} className='loader'>Loading...</div>
 )
 
 const load8 = css.keyframes({
@@ -16,12 +16,11 @@ const load8 = css.keyframes({
   }
 })
 
-Spinner.styles = css({
+Spinner.styles = (r = 0, g = 0, b = 0) => css({
   '.loader, .loader:after': {
     borderRadius: '50%',
     width: '10em',
-    height: '10em',
-    color: 'red'
+    height: '10em'
   },
 
   '.loader': {
@@ -29,10 +28,10 @@ Spinner.styles = css({
     fontSize: '10px',
     position: 'relative',
     textIndent: '-9999em',
-    borderTop: '1.1em solid rgba(255, 255, 255, 0.2)',
-    borderRight: '1.1em solid rgba(255, 255, 255, 0.2)',
-    borderBottom: '1.1em solid rgba(255, 255, 255, 0.2)',
-    borderLeft: '1.1em solid #ffffff',
+    borderTop: `1.1em solid rgba(${r}, ${g}, ${b}, 0.2)`,
+    borderRight: `1.1em solid rgba(${r}, ${g}, ${b}, 0.2)`,
+    borderBottom: `1.1em solid rgba(${r}, ${g}, ${b}, 0.2)`,
+    borderLeft: `1.1em solid rgb(${r}, ${g}, ${b})`,
     WebkitTransform: 'translateZ(0)',
     MsTransform: 'translateZ(0)',
     transform: 'translateZ(0)',
@@ -40,7 +39,5 @@ Spinner.styles = css({
     animation: `${load8} 1.1s infinite linear`
   }
 })
-
-
 
 export default Spinner
