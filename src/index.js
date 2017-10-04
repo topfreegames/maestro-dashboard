@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { persistStore } from 'redux-persist'
 import { connect, Provider } from 'react-redux'
 import Router from 'containers/router'
+import { Snackbar } from 'components/common'
 import store from 'reducers'
 import { navigate } from 'actions/common'
 require('es6-promise').polyfill()
@@ -19,12 +20,21 @@ class App extends React.Component {
 
   render () {
     const { route, routeElement } = this.props
-    return <routeElement.element route={route} />
+
+    return (
+      <div>
+        <routeElement.element route={route} />
+        <Snackbar text={this.props.snackbar.text} delay={300} />
+      </div>
+    )
   }
 }
 
 const AppWithProps = connect(state => ({
-  session: state.session
+  session: state.session,
+  snackbar: {
+    text: 'Some text goes here'
+  }
 }))(App)
 
 class Bootloader extends React.Component {
