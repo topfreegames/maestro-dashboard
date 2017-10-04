@@ -36,6 +36,20 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
     />
   )
 
+  const renderArrayElement = (prefix, arrayPath, index, _format) => (
+    <div key={prefix} className='section'>
+      <Button
+        size='small'
+        variant='secondary'
+        customStyles={{ display: 'inline-flex' }}
+        handleClick={event => handleRemove(event, arrayPath, index)}
+      >
+        Remove
+      </Button>
+      {renderObject(_format, prefix)}
+    </div>
+  )
+
   const renderArray = ([name, { _format }], prefix) => {
     const arrayPath = makePath(prefix, name)
     const arr = getValue(arrayPath, object) || []
@@ -45,25 +59,16 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
       <div className='section' key={makePath(prefix, name)}>
         <div>
           <label>{name}</label>
-          <Button size='small' handleClick={e => handleAdd(e, `${arrayPath}.${len}`, parse(_format))}>Add</Button>
+          <Button
+            size='small'
+            handleClick={e => handleAdd(e, `${arrayPath}.${len}`, parse(_format))}
+          >
+            Add
+          </Button>
         </div>
         {arr.map((e, i) => {
-          const newPrefix = `${arrayPath}.${i}.`
-
-          return (
-            <div key={newPrefix} className='section'>
-              <Button
-                size='small'
-                variant='secondary'
-                customStyles={{ display: 'inline-flex' }}
-                handleClick={e => handleRemove(e, arrayPath, i)}
-              >
-                Remove
-              </Button>
-              {renderObject(_format, newPrefix)}
-            </div>
-          )
-        })}
+          return renderArrayElement(`${arrayPath}.${i}.`, arrayPath, i, _format)
+        }).reverse()}
       </div>
     )
   }

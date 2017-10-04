@@ -1,13 +1,14 @@
 import React from 'react'
 import { css } from 'glamor'
 import Header from 'components/common/header'
-import { Button } from 'components/common'
+import { Button, Loading } from 'components/common'
 import styles from 'constants/styles'
 import schedulerTemplate from 'constants/scheduler_template'
 import Form from 'containers/common/form'
 
 const SchedulersEdit = ({
   header,
+  loading,
   scheduler,
   handleSubmit
 }) => (
@@ -17,6 +18,9 @@ const SchedulersEdit = ({
       right={header.right}
     />
     <section role='main'>
+      {loading &&
+        <Loading position='fixed' />
+      }
       <Form
         formFor={scheduler}
         handleSubmit={handleSubmit}
@@ -33,6 +37,7 @@ const SchedulersEdit = ({
 
 SchedulersEdit.styles = css({
   '> section[role="main"] > form, & .section': {
+    position: 'relative',
     display: 'flex',
     boxSizing: 'border-box',
     flexDirection: 'column',

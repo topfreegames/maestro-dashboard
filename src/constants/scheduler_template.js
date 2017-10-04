@@ -23,6 +23,9 @@ export default {
   affinity: {
     _type: 'string'
   },
+  toleration: {
+    _type: 'string'
+  },
   ports: {
     _type: 'array',
     _format: {
@@ -148,6 +151,36 @@ export default {
       },
       cooldown: {
         _type: 'integer',
+        _validations: [
+          validations.required
+        ]
+      }
+    }
+  },
+  env: {
+    _type: 'array',
+    _format: {
+      _type: 'compose',
+      name: {
+        _type: 'string',
+        _validations: [
+          validations.required
+        ]
+      },
+      value: {
+        _type: 'string',
+        _validations: [
+          validations.required
+        ]
+      }
+    }
+  },
+  cmd: {
+    _type: 'array',
+    _format: {
+      _type: 'compose',
+      value: {
+        _type: 'string',
         _validations: [
           validations.required
         ]

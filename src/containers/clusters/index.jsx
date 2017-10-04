@@ -5,20 +5,7 @@ import { Button } from 'components/common'
 import { selectCluster } from 'actions/clusters'
 import { navigate } from 'actions/common'
 
-const clusters = [
-  {
-    name: 'North America',
-    host: 'http://localhost:5001'
-  },
-  {
-    name: 'South America',
-    host: 'http://localhost:5001'
-  },
-  {
-    name: 'Asia Pacific',
-    host: 'http://localhost:5001'
-  }
-]
+const clusters = JSON.parse(process.env.CLUSTERS)
 
 class ClustersIndex extends React.Component {
   renderCluster = ({ name, host }) => (

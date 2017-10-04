@@ -9,7 +9,7 @@ const htmlWebpackPluginConfig = new HtmlWebpackPlugin({
   inject: false
 })
 
-const envVars = ['MAESTRO_URL', 'GA_CALLBACK', 'GA_CLIENT_ID']
+const envVars = ['MAESTRO_URL', 'GA_CALLBACK', 'GA_CLIENT_ID', 'CLUSTERS']
 
 const definePluginMap = envVars.reduce((acc, x) => ({
   ...acc,

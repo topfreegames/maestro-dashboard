@@ -16,7 +16,7 @@ const load8 = css.keyframes({
   }
 })
 
-Spinner.styles = (r = 0, g = 0, b = 0) => css({
+Spinner.styles = (r = 255, g = 255, b = 255) => css({
   '.loader, .loader:after': {
     borderRadius: '50%',
     width: '10em',

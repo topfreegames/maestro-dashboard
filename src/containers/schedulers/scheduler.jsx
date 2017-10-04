@@ -66,21 +66,30 @@ class Scheduler extends React.Component {
     })
   }
 
-  render = () => (
-    <SchedulerComponent
-      name={this.props.name}
-      game={this.props.game}
-      ready={this.props.status.roomsAtReady}
-      occupied={this.props.status.roomsAtOccupied}
-      minimum={this.state.minimum}
-      replicas={this.state.replicas}
-      showGraphs={this.state.showGraphs}
-      fetching={this.state.fetching}
-      handleChange={this.handleChange}
-      handleSubmit={this.handleSubmit}
-      toggleGraphs={this.toggleGraphs}
-    />
-  )
+  render = () => {
+    const ready = this.props.status.roomsAtReady
+    const occupied = this.props.status.roomsAtOccupied
+    const sum = ready + occupied
+    const occupancy = sum > 0 ? occupied / sum : 0
+
+    return (
+      <SchedulerComponent
+        name={this.props.name}
+        game={this.props.game}
+        ready={ready}
+        occupied={occupied}
+        occupancy={occupancy}
+        threshold={this.props.autoscaling.up.trigger.threshold}
+        minimum={this.state.minimum}
+        replicas={this.state.replicas}
+        showGraphs={this.state.showGraphs}
+        fetching={this.state.fetching}
+        handleChange={this.handleChange}
+        handleSubmit={this.handleSubmit}
+        toggleGraphs={this.toggleGraphs}
+      />
+    )
+  }
 }
 
 export default Scheduler

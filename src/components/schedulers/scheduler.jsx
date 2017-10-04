@@ -1,15 +1,24 @@
 import React from 'react'
 import { css } from 'glamor'
-import { Spinner, TextInput, Button } from 'components/common'
+import { Loading, TextInput, Button } from 'components/common'
 import Graph from './graph'
 import { navigate } from 'actions/common'
 import styles from 'constants/styles'
+
+const wrapperStyles = css({
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  boxSizing: 'border-box'
+})
 
 const Scheduler = ({
   name,
   game,
   ready,
   occupied,
+  occupancy,
+  threshold,
   minimum,
   replicas,
   showGraphs,
@@ -18,57 +27,60 @@ const Scheduler = ({
   handleSubmit,
   toggleGraphs
 }) => (
-  <div {...Scheduler.styles}>
-    {fetching && <span className='fetching'><Spinner r={255} g={255} b={255} /></span>}
-    <div>
-      {name}
-      <button onClick={() => navigate(`schedulers/${name}/edit`)}>
-        <i className='fa fa-ellipsis-v' aria-hidden='true' />
-      </button>
-    </div>
-    <div>{game}</div>
-    <div>
+  <div {...wrapperStyles}>
+    {fetching && <Loading />}
+    <div {...Scheduler.styles}>
+      <div>
+        {name}
+        <button onClick={() => navigate(`schedulers/${name}/edit`)}>
+          <i className='fa fa-ellipsis-v' aria-hidden='true' />
+        </button>
+      </div>
+      <div>{game}</div>
       <div>
         <div>
-          <label>Ready</label>
-          <i className='fa fa-play-circle' aria-hidden='true' />
-          {ready}
+          <div>
+            <label>Ready</label>
+            <i className='fa fa-play-circle' aria-hidden='true' />
+            {ready}
+          </div>
+          <div>
+            <label>Occupied</label>
+            <i className='fa fa-ban' aria-hidden='true' />
+            {occupied}
+          </div>
+          <div className={(occupancy > threshold) && 'critical'}>{occupancy}%</div>
         </div>
-        <div>
-          <label>Occupied</label>
-          <i className='fa fa-ban' aria-hidden='true' />
-          {occupied}
-        </div>
+        <Button
+          variant={!showGraphs && 'ghost'}
+          size='small'
+          handleClick={toggleGraphs}
+        >
+          <i className='fa fa-area-chart' aria-hidden='true' />
+        </Button>
       </div>
-      <Button
-        variant={!showGraphs && 'ghost'}
-        size='small'
-        handleClick={toggleGraphs}
-      >
-        <i className='fa fa-area-chart' aria-hidden='true' />
-      </Button>
-    </div>
-    {showGraphs && <Graph scheduler={name} />}
-    <div className='footer'>
-      <TextInput
-        id='minimum'
-        label='Minimum'
-        value={minimum}
-        handleChange={handleChange}
-      />
-      <TextInput
-        id='replicas'
-        label='Replicas'
-        value={replicas}
-        handleChange={handleChange}
-      />
-      <Button
-        variant={fetching && 'inverse'}
-        handleClick={handleSubmit}
-      >
-        {fetching && 'Saving'}
-        {!fetching && 'Save'}
-      </Button>
+      {showGraphs && <Graph scheduler={name} />}
+      <div className='footer'>
+        <TextInput
+          id='minimum'
+          label='Minimum'
+          value={minimum}
+          handleChange={handleChange}
+        />
+        <TextInput
+          id='replicas'
+          label='Replicas'
+          value={replicas}
+          handleChange={handleChange}
+        />
+        <Button
+          variant={fetching && 'inverse'}
+          handleClick={handleSubmit}
+        >
+          {fetching && 'Saving'}
+          {!fetching && 'Save'}
+        </Button>
+      </div>
     </div>
   </div>
 )
@@ -144,6 +156,14 @@ Scheduler.styles = css({
 
         '& + div': {
           marginLeft: '20px'
+        }
+      },
+
+      '> div:nth-of-type(3)': {
+        color: styles.colors.gray_75,
+
+        '&.critical': {
+          color: styles.colors.brandSecondary
         }
       },
 

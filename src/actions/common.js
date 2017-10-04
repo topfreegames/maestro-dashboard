@@ -36,6 +36,9 @@ client.put = async (endpoint, payload) =>
 client.post = async (endpoint, payload) =>
   client.fetch('POST', endpoint, payload)
 
+client.delete = async (endpoint) =>
+  client.fetch('DELETE', endpoint)
+
 export const navigate = (path, { isExternal } = {}) => {
   if (isExternal) {
     window.location = path

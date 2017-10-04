@@ -19,32 +19,27 @@ class Graph extends React.Component {
 
     this.state = {
       imagesReady: false,
-      occupiedSnapshotUrl: null,
-      readySnapshotUrl: null
+      snapshotUrl: null
     }
   }
 
   componentDidMount = async () => {
-    const readySnapshotUrl = await getSnapshot('tanks-blue-d-con', 'ready')
-    const occupiedSnapshotUrl = await getSnapshot('tanks-blue-d-con', 'occupied')
+    const snapshotUrl = await getSnapshot('tanks-blue-d-con')
 
     this.maybeForceUpdate()
 
     this.setState({
       ...this.state,
-      readySnapshotUrl,
-      occupiedSnapshotUrl
+      snapshotUrl
     })
   }
 
   maybeForceUpdate = async () => {
-    const { readyImg, occupiedImg } = this
-    const { readySnapshotUrl, occupiedSnapshotUrl } = this.state
+    const { img } = this
+    const { snapshotUrl } = this.state
 
-    if (!readyImg || !readySnapshotUrl ||
-      !occupiedImg || !occupiedSnapshotUrl ||
-      (readyImg.naturalWidth <= 1) ||
-      (occupiedImg.naturalWidth <= 1)) {
+    if (!img || !snapshotUrl ||
+      (img.naturalWidth <= 1)) {
       this.forceUpdate()
       setTimeout(() => this.maybeForceUpdate(), 1000)
     } else {
@@ -61,15 +56,10 @@ class Graph extends React.Component {
   render = () => {
     return (
       <div {...Graph.styles}>
-        {!this.state.imagesReady && <Spinner />}
+        {!this.state.imagesReady && <Spinner r={0} g={0} b={0} />}
         <img
-          ref={img => (this.readyImg = img)}
-          src={`${this.state.readySnapshotUrl}?${randomString(10)}`}
-          style={this.imgStyle(this.state.imagesReady)}
-        />
-        <img
-          ref={img => (this.occupiedImg = img)}
-          src={`${this.state.occupiedSnapshotUrl}?${randomString(10)}`}
+          ref={img => (this.img = img)}
+          src={`${this.state.snapshotUrl}?${randomString(10)}`}
           style={this.imgStyle(this.state.imagesReady)}
         />
       </div>

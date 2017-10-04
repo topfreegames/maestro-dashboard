@@ -99,3 +99,10 @@ export const createScheduler = async(payload) => {
   console.log(response)
   console.log(await response.json())
 }
+
+export const deleteScheduler = async name => {
+  const response =
+    await client.delete(`scheduler/${name}`)
+  console.log(response)
+  console.log(await response.json())
+}
