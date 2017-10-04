@@ -24,7 +24,11 @@ class App extends React.Component {
     return (
       <div>
         <routeElement.element route={route} />
-        <Snackbar text={this.props.snackbar.text} delay={300} />
+        <Snackbar
+          text={this.props.snackbar.text}
+          delay={300}
+          action={{ text: 'UNDO' }}
+        />
       </div>
     )
   }

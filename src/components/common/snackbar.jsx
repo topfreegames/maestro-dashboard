@@ -3,10 +3,11 @@ import { css } from 'glamor'
 import Expire from './expire'
 import styles from 'constants/styles'
 
-const Snackbar = ({ text, delay }) => (
+const Snackbar = ({ text, delay, action }) => (
   <Expire delay={delay * 8} styles={Snackbar.transitionStyles(delay)}>
     <div {...Snackbar.styles}>
       <div className='text'>{text}</div>
+      {action && <div className='action'>{action.text}</div>}
     </div>
   </Expire>
 )
@@ -16,11 +17,18 @@ Snackbar.styles = css({
   bottom: 0,
   width: '100%',
   display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   padding: '12px 24px',
   background: 'rgba(0, 0, 0, 0.9)',
   color: 'white',
   fontWeight: 400,
-  fontSize: styles.fontSizes['3']
+  fontSize: styles.fontSizes['3'],
+
+  '> .action': {
+    textTransform: 'uppercase',
+    color: styles.colors.brandSecondary
+  }
 })
 
 Snackbar.transitionStyles = delay => css({
