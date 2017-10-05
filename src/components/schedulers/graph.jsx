@@ -4,12 +4,9 @@ import { Spinner } from 'components/common'
 import styles from 'constants/styles'
 import { randomString } from 'helpers/common'
 
-const end = Math.round(new Date() / 1000)
-const start = end - 1000*60*60
-
 const getSnapshot = async (scheduler, type) => {
   const res =
-    await fetch(`http://localhost:9000/graph?scheduler=${scheduler}&type=${type}`)
+    await fetch(`${process.env.GRAPH_HOST}/graph?scheduler=${scheduler}&type=${type}`)
   return (await res.json()).snapshot_url
 }
 
