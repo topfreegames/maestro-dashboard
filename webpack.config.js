@@ -1,7 +1,9 @@
-require('dotenv').config()
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+const env = process.env.NODE_ENV
+require('dotenv').config({ path: `.env.${env}` })
 
 const htmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: 'index.html',

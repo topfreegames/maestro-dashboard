@@ -41,7 +41,7 @@ TextInput.styles = css({
       backgroundColor: styles.colors.brandPrimary,
       height: '2px',
       width: 0,
-      transition: '0.2s ease all'
+      transition: '0.15s ease all'
     },
 
     '&::before': { left: '50%' },
