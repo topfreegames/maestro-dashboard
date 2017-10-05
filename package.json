@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development webpack-dev-server --host 0.0.0.0",
     "build": "NODE_ENV=production webpack -p",
-    "server": "NODE_ENV=production nodemon server.js"
+    "server": "NODE_ENV=development nodemon server.js"
   },
   "author": "",
   "license": "ISC",

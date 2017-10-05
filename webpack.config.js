@@ -25,7 +25,7 @@ const SRC_PATH = path.join(__dirname, 'src')
 
 module.exports = {
   context: SRC_PATH,
-  entry: './index.js',
+  entry: ['./index.js', 'webpack-hot-middleware/client'],
   output: {
     path: BUILD_PATH,
     filename: 'bundle.js'
@@ -48,6 +48,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     htmlWebpackPluginConfig,
     constantsPlugin
   ],

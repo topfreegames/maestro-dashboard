@@ -11,7 +11,7 @@ export const exchangeCodeForCluster = (code, cluster) =>
 
 const selectClusterWithToken = cluster =>
   (dispatch, getState) => {
-    client.base = cluster.host
+    client.set(cluster.host)
 
     dispatch({
       type: actions.session.setToken,

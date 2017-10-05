@@ -3,7 +3,8 @@ import history from 'constants/history'
 
 export const client = {}
 
-client.base = process.env.MAESTRO_URL
+client.base = window.localStorage.getItem('maestro:client')
+client.set = host => window.localStorage.setItem('maestro:client', host)
 
 client.headers = () => {
   const state = store.getState()
