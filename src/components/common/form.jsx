@@ -21,7 +21,8 @@ class Form extends React.Component {
     const { formFor, template } = this.props
 
     // deep diff
-    if (formFor && newForm && formFor.length !== newForm.length) return
+    if (this.state.formFor ||
+      (formFor && newForm && formFor.length !== newForm.length)) return
 
     this.setState({
       ...this.state,
@@ -29,7 +30,9 @@ class Form extends React.Component {
     })
   }
 
-  componentDidMount = () => this.maybeUpdateFormFor()
+  componentDidMount =
+    () => this.maybeUpdateFormFor(this.props.formFor)
+
   componentWillReceiveProps =
     nextProps => this.maybeUpdateFormFor(nextProps.formFor)
 
