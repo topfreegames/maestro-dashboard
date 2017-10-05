@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { BackButton } from 'components/common'
 import Form from 'components/schedulers/form'
 import { createScheduler } from 'actions/schedulers'
@@ -25,4 +24,4 @@ class SchedulersNew extends React.Component {
   )
 }
 
-export default connect()(SchedulersNew)
+export default SchedulersNew

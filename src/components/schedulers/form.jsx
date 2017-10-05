@@ -1,26 +1,22 @@
 import React from 'react'
 import { css } from 'glamor'
 import Header from 'components/common/header'
-import { Button, Loading, Form } from 'components/common'
+import { Button, Form } from 'components/common'
 import styles from 'constants/styles'
 import schedulerTemplate from 'constants/scheduler_template'
 
-const SchedulersEdit = ({
+const SchedulersForm = ({
   header,
-  loading,
   scheduler,
   handleSubmit
 }) => (
-  <div {...SchedulersEdit.styles}>
+  <div {...SchedulersForm.styles}>
     <Header
       left={header.left}
       right={header.right}
     />
     <section role='main'>
-      {(loading || !scheduler.name) &&
-        <Loading position='fixed' />
-      }
-      {scheduler.name && <Form
+      <Form
         formFor={scheduler}
         handleSubmit={handleSubmit}
         template={schedulerTemplate}
@@ -29,12 +25,12 @@ const SchedulersEdit = ({
             Save
           </Button>
         }
-      />}
+      />
     </section>
   </div>
 )
 
-SchedulersEdit.styles = css({
+SchedulersForm.styles = css({
   '> section[role="main"] > form, & .section': {
     position: 'relative',
     display: 'flex',
@@ -77,4 +73,4 @@ SchedulersEdit.styles = css({
   }
 })
 
-export default SchedulersEdit
+export default SchedulersForm

@@ -72,17 +72,20 @@ class SchedulersEdit extends React.Component {
     )
   }
 
-  render = () => (
-    <Form
-      header={{
-        left: headerLeft(this.props),
-        right: headerRight(this.handleDeleteScheduler)
-      }}
-      loading={this.state.loading}
-      scheduler={this.props}
-      handleSubmit={this.handleSubmit}
-    />
-  )
+  render = () => {
+    if (!this.props.name) return (<div />)
+
+    return (
+      <Form
+        header={{
+          left: headerLeft(this.props),
+          right: headerRight(this.handleDeleteScheduler)
+        }}
+        scheduler={this.props}
+        handleSubmit={this.handleSubmit}
+      />
+    )
+  }
 }
 
 export default connect((state, ownProps) => ({
