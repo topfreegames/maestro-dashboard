@@ -4,11 +4,13 @@ import { autoRehydrate } from 'redux-persist'
 import sessionReducer from 'reducers/session'
 import schedulersReducer from 'reducers/schedulers'
 import clustersReducer from 'reducers/clusters'
+import snackbarReducer from 'reducers/snackbar'
 
 const appReducer = combineReducers({
   session: sessionReducer,
   schedulers: schedulersReducer,
-  clusters: clustersReducer
+  clusters: clustersReducer,
+  snackbar: snackbarReducer
 })
 
 const rootReducer = (state = {}, action) => {

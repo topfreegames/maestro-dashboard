@@ -18,7 +18,12 @@ export const session = {
   setCode: 'SESSION/SET_CODE'
 }
 
+export const snackbar = {
+  set: 'SNACKBAR/SET'
+}
+
 export default {
+  snackbar,
   schedulers,
   clusters,
   session

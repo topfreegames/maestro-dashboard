@@ -1,9 +1,10 @@
 import React from 'react'
 import { css } from 'glamor'
-import { Loading, TextInput, Button } from 'components/common'
+import { Loading, Button, Form } from 'components/common'
 import Graph from './graph'
 import { navigate } from 'actions/common'
 import styles from 'constants/styles'
+import basicSchedulerTemplate from 'constants/basic_scheduler_template'
 
 const wrapperStyles = css({
   position: 'relative',
@@ -61,25 +62,19 @@ const Scheduler = ({
       </div>
       {showGraphs && <Graph scheduler={name} />}
       <div className='footer'>
-        <TextInput
-          id='minimum'
-          label='Minimum'
-          value={minimum}
-          handleChange={handleChange}
+        <Form
+          formFor={{ minimum, replicas }}
+          handleSubmit={handleSubmit}
+          template={basicSchedulerTemplate}
+          button={
+            <Button
+              variant={fetching && 'inverse'}
+            >
+              {fetching && 'Saving'}
+              {!fetching && 'Save'}
+            </Button>
+          }
         />
-        <TextInput
-          id='replicas'
-          label='Replicas'
-          value={replicas}
-          handleChange={handleChange}
-        />
-        <Button
-          variant={fetching && 'inverse'}
-          handleClick={handleSubmit}
-        >
-          {fetching && 'Saving'}
-          {!fetching && 'Save'}
-        </Button>
       </div>
     </div>
   </div>
@@ -181,22 +176,23 @@ Scheduler.styles = css({
     borderTop: `1px solid ${styles.colors.gray_0}`,
     paddingTop: '16px',
 
-    '> div': {
+    '> form': {
       display: 'flex',
-      justifyContent: 'center',
-      width: '25%',
+      flexDirection: 'row',
+      width: '100%',
 
-      '& input': {
-        textAlign: 'center'
+      '> div': {
+        width: '25%',
+
+        '& + div': {
+          marginLeft: '20px'
+        }
       },
 
-      '& + div': {
-        marginLeft: '20px'
+      '> button': {
+        alignSelf: 'center',
+        marginLeft: 'auto'
       }
-    },
-
-    '> button': {
-      marginLeft: 'auto'
     }
   }
 })

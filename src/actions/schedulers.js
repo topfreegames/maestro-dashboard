@@ -49,26 +49,24 @@ const updateSchedulerMinimum = async (name, payload) => {
   const response = await client.put(`scheduler/${name}/min`, {
     min: payload.newMinimum
   })
-  console.log(response)
-  console.log(await response.json())
+  if (response.status !== 200) throw new Error('bad request')
 }
 
 const updateSchedulerReplicas = async (name, payload) => {
   const response = await client.post(`scheduler/${name}`, {
     replicas: payload.replicas
   })
-  console.log(response)
-  console.log(await response.json())
+  if (response.status !== 200) throw new Error('bad request')
 }
 
-const sleep = time =>
-  new Promise((resolve) => setTimeout(resolve, time))
-
 export const updateSchedulerMinimumAndReplicas = async (name, payload) => {
-  if (payload.newMinimum) updateSchedulerMinimum(name, payload)
-  if (payload.replicas) updateSchedulerReplicas(name, payload)
-
-  await sleep(1200)
+  try {
+    if (payload.newMinimum) await updateSchedulerMinimum(name, payload)
+    if (payload.replicas) await updateSchedulerReplicas(name, payload)
+    return { status: 200 }
+  } catch (err) {
+    return { status: 400 }
+  }
 }
 
 const removeEmptyFields = payload =>
@@ -85,24 +83,15 @@ const removeEmptyFields = payload =>
     }
   }, {})
 
-export const updateScheduler = async(payload) => {
+export const updateScheduler = async payload => {
   const normalizedPayload = removeEmptyFields(payload)
-  console.log(normalizedPayload)
-  const response =
-    await client.put(`scheduler/${payload.name}?maxsurge=25`, normalizedPayload)
-  console.log(response)
-  console.log(await response.json())
+  return client.put(`scheduler/${payload.name}?maxsurge=25`, normalizedPayload)
 }
 
-export const createScheduler = async(payload) => {
-  const response = await client.post('scheduler', payload)
-  console.log(response)
-  console.log(await response.json())
+export const createScheduler = async payload => {
+  return client.post('scheduler', payload)
 }
 
 export const deleteScheduler = async name => {
-  const response =
-    await client.delete(`scheduler/${name}`)
-  console.log(response)
-  console.log(await response.json())
+  return client.delete(`scheduler/${name}`)
 }

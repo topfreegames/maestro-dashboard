@@ -1,14 +1,15 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import SchedulerComponent from 'components/schedulers/scheduler'
 import { updateSchedulerMinimumAndReplicas } from 'actions/schedulers'
+import { default as snackbarH } from 'helpers/snackbar'
+import snackbar from 'actions/snackbar'
 
 class Scheduler extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      minimum: this.props.autoscaling.min,
-      replicas: this.reduceRoomsStatuses(),
       showGraphs: false,
       fetching: false
     }
@@ -21,49 +22,46 @@ class Scheduler extends React.Component {
 
   toggleGraphs = event => {
     event.preventDefault()
-    this.setState({
-      ...this.state,
-      showGraphs: !this.state.showGraphs
-    })
+    this.setState({ showGraphs: !this.state.showGraphs })
   }
 
-  handleChange = event => {
-    this.setState({
-      ...this.state,
-      [event.target.id]: event.target.value
-    })
-  }
-
-  handleSubmit = async event => {
-    event.preventDefault()
-
+  handleSubmit = async ({ minimum, replicas }) => {
     const updatePayload = {}
 
     const shouldUpdateMinimum =
-      this.props.autoscaling.min !== this.state.minimum
+      this.props.autoscaling.min !== minimum
 
     if (shouldUpdateMinimum) {
-      updatePayload.newMinimum = parseInt(this.state.minimum)
+      updatePayload.newMinimum = parseInt(minimum)
     }
 
     const shouldUpdateReplicas =
-      this.state.replicas !== this.reduceRoomsStatuses()
+      replicas !== this.reduceRoomsStatuses()
 
     if (shouldUpdateReplicas) {
-      updatePayload.replicas = parseInt(this.state.replicas)
+      updatePayload.replicas = parseInt(replicas)
     }
 
-    this.setState({
-      ...this.state,
-      fetching: true
-    })
+    this.setState({ fetching: true })
 
-    await updateSchedulerMinimumAndReplicas(this.props.name, updatePayload)
+    const res =
+      await updateSchedulerMinimumAndReplicas(this.props.name, updatePayload)
 
-    this.setState({
-      ...this.state,
-      fetching: false
-    })
+    if (Object.entries(updatePayload).length === 0) {
+      this.props.dispatch(
+        snackbar.set({ text: `Nothing to update in ${this.props.name}` })
+      )
+    } else {
+      snackbarH.textFromBoolean(
+        res.status > 199 && res.status < 300,
+        {
+          isTrue: `${this.props.name} updated`,
+          isFalse: `Error updating ${this.props.name}`
+        }
+      )
+    }
+
+    this.setState({ fetching: false })
   }
 
   render = () => {
@@ -80,8 +78,8 @@ class Scheduler extends React.Component {
         occupied={occupied}
         occupancy={occupancy}
         threshold={this.props.autoscaling.up.trigger.threshold}
-        minimum={this.state.minimum}
-        replicas={this.state.replicas}
+        minimum={this.props.autoscaling.min}
+        replicas={this.reduceRoomsStatuses()}
         showGraphs={this.state.showGraphs}
         fetching={this.state.fetching}
         handleChange={this.handleChange}
@@ -92,4 +90,4 @@ class Scheduler extends React.Component {
   }
 }
 
-export default Scheduler
+export default connect()(Scheduler)

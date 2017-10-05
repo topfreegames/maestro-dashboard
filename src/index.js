@@ -19,16 +19,15 @@ class App extends React.Component {
   }
 
   render () {
-    const { route, routeElement } = this.props
+    const { route, routeElement, snackbar } = this.props
 
     return (
       <div>
         <routeElement.element route={route} />
-        <Snackbar
-          text={this.props.snackbar.text}
+        {snackbar && <Snackbar
           delay={300}
-          action={{ text: 'UNDO' }}
-        />
+          {...this.props.snackbar}
+        />}
       </div>
     )
   }
@@ -36,9 +35,7 @@ class App extends React.Component {
 
 const AppWithProps = connect(state => ({
   session: state.session,
-  snackbar: {
-    text: 'Some text goes here'
-  }
+  snackbar: state.snackbar
 }))(App)
 
 class Bootloader extends React.Component {
@@ -48,7 +45,9 @@ class Bootloader extends React.Component {
   }
 
   componentWillMount = () =>
-    persistStore(store, {}, () => this.setState({ rehydrated: true }))
+    persistStore(store, {
+      blacklist: ['snackbar']
+    }, () => this.setState({ rehydrated: true }))
 
   render = () => {
     const { rehydrated } = this.state

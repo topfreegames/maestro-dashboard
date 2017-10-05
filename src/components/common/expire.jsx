@@ -26,8 +26,8 @@ class Expire extends React.Component {
   componentWillUnmount = () => clearTimeout(this._timer)
 
   componentWillReceiveProps = nextProps => {
-    if (nextProps.children !== this.props.children) {
-    }
+    this.setTimer()
+    this.setState({ visible: true })
   }
 
   componentDidMount = () => this.setTimer()
@@ -36,10 +36,10 @@ class Expire extends React.Component {
     <div {...this.props.styles}>
       <ReactCSSTransitionGroup
         transitionName='expire'
-        transitionAppear={true}
-        transitionEnterTimeout={this.props.delay}
-        transitionLeaveTimeout={this.props.delay}
-        transitionAppearTimeout={this.props.delay}
+        transitionAppear
+        transitionEnterTimeout={this.props.delay / 3}
+        transitionLeaveTimeout={this.props.delay / 3}
+        transitionAppearTimeout={this.props.delay / 3}
       >
         {this.state.visible && this.props.children}
       </ReactCSSTransitionGroup>

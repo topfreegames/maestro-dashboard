@@ -8,6 +8,7 @@ const TextInput = ({ id, label, value, handleChange, error }) => (
     <input
       id={id}
       type='text'
+      autoComplete='off'
       value={value}
       onChange={handleChange}
       className={error && 'error'}
@@ -60,7 +61,14 @@ TextInput.styles = css({
     },
 
     '&.error': {
-      borderColor: styles.colors.brandSecondary
+      borderColor: styles.colors.brandSecondary,
+
+      '& ~ .bar::before, & ~ .bar::after': {
+        backgroundColor: styles.colors.brandSecondary
+      },
+      '&:focus ~ .bar::before, &:focus ~ .bar::after': {
+        backgroundColor: styles.colors.brandSecondary
+      }
     }
   },
 

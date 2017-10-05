@@ -4,6 +4,7 @@ import { Button, BackButton } from 'components/common'
 import Form from 'components/schedulers/form'
 import { getScheduler, updateScheduler, deleteScheduler } from 'actions/schedulers'
 import { navigate } from 'actions/common'
+import snackbar from 'helpers/snackbar'
 
 const headerLeft = scheduler =>
   <div>
@@ -42,15 +43,33 @@ class SchedulersEdit extends React.Component {
 
   handleSubmit = async scheduler => {
     this.toggleLoading()
-    await updateScheduler(scheduler)
+
+    const res = await updateScheduler(scheduler)
+
     this.toggleLoading()
+
+    snackbar.textFromBoolean(
+      res.status > 199 && res.status < 300,
+      {
+        isTrue: `${this.props.name} updated`,
+        isFalse: `Error updating ${this.props.name}`
+      }
+    )
   }
 
   handleDeleteScheduler = async event => {
     event.preventDefault()
     this.toggleLoading()
-    await deleteScheduler(this.props.name)
+    const res = await deleteScheduler(this.props.name)
     navigate('/dashboard')
+
+    snackbar.textFromBoolean(
+      res.status > 199 && res.status < 300,
+      {
+        isTrue: `${this.props.name} deleted`,
+        isFalse: `Error deleting ${this.props.name}`
+      }
+    )
   }
 
   render = () => (

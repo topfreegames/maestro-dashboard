@@ -1,6 +1,7 @@
 import actions from 'constants/actions'
 import { exchangeCode, getCode } from './session'
 import { client } from './common'
+import snackbar from 'actions/snackbar'
 
 export const exchangeCodeForCluster = (code, cluster) =>
   async dispatch => {
@@ -21,6 +22,10 @@ const selectClusterWithToken = cluster =>
       type: actions.clusters.selectSuccess,
       token: cluster.token
     })
+
+    dispatch(
+      snackbar.set({ text: `Cluster [${cluster.name}] selected` })
+    )
   }
 
 export const selectCluster = cluster =>

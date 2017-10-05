@@ -23,9 +23,21 @@ client.makeFetchOpts = (method, payload) => {
   return opts
 }
 
-client.fetch = async (method, endpoint, payload) =>
-  fetch(`${client.base}/${endpoint}`,
-    client.makeFetchOpts(method, payload))
+const timeout = time =>
+  new Promise((resolve) => setTimeout(resolve, time, { status: 400 }))
+
+client.fetch = async (method, endpoint, payload) => {
+  try {
+    const resolve = await Promise.race([
+      timeout(30000),
+      fetch(`${client.base}/${endpoint}`,
+        client.makeFetchOpts(method, payload))
+    ])
+    return resolve
+  } catch (err) {
+    return { status: 400 }
+  }
+}
 
 client.get = async endpoint =>
   client.fetch('GET', endpoint)
