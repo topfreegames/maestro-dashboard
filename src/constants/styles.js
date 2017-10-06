@@ -19,7 +19,9 @@ export const fontSizes = {
   3: '14px',
   4: '16px',
   5: '18px',
-  6: '20px'
+  6: '20px',
+  7: '22px',
+  8: '24px'
 }
 
 export default {

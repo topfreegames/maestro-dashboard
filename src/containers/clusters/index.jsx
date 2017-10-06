@@ -51,8 +51,7 @@ const buttonCustomStyles = css({
 
 ClustersIndex.styles = css({
   display: 'flex',
-  flexDirection: 'column',
-  padding: '16px'
+  flexDirection: 'column'
 })
 
 export default connect(state => ({

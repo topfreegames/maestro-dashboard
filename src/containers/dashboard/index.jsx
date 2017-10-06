@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { css } from 'glamor'
 import Header from 'components/common/header'
 import Schedulers from 'containers/schedulers'
-import Clusters from 'containers/clusters'
+import Settings from 'components/settings'
 import styles from 'constants/styles'
 
 class SearchTextInput extends React.Component {
@@ -25,7 +25,7 @@ class Dashboard extends React.Component {
   constructor (props) {
     super(props)
 
-    const activeTab = this.props.session.token ? 'Schedulers' : 'Clusters'
+    const activeTab = this.props.session.token ? 'Schedulers' : 'Settings'
 
     this.state = {
       activeTab,
@@ -101,14 +101,14 @@ class Dashboard extends React.Component {
           left={header.left}
           title={header.title}
           right={header.right}
-          tabs={['Clusters', 'Schedulers']}
+          tabs={['Settings', 'Schedulers']}
           switchTab={this.switchTab}
           activeTab={activeTab}
         />
         {activeTab === 'Schedulers' &&
           <Schedulers filter={this.state.schedulerFilter} />}
-        {activeTab === 'Clusters' &&
-          <Clusters switchToSchedulers={this.switchToSchedulers} />}
+        {activeTab === 'Settings' &&
+          <Settings switchToSchedulers={this.switchToSchedulers} />}
       </div>
     )
   }
@@ -125,18 +125,21 @@ SearchTextInput.styles = css({
 const headerLeftStyles = css({
   color: styles.colors.brandPrimary,
   fontWeight: 700,
-  fontSize: styles.fontSizes['6']
+  fontSize: styles.fontSizes['7']
 })
 
 const headerRightStyles = css({
-  color: styles.colors.gray_75
+  color: styles.colors.gray_75,
+  fontSize: styles.fontSizes['7']
 })
 
 Dashboard.styles = css({
   '> div:nth-of-type(2)': {
     display: 'flex',
     width: '100%'
-  }
+  },
+
+  paddingBottom: '88px'
 })
 
 export default connect(state => ({
