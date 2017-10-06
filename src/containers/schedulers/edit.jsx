@@ -100,7 +100,7 @@ class SchedulersEdit extends React.Component {
   )
 
   render = () => {
-    if (!this.props.scheduler.name) return (<div />)
+    if (!this.props.scheduler || !this.props.scheduler.name) return (<div />)
 
     return (
       <div>
