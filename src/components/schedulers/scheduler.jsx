@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import { Loading, Button, Form } from 'components/common'
-import Graph from './graph'
+import Graph from 'containers/schedulers/graph'
 import { navigate } from 'actions/common'
 import styles from 'constants/styles'
 import basicSchedulerTemplate from 'constants/basic_scheduler_template'
