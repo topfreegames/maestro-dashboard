@@ -20,7 +20,8 @@ Spinner.styles = (r = 255, g = 255, b = 255) => css({
   '.loader, .loader:after': {
     borderRadius: '50%',
     width: '10em',
-    height: '10em'
+    height: '10em',
+    overflow: 'hidden'
   },
 
   '.loader': {

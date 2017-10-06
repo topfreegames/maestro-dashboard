@@ -31,7 +31,7 @@ class Graph extends React.Component {
     this.props.setTimeout(() => {
       this.refreshSnapshot()
       this.refreshLoop()
-    }, 10000)
+    }, 15000)
   }
 
   refreshSnapshot = async () => {
@@ -43,7 +43,7 @@ class Graph extends React.Component {
     const { imgBack } = this
     const { frontSnapshotUrl, snapshotUrl } = this.state
 
-    this.props.setTimeout(() => this.maybeForceUpdateLoop(), 1000)
+    this.props.setTimeout(() => this.maybeForceUpdateLoop(), 1500)
 
     if (frontSnapshotUrl === snapshotUrl) return
 
