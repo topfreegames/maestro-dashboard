@@ -53,7 +53,7 @@ const Scheduler = ({
           <div className={(occupancy > threshold) && 'critical'}>{occupancy}%</div>
         </div>
         <Button
-          variant={!showGraphs && 'ghost'}
+          variant={showGraphs ? 'inverse' : 'ghost'}
           size='small'
           handleClick={toggleGraphs}
         >
