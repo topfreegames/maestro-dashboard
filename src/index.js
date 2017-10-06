@@ -1,67 +1,21 @@
-import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { persistStore } from 'redux-persist'
-import { connect, Provider } from 'react-redux'
-import Router from 'containers/router'
-import { Snackbar } from 'components/common'
-import store from 'reducers'
-import { navigate } from 'actions/common'
+import { AppContainer } from 'react-hot-loader'
+import Bootloader from './app'
 require('es6-promise').polyfill()
 require('isomorphic-fetch')
 
-class App extends React.Component {
-  componentWillReceiveProps = nextProps => {
-    if (!(nextProps.session.code || nextProps.session.token) &&
-      !nextProps.routeElement.public) {
-      navigate('/')
-    }
-  }
-
-  render () {
-    const { route, routeElement, snackbar } = this.props
-
-    return (
-      <div>
-        <routeElement.element route={route} />
-        {snackbar && <Snackbar
-          delay={300}
-          {...this.props.snackbar}
-        />}
-      </div>
-    )
-  }
+const render = Component => {
+  ReactDOM.render(
+    <AppContainer>
+      <Bootloader />
+    </AppContainer>,
+    document.getElementById('app')
+  )
 }
 
-const AppWithProps = connect(state => ({
-  session: state.session,
-  snackbar: state.snackbar
-}))(App)
+render(Bootloader)
 
-class Bootloader extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { rehydrated: false }
-  }
-
-  componentWillMount = () =>
-    persistStore(store, {
-      blacklist: ['snackbar']
-    }, () => this.setState({ rehydrated: true }))
-
-  render = () => {
-    const { rehydrated } = this.state
-    return !rehydrated ? <div /> : (
-      <Provider store={store}>
-        <Router>
-          <AppWithProps />
-        </Router>
-      </Provider>
-    )
-  }
+if (module.hot) {
+  module.hot.accept('./app', () => { render(Bootloader) })
 }
-
-ReactDOM.render(
-  <Bootloader />,
-  document.getElementById('app')
-)

@@ -25,7 +25,12 @@ const SRC_PATH = path.join(__dirname, 'src')
 
 module.exports = {
   context: SRC_PATH,
-  entry: ['./index.js', 'webpack-hot-middleware/client'],
+  entry: [
+    'babel-polyfill',
+    'react-hot-loader/patch',
+    'webpack-hot-middleware/client',
+    './index.js'
+  ],
   output: {
     path: BUILD_PATH,
     filename: 'bundle.js'
