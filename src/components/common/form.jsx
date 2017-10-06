@@ -1,4 +1,5 @@
 import React from 'react'
+import diff from 'deep-diff'
 import {
   render,
   parse,
@@ -20,8 +21,8 @@ class Form extends React.Component {
   maybeUpdateFormFor = newForm => {
     const { formFor, template } = this.props
 
-    // deep diff
-    if (this.state.formFor ||
+    const formDiff = formFor && newForm && diff(formFor, newForm)
+    if ((!formDiff && this.state.formFor) ||
       (formFor && newForm && formFor.length !== newForm.length)) return
 
     this.setState({

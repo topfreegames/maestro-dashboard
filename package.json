@@ -39,6 +39,7 @@
     "babel-polyfill": "^6.26.0",
     "client-oauth2": "^4.1.0",
     "cors": "^2.8.4",
+    "deep-diff": "^0.3.8",
     "es6-promise": "^4.1.1",
     "express": "^4.16.1",
     "fuzzy": "^0.1.3",
