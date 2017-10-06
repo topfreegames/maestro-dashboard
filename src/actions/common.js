@@ -3,8 +3,10 @@ import history from 'constants/history'
 
 export const client = {}
 
-client.base = window.localStorage.getItem('maestro:client')
-client.set = host => window.localStorage.setItem('maestro:client', host)
+client.host = () => {
+  const clusters = store.getState().clusters
+  return clusters[clusters.current].host
+}
 
 client.headers = () => {
   const state = store.getState()
@@ -31,7 +33,7 @@ client.fetch = async (method, endpoint, payload) => {
   try {
     const resolve = await Promise.race([
       timeout(30000),
-      fetch(`${client.base}/${endpoint}`,
+      fetch(`${client.host()}/${endpoint}`,
         client.makeFetchOpts(method, payload))
     ])
     return resolve

@@ -1,6 +1,5 @@
 import actions from 'constants/actions'
 import { exchangeCode, getCode } from './session'
-import { client } from './common'
 import snackbar from 'actions/snackbar'
 
 export const exchangeCodeForCluster = (code, cluster) =>
@@ -11,8 +10,6 @@ export const exchangeCodeForCluster = (code, cluster) =>
 
 const selectClusterWithToken = cluster =>
   (dispatch, getState) => {
-    client.set(cluster.host)
-
     dispatch({
       type: actions.session.setToken,
       token: cluster.token
