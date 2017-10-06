@@ -1,13 +1,14 @@
 import React from 'react'
 import { css } from 'glamor'
 import Header from 'components/common/header'
-import { Button, Form } from 'components/common'
+import { Button, Form, Loading } from 'components/common'
 import styles from 'constants/styles'
 import schedulerTemplate from 'constants/scheduler_template'
 
 const SchedulersForm = ({
   header,
   scheduler,
+  loading,
   handleSubmit
 }) => (
   <div {...SchedulersForm.styles}>
@@ -16,6 +17,7 @@ const SchedulersForm = ({
       right={header.right}
     />
     <section role='main'>
+      {loading && <Loading position='fixed' />}
       <Form
         formFor={scheduler}
         handleSubmit={handleSubmit}

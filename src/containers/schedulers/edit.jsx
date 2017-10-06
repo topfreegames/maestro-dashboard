@@ -112,6 +112,7 @@ class SchedulersEdit extends React.Component {
           }}
           scheduler={this.props.scheduler}
           handleSubmit={this.handleSubmit}
+          loading={this.state.loading}
         />
       </div>
     )
