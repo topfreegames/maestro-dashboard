@@ -31,7 +31,7 @@ const SchedulersForm = ({
 )
 
 SchedulersForm.styles = css({
-  '> section[role="main"] > form, & .section': {
+  '& form, & .section': {
     position: 'relative',
     display: 'flex',
     boxSizing: 'border-box',
@@ -43,10 +43,27 @@ SchedulersForm.styles = css({
     }
   },
 
+  '& form > .section.odd > label': {
+    backgroundColor: styles.colors.brandPrimary,
+    width: 'calc(100% + 32px)',
+    margin: '-16px 0 8px -16px',
+    padding: '8px 16px',
+    borderRadius: '4px 4px 0 0',
+    color: styles.colors.background
+  },
+
   '& .section': {
     marginTop: '16px !important',
     marginBottom: '8px',
-    border: `1px solid ${styles.colors.gray_25}`,
+    border: `1px solid ${styles.colors.gray_0}`,
+    borderRadius: '4px',
+
+    '&.odd, &.odd > div > input': {
+      backgroundColor: styles.colors.background
+    },
+    '&.even, &.even > div > input': {
+      backgroundColor: styles.colors.gray_0
+    },
 
     '& + .section': {
       marginTop: '8px !important'
@@ -58,7 +75,6 @@ SchedulersForm.styles = css({
       alignItems: 'center',
       justifyContent: 'space-between',
       textTransform: 'uppercase',
-      color: `${styles.colors.gray_100}`,
       fontSize: `${styles.fontSizes[`3`]}`,
       fontWeight: 500
     },

@@ -26,6 +26,20 @@ export default {
   toleration: {
     _type: 'string'
   },
+  shutdownTimeout: {
+    _type: 'integer',
+    _label: 'shutdown timeout',
+    _validations: [
+      validations.required
+    ]
+  },
+  occupiedTimeout: {
+    _type: 'integer',
+    _label: 'occupied timeout',
+    _validations: [
+      validations.required
+    ]
+  },
   ports: {
     _type: 'array',
     _format: {
@@ -49,17 +63,6 @@ export default {
         ]
       }
     }
-  },
-  shutdownTimeout: {
-    _type: 'integer',
-    _label: 'shutdown timeout',
-    _validations: [
-      validations.required
-    ]
-  },
-  occupiedTimeout: {
-    _type: 'integer',
-    _label: 'occupied timeout'
   },
   limits: {
     _type: 'compose',
@@ -92,6 +95,12 @@ export default {
           validations.required
         ]
       },
+      cooldown: {
+        _type: 'integer',
+        _validations: [
+          validations.required
+        ]
+      },
       trigger: {
         _type: 'compose',
         usage: {
@@ -112,12 +121,6 @@ export default {
             validations.required
           ]
         }
-      },
-      cooldown: {
-        _type: 'integer',
-        _validations: [
-          validations.required
-        ]
       }
     },
     down: {
@@ -128,6 +131,12 @@ export default {
           validations.required
         ]
       },
+      cooldown: {
+        _type: 'integer',
+        _validations: [
+          validations.required
+        ]
+      },
       trigger: {
         _type: 'compose',
         usage: {
@@ -148,12 +157,6 @@ export default {
             validations.required
           ]
         }
-      },
-      cooldown: {
-        _type: 'integer',
-        _validations: [
-          validations.required
-        ]
       }
     }
   },

@@ -36,8 +36,8 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
     />
   )
 
-  const renderArrayElement = (prefix, arrayPath, index, _format) => (
-    <div key={prefix} className='section'>
+  const renderArrayElement = (prefix, arrayPath, index, _format, isOdd) => (
+    <div key={prefix} className={`section ${isOdd ? 'odd' : 'even'}`}>
       <Button
         size='small'
         variant='secondary'
@@ -46,17 +46,17 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
       >
         Remove
       </Button>
-      {renderObject(_format, prefix)}
+      {renderObject(_format, prefix, !isOdd)}
     </div>
   )
 
-  const renderArray = ([name, { _format }], prefix) => {
+  const renderArray = ([name, { _format }], prefix, isOdd) => {
     const arrayPath = makePath(prefix, name)
     const arr = getValue(arrayPath, object) || []
     const len = arr.length
 
     return (
-      <div className='section' key={makePath(prefix, name)}>
+      <div className={`section ${isOdd ? 'odd' : 'even'}`} key={makePath(prefix, name)}>
         <div>
           <label>{name}</label>
           <Button
@@ -67,34 +67,34 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
           </Button>
         </div>
         {arr.map((e, i) => {
-          return renderArrayElement(`${arrayPath}.${i}.`, arrayPath, i, _format)
+          return renderArrayElement(`${arrayPath}.${i}.`, arrayPath, i, _format, !isOdd)
         }).reverse()}
       </div>
     )
   }
 
-  const renderCompose = ([name, children], prefix) => (
-    <div className='section' key={makePath(prefix, name)}>
+  const renderCompose = ([name, children], prefix, isOdd) => (
+    <div className={`section ${isOdd ? 'odd' : 'even'}`} key={makePath(prefix, name)}>
       <label>{name}</label>
-      {renderObject(children, `${makePath(prefix, name)}.`)}
+      {renderObject(children, `${makePath(prefix, name)}.`, !isOdd)}
     </div>
   )
 
-  const renderEntry = (e, prefix = '') => {
+  const renderEntry = (e, prefix = '', isOdd) => {
     switch (e[1]._type) {
       case 'compose':
-        return renderCompose(e, prefix)
+        return renderCompose(e, prefix, isOdd)
       case 'array':
-        return renderArray(e, prefix)
+        return renderArray(e, prefix, isOdd)
       default:
-        return renderSimple(e, prefix)
+        return renderSimple(e, prefix, isOdd)
     }
   }
 
-  const renderObject = (o, prefix = '') =>
+  const renderObject = (o, prefix = '', isOdd = true) =>
     Object.entries(o)
       .filter(e => e[0][0] !== '_')
-      .map(e => renderEntry(e, prefix))
+      .map(e => renderEntry(e, prefix, isOdd))
 
   return object && renderObject(template)
 }
