@@ -23,14 +23,34 @@ const constantsPlugin = new webpack.DefinePlugin(definePluginMap)
 const BUILD_PATH = path.join(__dirname, 'build')
 const SRC_PATH = path.join(__dirname, 'src')
 
+const entryPrd = [
+  'babel-polyfill',
+  './index.js'
+]
+
+const entryDev = [
+  'babel-polyfill',
+  'react-hot-loader/patch',
+  'webpack-hot-middleware/client',
+  './index.js'
+]
+
+const entry = process.env.NODE_ENV === 'production' ? entryPrd : entryDev
+
+const pluginsPrd = [
+  htmlWebpackPluginConfig,
+  constantsPlugin
+]
+
+const pluginsDev = pluginsPrd.concat([
+  new webpack.HotModuleReplacementPlugin()
+])
+
+const plugins = process.env.NODE_ENV === 'production' ? pluginsPrd : pluginsDev
+
 module.exports = {
   context: SRC_PATH,
-  entry: [
-    'babel-polyfill',
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client',
-    './index.js'
-  ],
+  entry,
   output: {
     path: BUILD_PATH,
     filename: 'bundle.js'
@@ -52,11 +72,7 @@ module.exports = {
       { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
     ]
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    htmlWebpackPluginConfig,
-    constantsPlugin
-  ],
+  plugins,
   devServer: {
     historyApiFallback: true
   }

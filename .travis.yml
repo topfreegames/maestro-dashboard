@@ -1,0 +1,19 @@
+sudo: required
+language: node_js
+services:
+- docker
+branches:
+  only:
+  - master
+cache:
+  directories:
+  - node_modules
+install:
+- npm install
+script:
+- npm run build
+after_success:
+- bash ci/after-success.sh
+env:
+  global:
+    secure: nxf1XULKeFql5dMUViaKEYxiycXRI1tcN4rJrIrQUIGOs8wa8y7WZCeBDf9JN/UDBQJbA5nBSvulAxds1fzTT229uir5q2+jvYrWaPEUrm9Hv9DOBOiCSNf3My6oZOxqMtf8HMD0aMugabGE2l2Zw9i+IWny/caB8igOQ1Ln3QXBpIFvCczn/LFnOGnzsom3VowF2dYxX3UafxLSfNBGbNgdZAP3GFxq8hPCrqYfwiHtEnyltQBQVLlXRmdMWP53izLIAsPuVTgcB97AM0eOR0N976yBbpmXwLb7yiSqKn6nW9PKiDwNGrPm51t6K/R/J9Pbq/kycr8pOkuXxncQ8FHqB8dzBWu4wMCjWX9mg1CoP1TLXE/uu8C+0i5kAnMNJyDSDuUulWfKNHHEBwADjOvLRVEDuFPAlJMzysDECH0s+gz7vy5CIamW1dc7nZICHAwWE4ZHjB9/YVQ3s2aGCYnny7nlZ471cU+qrb12mEENOwfUxY/ZH8kBf5DjxaWQELNc4rKXqkWmQP0g12187bkKg73aoKuFMXKaXnYQc6UJ1v37d9aa9KV+8nXg/pXJBHchS+SnJudhJUcn4O5alU0kDdxDCFHPfTA3Vs6KNrZD8CGn7e4r47u1wF0M3R/tevma9R+rNQtIqsM5kmSaY54Zsyw3M73xqTwD0qcYk3o=
