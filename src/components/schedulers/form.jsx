@@ -48,7 +48,7 @@ SchedulersForm.styles = css({
     width: 'calc(100% + 32px)',
     margin: '-16px 0 8px -16px',
     padding: '8px 16px',
-    borderRadius: '4px 4px 0 0',
+    borderRadius: '2px 2px 0 0',
     color: styles.colors.background
   },
 
@@ -56,7 +56,7 @@ SchedulersForm.styles = css({
     marginTop: '16px !important',
     marginBottom: '8px',
     border: `1px solid ${styles.colors.gray_0}`,
-    borderRadius: '4px',
+    borderRadius: '2px',
 
     '&.odd, &.odd > div > input': {
       backgroundColor: styles.colors.background

@@ -29,6 +29,13 @@ const variants = {
   inverse: css({
     backgroundColor: styles.colors.brandInverse,
     color: styles.colors.gray_100
+  }),
+  flat: css({
+    background: styles.colors.background,
+    color: styles.colors.brandPrimary,
+    height: 'auto',
+    padding: 0,
+    boxShadow: 'none'
   })
 }
 

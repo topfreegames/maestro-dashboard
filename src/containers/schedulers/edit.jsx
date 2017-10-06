@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, BackButton } from 'components/common'
+import { Button, BackButton, Confirmation } from 'components/common'
 import Form from 'components/schedulers/form'
 import { getScheduler, updateScheduler, deleteScheduler } from 'actions/schedulers'
 import { navigate } from 'actions/common'
@@ -26,6 +26,7 @@ class SchedulersEdit extends React.Component {
     super()
 
     this.state = {
+      showConfirmation: false,
       loading: false
     }
   }
@@ -51,8 +52,8 @@ class SchedulersEdit extends React.Component {
     snackbar.textFromBoolean(
       res.status > 199 && res.status < 300,
       {
-        isTrue: `${this.props.name} updated`,
-        isFalse: `Error updating ${this.props.name}`
+        isTrue: `${this.props.scheduler.name} updated`,
+        isFalse: `Error updating ${this.props.scheduler.name}`
       }
     )
   }
@@ -60,34 +61,64 @@ class SchedulersEdit extends React.Component {
   handleDeleteScheduler = async event => {
     event.preventDefault()
     this.toggleLoading()
-    const res = await deleteScheduler(this.props.name)
+
+    const { name } = this.props.scheduler
+
+    const res = await deleteScheduler(name)
     navigate('/dashboard')
 
     snackbar.textFromBoolean(
       res.status > 199 && res.status < 300,
       {
-        isTrue: `${this.props.name} deleted`,
-        isFalse: `Error deleting ${this.props.name}`
+        isTrue: `${name} deleted`,
+        isFalse: `Error deleting ${name}`
       }
     )
   }
 
+  toggleConfirmation = event => {
+    event.preventDefault()
+    this.setState({ showConfirmation: !this.state.showConfirmation })
+  }
+
+  confirmation = () => (
+    <Confirmation
+      title='Delete Scheduler?'
+      description={`
+        ${this.props.scheduler.name} will be permanently deleted from 
+        [${this.props.cluster}] cluster
+      `}
+      close={this.toggleConfirmation}
+      actions={[
+        { name: 'Cancel' },
+        {
+          name: 'Delete',
+          func: e => this.handleDeleteScheduler(e)
+        }
+      ]}
+    />
+  )
+
   render = () => {
-    if (!this.props.name) return (<div />)
+    if (!this.props.scheduler.name) return (<div />)
 
     return (
-      <Form
-        header={{
-          left: headerLeft(this.props),
-          right: headerRight(this.handleDeleteScheduler)
-        }}
-        scheduler={this.props}
-        handleSubmit={this.handleSubmit}
-      />
+      <div>
+        {this.state.showConfirmation && this.confirmation()}
+        <Form
+          header={{
+            left: headerLeft(this.props.scheduler),
+            right: headerRight(this.toggleConfirmation)
+          }}
+          scheduler={this.props.scheduler}
+          handleSubmit={this.handleSubmit}
+        />
+      </div>
     )
   }
 }
 
 export default connect((state, ownProps) => ({
-  ...state.schedulers.show[ownProps.route.options.name]
+  scheduler: state.schedulers.show[ownProps.route.options.name],
+  cluster: state.clusters.current
 }))(SchedulersEdit)
