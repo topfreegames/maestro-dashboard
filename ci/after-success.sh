@@ -4,7 +4,7 @@ IFS=$'\n\t'
 REPO=quay.io/tfgco/maestro-dashboard
 DOCKER_REGISTRY=${DOCKER_REGISTRY:=quay.io}
 
-docker build -t maestro-dashboard
+docker build -t maestro-dashboard .
 docker login -u $DOCKER_USER -p $DOCKER_PASSWORD $DOCKER_REGISTRY
 
 # If this is not a pull request, update the branch's docker tag.
