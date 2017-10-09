@@ -1,4 +1,4 @@
-FROM node:8.6.0
+FROM mhart/alpine-node
 EXPOSE 8080
 RUN mkdir -p /var/apps/maestro-dashboard
 WORKDIR /var/apps/maestro-dashboard
