@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import Scheduler from 'containers/schedulers/scheduler'
-import { AddButton } from 'components/common'
+import { Spinner, AddButton } from 'components/common'
 import styles from 'constants/styles'
 import { navigate } from 'actions/common'
 
@@ -14,6 +14,8 @@ const Schedulers = ({ filter, schedulers, fetching }) => (
   <div {...Schedulers.styles}>
     {filter !== '' &&
       <div className='results'>Results for <span>{filter}</span></div>}
+    {(fetching && schedulers.length === 0) &&
+      <Spinner r={0} g={0} b={0} />}
     {(!fetching || schedulers.length > 0) &&
       schedulers.map(s => <Scheduler key={s.name} {...s} />)}
     <AddButton handleClick={newScheduler} />

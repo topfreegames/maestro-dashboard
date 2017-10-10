@@ -19,6 +19,7 @@ class SchedulersNew extends React.Component {
       header={{
         left: headerLeft()
       }}
+      isBlank
       handleSubmit={this.handleSubmit}
     />
   )

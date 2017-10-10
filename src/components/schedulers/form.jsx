@@ -9,7 +9,8 @@ const SchedulersForm = ({
   header,
   scheduler,
   loading,
-  handleSubmit
+  handleSubmit,
+  isBlank
 }) => (
   <div {...SchedulersForm.styles}>
     <Header
@@ -17,8 +18,9 @@ const SchedulersForm = ({
       right={header.right}
     />
     <section role='main'>
-      {loading && <Loading position='fixed' />}
-      <Form
+      {(loading || (scheduler && scheduler.fetching)) &&
+        <Loading position='fixed' />}
+      {(isBlank || (scheduler && !scheduler.fetching)) && <Form
         formFor={scheduler}
         handleSubmit={handleSubmit}
         template={schedulerTemplate}
@@ -27,7 +29,7 @@ const SchedulersForm = ({
             Save
           </Button>
         }
-      />
+      />}
     </section>
   </div>
 )

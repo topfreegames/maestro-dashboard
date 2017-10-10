@@ -6,10 +6,10 @@ import { getScheduler, updateScheduler, deleteScheduler } from 'actions/schedule
 import { navigate } from 'actions/common'
 import snackbar from 'helpers/snackbar'
 
-const headerLeft = scheduler =>
+const headerLeft = schedulerName =>
   <div>
     <BackButton />
-    <span>{scheduler && scheduler.name}</span>
+    <span>{schedulerName}</span>
   </div>
 
 const headerRight = handleClick =>
@@ -100,14 +100,12 @@ class SchedulersEdit extends React.Component {
   )
 
   render = () => {
-    if (!this.props.scheduler || !this.props.scheduler.name) return (<div />)
-
     return (
       <div>
         {this.state.showConfirmation && this.confirmation()}
         <Form
           header={{
-            left: headerLeft(this.props.scheduler),
+            left: headerLeft(this.props.schedulerName),
             right: headerRight(this.toggleConfirmation)
           }}
           scheduler={this.props.scheduler}
@@ -120,6 +118,7 @@ class SchedulersEdit extends React.Component {
 }
 
 export default connect((state, ownProps) => ({
+  schedulerName: ownProps.route.options.name,
   scheduler: state.schedulers.show[ownProps.route.options.name],
   cluster: state.clusters.current
 }))(SchedulersEdit)

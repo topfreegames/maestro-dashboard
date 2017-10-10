@@ -5,6 +5,7 @@ import sessionReducer from 'reducers/session'
 import schedulersReducer from 'reducers/schedulers'
 import clustersReducer from 'reducers/clusters'
 import snackbarReducer from 'reducers/snackbar'
+import actions from 'constants/actions'
 
 const appReducer = combineReducers({
   session: sessionReducer,
@@ -18,6 +19,11 @@ const rootReducer = (state = {}, action) => {
 
   if (action.type === 'PURGE') {
     statePrime = {}
+  } else if (action.type === actions.clusters.selectSuccess) {
+    statePrime = {
+      ...state,
+      schedulers: undefined
+    }
   }
 
   return appReducer(statePrime, action)

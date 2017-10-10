@@ -35,7 +35,7 @@ const schedulersReducer = (state = initialState, action) => {
           ...state.show,
           [action.name]: {
             ...state.show[action.name],
-            fecthing: true,
+            fetching: true,
             error: {}
           }
         }
