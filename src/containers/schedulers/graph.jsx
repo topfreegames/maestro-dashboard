@@ -35,7 +35,7 @@ class Graph extends React.Component {
   }
 
   refreshSnapshot = async () => {
-    const snapshotUrl = await getSnapshot('tanks-blue-d-con')
+    const snapshotUrl = await getSnapshot(this.props.scheduler)
     this.setState({ snapshotUrl })
   }
 
@@ -92,4 +92,3 @@ Graph.styles = css({
 })
 
 export default ReactTimeout(Graph)
-
