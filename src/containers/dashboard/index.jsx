@@ -115,7 +115,8 @@ class Dashboard extends React.Component {
 }
 
 SearchTextInput.styles = css({
-  fontSize: styles.fontSizes['4'],
+  fontSize: styles.fontSizes['5'],
+  border: 'none',
 
   '&::placeholder': {
     color: styles.colors.gray_50
@@ -125,12 +126,12 @@ SearchTextInput.styles = css({
 const headerLeftStyles = css({
   color: styles.colors.brandPrimary,
   fontWeight: 700,
-  fontSize: styles.fontSizes['7']
+  fontSize: styles.fontSizes['8']
 })
 
 const headerRightStyles = css({
   color: styles.colors.gray_75,
-  fontSize: styles.fontSizes['7']
+  fontSize: styles.fontSizes['8']
 })
 
 Dashboard.styles = css({

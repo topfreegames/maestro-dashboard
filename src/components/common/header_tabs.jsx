@@ -30,7 +30,7 @@ const smallStyles = css({
       width: '50%',
       height: '48px',
       borderBottom: `2px ${styles.colors.gray_0} solid`,
-      fontSize: styles.fontSizes['3'],
+      fontSize: styles.fontSizes['5'],
       color: styles.colors.gray_50,
       cursor: 'pointer',
 
