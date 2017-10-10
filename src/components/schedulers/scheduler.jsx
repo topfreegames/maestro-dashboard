@@ -54,7 +54,7 @@ const Scheduler = ({
             <i className='fa fa-ban' aria-hidden='true' />
             {occupied}
           </div>
-          <div className={(occupancy > threshold) && 'critical'}>{occupancy}%</div>
+          <div className={(occupancy > threshold) && 'critical'}>{(occupancy * 100).toPrecision(3)}%</div>
         </div>
         <Button
           variant={showGraphs ? 'inverse' : 'ghost'}
@@ -92,6 +92,7 @@ Scheduler.styles = css({
   width: '100%',
   boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.2)',
   padding: '10px',
+  overflow: 'hidden',
 
   '> .fetching': {
     display: 'flex',
