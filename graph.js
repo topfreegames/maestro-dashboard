@@ -40,5 +40,5 @@ const maybeRequest = scheduler => {
 module.exports = app =>
   app.get('/graph', function (req, res, next) {
     const { scheduler } = req.query
-    maybeRequest('tanks-green-d-con').then(json => res.json(json))
+    maybeRequest(scheduler).then(json => res.json(json))
   })
