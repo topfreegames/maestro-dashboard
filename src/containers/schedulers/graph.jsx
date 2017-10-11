@@ -31,44 +31,52 @@ class Graph extends React.Component {
     this.props.setTimeout(() => {
       this.refreshSnapshot()
       this.refreshLoop()
-    }, 15000)
+    }, 25000)
   }
 
   refreshSnapshot = async () => {
     const snapshotUrl = await getSnapshot(this.props.scheduler)
-    this.setState({ snapshotUrl })
+    if (snapshotUrl === this.state.frontSnapshotUrl) return
+    this.setState({ snapshotUrl, snapshotUrlAppendable: '' })
   }
 
   maybeForceUpdateLoop = async () => {
     const { imgBack } = this
-    const { frontSnapshotUrl, snapshotUrl } = this.state
+    const { frontSnapshotUrl, snapshotUrl, snapshotUrlAppendable } = this.state
 
-    this.props.setTimeout(() => this.maybeForceUpdateLoop(), 1500)
+    this.props.setTimeout(() => this.maybeForceUpdateLoop(), 3000)
 
-    if (frontSnapshotUrl === snapshotUrl) return
+    if (frontSnapshotUrl === snapshotUrl || snapshotUrl === null) return
 
     if (!imgBack || !snapshotUrl ||
       (imgBack.naturalWidth <= 1)) {
-      this.forceUpdate()
+      this.setState({ snapshotUrlAppendable: `?${randomString(10)}` })
     } else {
-      this.setState({ frontSnapshotUrl: snapshotUrl })
+      this.setState({
+        frontSnapshotUrl: snapshotUrl,
+        frontSnapshotUrlAppendable: snapshotUrlAppendable,
+        snapshotUrl: null
+      })
     }
   }
 
   hideImg = { position: 'absolute', top: '-1000px', left: '-1000px' }
 
   render = () => {
+    const { frontSnapshotUrl, snapshotUrl,
+      snapshotUrlAppendable, frontSnapshotUrlAppendable } = this.state
+
     return (
       <div {...Graph.styles}>
-        {!this.state.frontSnapshotUrl && <Spinner r={0} g={0} b={0} />}
-        {this.state.frontSnapshotUrl && <img
-          src={`${this.state.frontSnapshotUrl}?${randomString(10)}`}
+        {!frontSnapshotUrl && <Spinner r={0} g={0} b={0} />}
+        {frontSnapshotUrl && <img
+          src={`${frontSnapshotUrl}${frontSnapshotUrlAppendable}`}
         />}
-        <img
+        {this.state.snapshotUrl && <img
           ref={img => (this.imgBack = img)}
-          src={`${this.state.snapshotUrl}?${randomString(10)}`}
+          src={`${snapshotUrl}${snapshotUrlAppendable}`}
           style={this.hideImg}
-        />
+        />}
       </div>
     )
   }
