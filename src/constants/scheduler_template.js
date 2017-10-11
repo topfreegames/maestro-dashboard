@@ -179,15 +179,9 @@ export default {
     }
   },
   cmd: {
-    _type: 'array',
+    _type: 'array_of_simples',
     _format: {
-      _type: 'compose',
-      value: {
-        _type: 'string',
-        _validations: [
-          validations.required
-        ]
-      }
+      _type: 'string'
     }
   }
 }

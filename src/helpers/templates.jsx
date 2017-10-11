@@ -15,8 +15,9 @@ const getField = (template, path) =>
 
 const makePath = (prefix, name) => `${prefix}${name}`
 
-const getValue = (path, origin) =>
-  path.split('.').reduce((acc, x) => acc[x], origin)
+const getValue = (path, origin) => {
+  return path.split('.').reduce((acc, x) => acc[x], origin)
+}
 
 export const render = (template, object, errors, handleChange, handleAdd, handleRemove) => {
   const makeLabel = (prefix, name) => {
@@ -25,18 +26,18 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
     return (f._label ? f._label : name) + suffix
   }
 
-  const renderSimple = ([name, _], prefix) => (
+  const renderSimple = ([name, _], prefix, showLabel = true) => (
     <TextInput
       key={makePath(prefix, name)}
       id={makePath(prefix, name)}
-      label={makeLabel(prefix, name)}
+      label={showLabel && makeLabel(prefix, name)}
       value={getValue(makePath(prefix, name), object)}
       handleChange={handleChange}
       error={errors[makePath(prefix, name)]}
     />
   )
 
-  const renderArrayElement = (prefix, arrayPath, index, _format, isOdd) => (
+  const renderArrayElement = (prefix, arrayPath, index, _format, isOdd, ofSimples) => (
     <div key={prefix} className={`section ${isOdd ? 'odd' : 'even'}`}>
       <Button
         size='small'
@@ -46,11 +47,12 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
       >
         Remove
       </Button>
-      {renderObject(_format, prefix, !isOdd)}
+      {ofSimples && renderSimple([index], `${arrayPath}.`, false)}
+      {!ofSimples && renderObject(_format, prefix, !isOdd)}
     </div>
   )
 
-  const renderArray = ([name, { _format }], prefix, isOdd) => {
+  const renderArray = ([name, { _format }], prefix, isOdd, ofSimples) => {
     const arrayPath = makePath(prefix, name)
     const arr = getValue(arrayPath, object) || []
     const len = arr.length
@@ -67,7 +69,7 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
           </Button>
         </div>
         {arr.map((e, i) => {
-          return renderArrayElement(`${arrayPath}.${i}.`, arrayPath, i, _format, !isOdd)
+          return renderArrayElement(`${arrayPath}.${i}.`, arrayPath, i, _format, !isOdd, ofSimples)
         }).reverse()}
       </div>
     )
@@ -86,6 +88,8 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
         return renderCompose(e, prefix, isOdd)
       case 'array':
         return renderArray(e, prefix, isOdd)
+      case 'array_of_simples':
+        return renderArray(e, prefix, isOdd, true)
       default:
         return renderSimple(e, prefix, isOdd)
     }
@@ -118,6 +122,8 @@ export const parse = (template, object) => {
         return parseCompose(e, prefix)
       case 'array':
         return parseArray(e, prefix)
+      case 'array_of_simples':
+        return parseArray(e, prefix)
       default:
         return parseSimple(e, prefix)
     }
@@ -140,7 +146,9 @@ export const setInPath = (template, object, path, value) =>
       const field = getField(template, path)
       acc[x] = field._type === 'integer'
         ? (parseInt(value) || '')
-        : value
+        : (typeof value === 'object'
+          ? (Object.entries(value).length === 0 ? '' : value)
+          : value)
 
       return object
     } else {

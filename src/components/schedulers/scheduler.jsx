@@ -155,7 +155,7 @@ Scheduler.styles = css({
         alignItems: 'center',
 
         '& + div': {
-          marginLeft: '20px'
+          marginLeft: '12px'
         }
       },
 
