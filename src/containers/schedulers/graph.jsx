@@ -1,13 +1,14 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import ReactTimeout from 'react-timeout'
 import { css } from 'glamor'
 import { Spinner } from 'components/common'
 import styles from 'constants/styles'
 import { randomString } from 'helpers/common'
 
-const getSnapshot = async (scheduler, type) => {
+const getSnapshot = async (scheduler, region) => {
   const res =
-    await fetch(`${process.env.GRAPH_HOST}/graph?scheduler=${scheduler}&type=${type}`)
+    await fetch(`${process.env.GRAPH_HOST}/graph?scheduler=${scheduler}&region=${region}`)
   return (await res.json()).snapshot_url
 }
 
@@ -35,7 +36,7 @@ class Graph extends React.Component {
   }
 
   refreshSnapshot = async () => {
-    const snapshotUrl = await getSnapshot(this.props.scheduler)
+    const snapshotUrl = await getSnapshot(this.props.scheduler, this.props.region)
     if (snapshotUrl === this.state.frontSnapshotUrl) return
     this.setState({ snapshotUrl, snapshotUrlAppendable: '' })
   }
@@ -99,4 +100,6 @@ Graph.styles = css({
   }
 })
 
-export default ReactTimeout(Graph)
+export default connect(state => ({
+  region: state.clusters[state.clusters.current].region
+}))(ReactTimeout(Graph))
