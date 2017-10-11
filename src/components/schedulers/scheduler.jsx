@@ -19,6 +19,7 @@ const wrapperStyles = css({
 
 const Scheduler = ({
   name,
+  state,
   game,
   ready,
   occupied,
@@ -41,7 +42,16 @@ const Scheduler = ({
           <i className='fa fa-ellipsis-v' aria-hidden='true' />
         </button>
       </div>
-      <div>{game}</div>
+      <div>
+        <div>
+          <label>Game</label>
+          {game}
+        </div>
+        <div>
+          <label>State</label>
+          {state}
+        </div>
+      </div>
       <div>
         <div>
           <div>
@@ -139,7 +149,12 @@ Scheduler.styles = css({
 
   '> div:nth-of-type(2)': {
     fontSize: styles.fontSizes['3'],
-    color: styles.colors.gray_100
+    color: styles.colors.gray_100,
+
+    '> div': {
+      '> label': { marginRight: '8px' },
+      '& + div': { marginLeft: '12px' }
+    }
   },
 
   '> div:nth-of-type(3)': {

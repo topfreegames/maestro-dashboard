@@ -73,6 +73,7 @@ class Scheduler extends React.Component {
     return (
       <SchedulerComponent
         name={this.props.name}
+        state={this.props.status.state}
         game={this.props.game}
         ready={ready}
         occupied={occupied}
