@@ -91,7 +91,7 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
       case 'array_of_simples':
         return renderArray(e, prefix, isOdd, true)
       default:
-        return renderSimple(e, prefix, isOdd)
+        return renderSimple(e, prefix)
     }
   }
 
