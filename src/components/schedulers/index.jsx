@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import Scheduler from 'containers/schedulers/scheduler'
-import { Spinner, AddButton } from 'components/common'
+import { Spinner, AddButton, AutoComplete } from 'components/common'
 import styles from 'constants/styles'
 import { navigate } from 'actions/common'
 
@@ -10,8 +10,23 @@ const newScheduler = event => {
   navigate('/schedulers/new')
 }
 
-const Schedulers = ({ filter, schedulers, fetching }) => (
+const Schedulers = ({
+  filter,
+  gameFilter,
+  gameFilterOptions,
+  handleGameFilterChange,
+  schedulers,
+  fetching
+}) => (
   <div {...Schedulers.styles}>
+    <div {...filterStyles}>
+      <AutoComplete
+        options={gameFilterOptions}
+        value={gameFilter}
+        handleChange={handleGameFilterChange}
+        placeholder={'Filter by game'}
+      />
+    </div>
     {filter !== '' &&
       <div className='results'>Results for <span>{filter}</span></div>}
     {(fetching && schedulers.length === 0) &&
@@ -21,6 +36,12 @@ const Schedulers = ({ filter, schedulers, fetching }) => (
     <AddButton handleClick={newScheduler} />
   </div>
 )
+
+const filterStyles = css({
+  display: 'flex',
+  flexDirection: 'column',
+  marginBottom: '16px'
+})
 
 Schedulers.styles = css({
   display: 'flex',

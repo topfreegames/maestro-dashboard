@@ -2,7 +2,16 @@ import React from 'react'
 import { css } from 'glamor'
 import styles from 'constants/styles'
 
-const TextInput = ({ id, label, value, handleChange, error }) => (
+const TextInput = ({
+  id,
+  label,
+  placeholder,
+  value,
+  handleChange,
+  handleFocus,
+  handleBlur,
+  error
+}) => (
   <div {...TextInput.styles}>
     <label htmlFor={id}>{label}</label>
     <input
@@ -10,7 +19,10 @@ const TextInput = ({ id, label, value, handleChange, error }) => (
       type='text'
       autoComplete='off'
       value={value}
+      placeholder={placeholder}
       onChange={handleChange}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       className={error && 'error'}
     />
     <div className='bar' />
@@ -42,7 +54,7 @@ TextInput.styles = css({
       backgroundColor: styles.colors.brandPrimary,
       height: '2px',
       width: 0,
-      transition: '0.15s ease all'
+      transition: '0.2s cubic-bezier(0.64, 0.09, 0.08, 1) all'
     },
 
     '&::before': { left: '50%' },

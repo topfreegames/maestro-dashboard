@@ -8,13 +8,23 @@ const sortSchedulers = schedulers =>
   schedulers.sort((a, b) => a.name < b.name ? -1 : 1)
 
 class Schedulers extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      gameFilter: ''
+    }
+  }
+
+  handleGameFilterChange = e => this.setState({ gameFilter: e.target.value })
+
   componentDidMount = async () => {
     this.props.dispatch(getSchedulers())
   }
 
-  applyFilter = field =>
+  applyFilter = (filter, field, schedulers) =>
     fuzzy
-      .filter(this.props.filter, this.props.schedulers, {
+      .filter(filter, schedulers, {
         extract: el => el[field]
       })
       .map(el => el.original)
@@ -22,11 +32,19 @@ class Schedulers extends React.Component {
   render = () => (
     <SchedulersComponent
       filter={this.props.filter}
+      gameFilter={this.state.gameFilter}
+      handleGameFilterChange={this.handleGameFilterChange}
       schedulers={
         sortSchedulers(
-          [...this.applyFilter('name'), ...this.applyFilter('game')]
-          .filter((e, i, self) => (i === self.indexOf(e)))
+          this.applyFilter(this.props.filter, 'name',
+            this.applyFilter(this.state.gameFilter, 'game', this.props.schedulers)
+          )
         )
+      }
+      gameFilterOptions={
+        this.props.schedulers
+          .map(s => s.game)
+          .filter((e, i, self) => (i === self.indexOf(e)))
       }
       fetching={this.props.fetching}
     />
