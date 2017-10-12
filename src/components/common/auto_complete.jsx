@@ -63,7 +63,10 @@ class AutoComplete extends React.Component {
             transitionAppearTimeout={transitionDelayMs}
           >
             <ul>
-              <li onClick={e => this.handleClick(e, '')}>
+              <li
+                className={this.props.value === '' && 'active'}
+                onClick={e => this.handleClick(e, '')}
+              >
                 <i className='fa fa-asterisk' aria-hidden='true' />
               </li>
               {this.filterOptions().map(o => this.renderOption(o))}
