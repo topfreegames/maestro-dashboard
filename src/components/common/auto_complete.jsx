@@ -36,12 +36,6 @@ class AutoComplete extends React.Component {
     this.toggleOptions()
   }
 
-  filterOptions = () =>
-    fuzzy
-      .filter(this.props.value, this.props.options)
-      .map(el => el.original)
-      .sort((a, b) => a > b ? 1 : -1)
-
   render = () => (
     <div>
       {this.state.showOptions &&
@@ -69,7 +63,11 @@ class AutoComplete extends React.Component {
               >
                 <i className='fa fa-asterisk' aria-hidden='true' />
               </li>
-              {this.filterOptions().map(o => this.renderOption(o))}
+              {
+                this.props.options
+                  .sort((a, b) => a > b ? 1 : -1)
+                  .map(o => this.renderOption(o))
+              }
             </ul>
           </ReactCSSTransitionGroup>
         }
