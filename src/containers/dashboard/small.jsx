@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
-import Header from 'components/common/header'
+import { Header, Logo } from 'components/common'
 import Schedulers from 'containers/schedulers'
 import Settings from 'components/settings'
+import { Small } from 'components/common/responsive'
 import styles from 'constants/styles'
 
 class SearchTextInput extends React.Component {
@@ -48,7 +49,7 @@ class Dashboard extends React.Component {
   switchToSchedulers = () => this.switchTab(null, 'Schedulers')
 
   headerNormal = () => ({
-    left: <div {...headerLeftStyles}>M</div>,
+    left: <Logo />,
     title: this.props.cluster.name,
     right: (
       <i
@@ -96,20 +97,24 @@ class Dashboard extends React.Component {
     const header = this.state.header()
 
     return (
-      <div {...Dashboard.styles}>
-        <Header
-          left={header.left}
-          title={header.title}
-          right={header.right}
-          tabs={['Settings', 'Schedulers']}
-          switchTab={this.switchTab}
-          activeTab={activeTab}
-        />
-        {activeTab === 'Schedulers' &&
-          <Schedulers filter={this.state.schedulerFilter} />}
-        {activeTab === 'Settings' &&
-          <Settings switchToSchedulers={this.switchToSchedulers} />}
-      </div>
+      <Small>
+        <div {...Dashboard.styles}>
+          <Header
+            left={header.left}
+            title={header.title}
+            right={header.right}
+            tabs={['Settings', 'Schedulers']}
+            switchTab={this.switchTab}
+            activeTab={activeTab}
+          />
+          {activeTab === 'Schedulers' &&
+            <Schedulers filter={this.state.schedulerFilter} />
+          }
+          {activeTab === 'Settings' &&
+            <Settings switchToSchedulers={this.switchToSchedulers} />
+          }
+        </div>
+      </Small>
     )
   }
 }
@@ -121,12 +126,6 @@ SearchTextInput.styles = css({
   '&::placeholder': {
     color: styles.colors.gray_50
   }
-})
-
-const headerLeftStyles = css({
-  color: styles.colors.brandPrimary,
-  fontWeight: 700,
-  fontSize: styles.fontSizes['8']
 })
 
 const headerRightStyles = css({

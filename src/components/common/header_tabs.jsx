@@ -18,26 +18,24 @@ const HeaderTabs = ({ tabs, switchTab, activeTab }) => (
 )
 
 const smallStyles = css({
-  [`@media(max-width: ${styles.minWidth})`]: {
+  display: 'flex',
+  width: '100%',
+
+  '& div': {
     display: 'flex',
-    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    width: '50%',
+    height: '48px',
+    borderBottom: `2px ${styles.colors.gray_0} solid`,
+    fontSize: styles.fontSizes['5'],
+    color: styles.colors.gray_50,
+    cursor: 'pointer',
 
-    '& div': {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      boxSizing: 'border-box',
-      width: '50%',
-      height: '48px',
-      borderBottom: `2px ${styles.colors.gray_0} solid`,
-      fontSize: styles.fontSizes['5'],
-      color: styles.colors.gray_50,
-      cursor: 'pointer',
-
-      '&.active': {
-        color: styles.colors.brandPrimary,
-        borderColor: styles.colors.brandPrimary
-      }
+    '&.active': {
+      color: styles.colors.brandPrimary,
+      borderColor: styles.colors.brandPrimary
     }
   }
 })

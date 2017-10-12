@@ -1,6 +1,3 @@
-export const minWidth = '600px'
-export const maxWidth = '1500px'
-
 export const colors = {
   gray_0: '#F2F2F2',
   gray_25: '#dee3e7', // change
@@ -24,9 +21,13 @@ export const fontSizes = {
   8: '24px'
 }
 
+export const sizes = {
+  maxSmall: '500px',
+  minLarge: '501px'
+}
+
 export default {
-  minWidth,
-  maxWidth,
   colors,
-  fontSizes
+  fontSizes,
+  sizes
 }
