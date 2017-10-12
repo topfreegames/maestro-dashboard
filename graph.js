@@ -18,17 +18,18 @@ const maxInterval = 1000 * 60 * 5
 const pollingInterval = 1000 * 30
 const delayInterval = 1000 * 9
 
-const timeNow = () => Math.round((new Date()).getTime() / 1000)
+const timeNow = () => (new Date()).getTime()
+const timeInSec = time => Math.round(time / 1000)
 
 const cacheKey = (scheduler, region) => `${scheduler}//${region}`
 
 const snapshotRequest = (scheduler, region) => {
   const host = 'https://app.datadoghq.com/api/v1/graph/snapshot'
   const end = timeNow()
-  const start = end - 60 * 60
+  const start = end - 60 * 60 * 1000
 
   const url =
-    `${host}?${credentials()}&start=${start}&end=${end}&graph_def=${graphDef(scheduler, region)}&title=Occupancy`
+    `${host}?${credentials()}&start=${timeInSec(start)}&end=${timeInSec(end)}&graph_def=${graphDef(scheduler, region)}&title=Occupancy`
 
   return axios.get(url)
     .then(response => ({
@@ -70,7 +71,7 @@ const maybeRequest = (scheduler, region) => {
       lastRequestAt: timeNow()
     })
 
-    if (cached.lastRequestAt - cached.createdAt < delayInterval) {
+    if (timeNow() - cached.createdAt < delayInterval) {
       return delay(delayInterval - (cached.lastRequestAt - cached.createdAt))
         .then(() => cached.snapshot)
     }
