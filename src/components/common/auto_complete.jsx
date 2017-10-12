@@ -62,7 +62,12 @@ class AutoComplete extends React.Component {
             transitionLeaveTimeout={transitionDelayMs}
             transitionAppearTimeout={transitionDelayMs}
           >
-            <ul>{this.filterOptions().map(o => this.renderOption(o))}</ul>
+            <ul>
+              <li onClick={e => this.handleClick(e, '')}>
+                <i className='fa fa-asterisk' aria-hidden='true' />
+              </li>
+              {this.filterOptions().map(o => this.renderOption(o))}
+            </ul>
           </ReactCSSTransitionGroup>
         }
       </div>
@@ -110,6 +115,10 @@ AutoComplete.styles = css({
     background: styles.colors.background,
     boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
     listStyle: 'none',
+
+    '> li:nth-of-type(1)': {
+      fontSize: styles.fontSizes['1']
+    },
 
     '> li': {
       fontSize: styles.fontSizes['3'],

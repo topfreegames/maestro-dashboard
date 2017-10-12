@@ -35,7 +35,7 @@ const Scheduler = ({
 }) => (
   <div {...wrapperStyles}>
     {fetching && <Loading />}
-    <div {...Scheduler.styles}>
+    <div className={minimum === 0 && 'disabled'} {...Scheduler.styles}>
       <div>
         {name}
         <button onClick={() => navigate(`schedulers/${name}/edit`)}>
@@ -103,6 +103,10 @@ Scheduler.styles = css({
   boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.2)',
   padding: '10px',
   overflow: 'hidden',
+
+  '&.disabled, &.disabled input': {
+    background: `${styles.colors.gray_0} !important`
+  },
 
   '> .fetching': {
     display: 'flex',
