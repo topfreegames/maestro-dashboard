@@ -16,6 +16,7 @@ const delay = time =>
 
 const maxInterval = 1000 * 60 * 5
 const pollingInterval = 1000 * 30
+const delayInterval = 1000 * 9
 
 const timeNow = () => Math.round((new Date()).getTime() / 1000)
 
@@ -49,6 +50,7 @@ const startPollingSnapshot = (scheduler, region) => {
       cache.put(key, {
         snapshot,
         lastRequestAt,
+        createdAt: lastRequestAt,
         schedulerName: scheduler,
         schedulerRegion: region
       })
@@ -68,11 +70,16 @@ const maybeRequest = (scheduler, region) => {
       lastRequestAt: timeNow()
     })
 
+    if (cached.lastRequestAt - cached.createdAt < delayInterval) {
+      return delay(delayInterval - (cached.lastRequestAt - cached.createdAt))
+        .then(() => cached.snapshot)
+    }
+
     return Promise.resolve(cached.snapshot)
   }
 
   return startPollingSnapshot(scheduler, region).then(snapshot => {
-    return delay(8000).then(() => snapshot)
+    return delay(delayInterval).then(() => snapshot)
   })
 }
 

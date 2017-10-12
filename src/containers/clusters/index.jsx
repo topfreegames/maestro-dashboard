@@ -8,14 +8,14 @@ import { navigate } from 'actions/common'
 const clusters = JSON.parse(process.env.CLUSTERS)
 
 class ClustersIndex extends React.Component {
-  renderCluster = ({ name, host }) => (
+  renderCluster = cluster => (
     <Button
-      key={name}
-      handleClick={e => this.handleClick(e, { name, host })}
-      variant={(this.props.cluster.name !== name) && 'ghost'}
+      key={cluster.name}
+      handleClick={e => this.handleClick(e, cluster)}
+      variant={(this.props.cluster.name !== cluster.name) && 'ghost'}
       customStyles={buttonCustomStyles}
     >
-      {name}
+      {cluster.name}
     </Button>
   )
 

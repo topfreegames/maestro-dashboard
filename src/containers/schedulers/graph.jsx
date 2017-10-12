@@ -4,7 +4,8 @@ import ReactTimeout from 'react-timeout'
 import { css } from 'glamor'
 import { Spinner } from 'components/common'
 import styles from 'constants/styles'
-import { randomString } from 'helpers/common'
+
+const snapshotInterval = 60000
 
 const getSnapshot = async (scheduler, region) => {
   const res =
@@ -30,7 +31,7 @@ class Graph extends React.Component {
     this.props.setTimeout(() => {
       this.refreshSnapshot()
       this.refreshLoop()
-    }, 25000)
+    }, snapshotInterval)
   }
 
   refreshSnapshot = async () => {
