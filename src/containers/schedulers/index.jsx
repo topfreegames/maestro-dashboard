@@ -7,7 +7,7 @@ import { getSchedulers } from 'actions/schedulers'
 const sortSchedulers = schedulers =>
   schedulers
     .sort((a, b) => a.name < b.name ? -1 : 1)
-    .sort((a, b) => a.autoscaling.min === 0 ? -1 : 1)
+    .sort((a, b) => a.autoscaling.min === 0 ? 1 : -1)
 
 class Schedulers extends React.Component {
   constructor (props) {
