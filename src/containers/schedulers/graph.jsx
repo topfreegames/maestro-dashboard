@@ -9,7 +9,7 @@ import { randomString } from 'helpers/common'
 const getSnapshot = async (scheduler, region) => {
   const res =
     await fetch(`${process.env.GRAPH_HOST}/graph?scheduler=${scheduler}&region=${region}`)
-  return (await res.json()).snapshot_url
+  return (await res.json()).snapshot
 }
 
 class Graph extends React.Component {
@@ -17,7 +17,6 @@ class Graph extends React.Component {
     super()
 
     this.state = {
-      frontSnapshotUrl: null,
       snapshotUrl: null
     }
   }
@@ -25,7 +24,6 @@ class Graph extends React.Component {
   componentDidMount = async () => {
     this.refreshSnapshot()
     this.refreshLoop()
-    this.maybeForceUpdateLoop()
   }
 
   refreshLoop = () => {
@@ -37,47 +35,17 @@ class Graph extends React.Component {
 
   refreshSnapshot = async () => {
     const snapshotUrl = await getSnapshot(this.props.scheduler, this.props.region)
-    if (snapshotUrl === this.state.frontSnapshotUrl) return
-    this.setState({ snapshotUrl, snapshotUrlAppendable: '' })
+    if (snapshotUrl === this.state.snapshotUrl) return
+    this.setState({ snapshotUrl })
   }
-
-  maybeForceUpdateLoop = async () => {
-    const { imgBack } = this
-    const { frontSnapshotUrl, snapshotUrl, snapshotUrlAppendable } = this.state
-
-    this.props.setTimeout(() => this.maybeForceUpdateLoop(), 3000)
-
-    if (frontSnapshotUrl === snapshotUrl || snapshotUrl === null) return
-
-    if (!imgBack || !snapshotUrl ||
-      (imgBack.naturalWidth <= 1)) {
-      this.setState({ snapshotUrlAppendable: `?${randomString(10)}` })
-    } else {
-      this.setState({
-        frontSnapshotUrl: snapshotUrl,
-        frontSnapshotUrlAppendable: snapshotUrlAppendable,
-        snapshotUrl: null
-      })
-    }
-  }
-
-  hideImg = { position: 'absolute', top: '-1000px', left: '-1000px' }
 
   render = () => {
-    const { frontSnapshotUrl, snapshotUrl,
-      snapshotUrlAppendable, frontSnapshotUrlAppendable } = this.state
+    const { snapshotUrl } = this.state
 
     return (
       <div {...Graph.styles}>
-        {!frontSnapshotUrl && <Spinner r={0} g={0} b={0} />}
-        {frontSnapshotUrl && <img
-          src={`${frontSnapshotUrl}${frontSnapshotUrlAppendable}`}
-        />}
-        {this.state.snapshotUrl && <img
-          ref={img => (this.imgBack = img)}
-          src={`${snapshotUrl}${snapshotUrlAppendable}`}
-          style={this.hideImg}
-        />}
+        {!snapshotUrl && <Spinner r={0} g={0} b={0} />}
+        {snapshotUrl && <img src={snapshotUrl} />}
       </div>
     )
   }

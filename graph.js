@@ -14,31 +14,70 @@ const delay = time =>
     setTimeout(resolve, time)
   })
 
-const maybeRequest = (scheduler, region) => {
+const maxInterval = 1000 * 60 * 5
+const pollingInterval = 1000 * 30
+
+const timeNow = () => Math.round((new Date()).getTime() / 1000)
+
+const cacheKey = (scheduler, region) => `${scheduler}//${region}`
+
+const snapshotRequest = (scheduler, region) => {
   const host = 'https://app.datadoghq.com/api/v1/graph/snapshot'
-  const end = Math.round((new Date()).getTime() / 1000)
+  const end = timeNow()
   const start = end - 60 * 60
 
-  const fromCache = cache.get(scheduler)
-  console.log('fromCache', fromCache)
+  const url =
+    `${host}?${credentials()}&start=${start}&end=${end}&graph_def=${graphDef(scheduler, region)}&title=Occupancy`
 
-  if (fromCache) {
-    return Promise.resolve(fromCache)
-  } else {
-    const url =
-      `${host}?${credentials()}&start=${start}&end=${end}&graph_def=${graphDef(scheduler, region)}&title=Occupancy`
+  return axios.get(url)
+    .then(response => ({
+      snapshot: response.data.snapshot_url,
+      lastRequestAt: end
+    }))
+}
 
-    return axios.get(url)
-      .then(response => {
-        cache.put(scheduler, response.data, 60000, key => console.log(key + ' expired'))
-        return delay(7500).then(() => response.data)
+const startPollingSnapshot = (scheduler, region) => {
+  const key = cacheKey(scheduler, region)
+  const cached = cache.get(key)
+
+  if (cached && (timeNow() - cached.lastRequestAt > maxInterval)) return
+
+  setTimeout(() => startPollingSnapshot(scheduler, region), pollingInterval)
+
+  return snapshotRequest(scheduler, region)
+    .then(({ snapshot, lastRequestAt }) => {
+      cache.put(key, {
+        snapshot,
+        lastRequestAt,
+        schedulerName: scheduler,
+        schedulerRegion: region
       })
-      .catch(error => console.log(error))
+
+      return snapshot
+    })
+    .catch(err => console.log(err))
+}
+
+const maybeRequest = (scheduler, region) => {
+  const key = cacheKey(scheduler, region)
+  const cached = cache.get(key)
+
+  if (cached) {
+    cache.put(key, {
+      ...cached,
+      lastRequestAt: timeNow()
+    })
+
+    return Promise.resolve(cached.snapshot)
   }
+
+  return startPollingSnapshot(scheduler, region).then(snapshot => {
+    return delay(8000).then(() => snapshot)
+  })
 }
 
 module.exports = app =>
   app.get('/graph', function (req, res, next) {
     const { scheduler, region } = req.query
-    maybeRequest('tanks-green-f-con', 'ap').then(json => res.json(json))
+    maybeRequest(scheduler, region).then(snapshot => res.json({ snapshot }))
   })
