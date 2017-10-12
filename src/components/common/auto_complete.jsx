@@ -1,8 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { css } from 'glamor'
-import fuzzy from 'fuzzy'
 import TextInput from './text_input'
 import styles from 'constants/styles'
 
@@ -50,7 +48,7 @@ class AutoComplete extends React.Component {
         />
         {this.state.showOptions &&
           <ReactCSSTransitionGroup
-            transitionName='expire'
+            transitionName='auto-complete'
             transitionAppear
             transitionEnterTimeout={transitionDelayMs}
             transitionLeaveTimeout={transitionDelayMs}
@@ -87,14 +85,14 @@ const viewportWrapperStyles = css({
 })
 
 AutoComplete.transitionStyles = delay => css({
-  '& .expire-appear, & .expire-enter, & .expire-leave.expire-leave-active': {
+  '& .auto-complete-appear, & .auto-complete-enter, & .auto-complete-leave.auto-complete-leave-active': {
     transformOrigin: 'top',
     transform: 'scaleY(0)',
     opacity: '0.01'
   },
 
-  [`& .expire-appear.expire-appear-active,
-    & .expire-enter.expire-enter-active, & .expire-leave`]: {
+  [`& .auto-complete-appear.auto-complete-appear-active,
+    & .auto-complete-enter.auto-complete-enter-active, & .auto-complete-leave`]: {
       transform: 'scaleY(1)',
       opacity: '1.0',
       transition: `transform ${delay}ms ease-in, opacity ${delay * 2}ms ease-in`
@@ -127,6 +125,10 @@ AutoComplete.styles = css({
 
       '&.active': {
         background: styles.colors.gray_0
+      },
+
+      '&:hover': {
+        background: styles.colors.gray_25
       }
     }
   }
