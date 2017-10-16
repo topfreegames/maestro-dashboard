@@ -12,24 +12,13 @@ const newScheduler = event => {
 }
 
 const Schedulers = ({
-  filter,
-  gameFilter,
-  gameFilterOptions,
-  handleGameFilterChange,
+  schedulerFilter,
   schedulers,
   fetching
 }) => (
   <div {...Schedulers.styles}>
-    <div {...filterStyles}>
-      <AutoComplete
-        options={gameFilterOptions}
-        value={gameFilter}
-        handleChange={handleGameFilterChange}
-        placeholder={'Filter by game'}
-      />
-    </div>
-    {filter !== '' &&
-      <div className='results'>Results for <span>{filter}</span></div>}
+    {schedulerFilter !== '' &&
+      <div className='results'>Results for <span>{schedulerFilter}</span></div>}
     {(fetching && schedulers.length === 0) &&
       <Spinner r={0} g={0} b={0} />}
     {(!fetching || schedulers.length > 0) &&
@@ -37,10 +26,6 @@ const Schedulers = ({
     <AddButton handleClick={newScheduler} />
   </div>
 )
-
-const filterStyles = css({
-  marginBottom: '16px'
-})
 
 Schedulers.styles = css({
   display: 'flex',

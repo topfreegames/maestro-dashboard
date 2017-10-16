@@ -13,16 +13,6 @@ const sortSchedulers = schedulers =>
     .sort((a, b) => a.autoscaling.min === 0 ? 1 : -1)
 
 class Schedulers extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      gameFilter: ''
-    }
-  }
-
-  handleGameFilterChange = e => this.setState({ gameFilter: e.target.value })
-
   doGetSchedulers = () => this.props.dispatch(getSchedulers())
 
   componentDidMount = () => this.doGetSchedulers()
@@ -43,20 +33,13 @@ class Schedulers extends React.Component {
 
   render = () => (
     <SchedulersComponent
-      filter={this.props.filter}
-      gameFilter={this.state.gameFilter}
-      handleGameFilterChange={this.handleGameFilterChange}
+      schedulerFilter={this.props.schedulerFilter}
       schedulers={
         sortSchedulers(
-          this.applyFilter(this.props.filter, 'name',
-            this.applyFilter(this.state.gameFilter, 'game', this.props.schedulers)
+          this.applyFilter(this.props.schedulerFilter, 'name',
+            this.applyFilter(this.props.gameFilter, 'game', this.props.schedulers)
           )
         )
-      }
-      gameFilterOptions={
-        this.props.schedulers
-          .map(s => s.game)
-          .filter((e, i, self) => (i === self.indexOf(e)))
       }
       fetching={this.props.fetching}
     />

@@ -108,7 +108,7 @@ class Dashboard extends React.Component {
             activeTab={activeTab}
           />
           {activeTab === 'Schedulers' &&
-            <Schedulers filter={this.state.schedulerFilter} />
+            <Schedulers schedulerFilter={this.state.schedulerFilter} />
           }
           {activeTab === 'Settings' &&
             <Settings switchToSchedulers={this.switchToSchedulers} />
