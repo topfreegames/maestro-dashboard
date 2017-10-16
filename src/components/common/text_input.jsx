@@ -67,6 +67,8 @@ TextInput.styles = css({
     padding: '6px 0 6px',
     border: 'none',
     borderBottom: `1px solid ${styles.colors.gray_50}`,
+    outline: 'none',
+    borderRadius: 0,
 
     '&:focus ~ .bar::before, &:focus ~ .bar::after': {
       width: '50%'

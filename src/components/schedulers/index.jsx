@@ -20,16 +20,14 @@ const Schedulers = ({
   fetching
 }) => (
   <div {...Schedulers.styles}>
-    {false &&
-      <div {...filterStyles}>
-        <AutoComplete
-          options={gameFilterOptions}
-          value={gameFilter}
-          handleChange={handleGameFilterChange}
-          placeholder={'Filter by game'}
-        />
-      </div>
-    }
+    <div {...filterStyles}>
+      <AutoComplete
+        options={gameFilterOptions}
+        value={gameFilter}
+        handleChange={handleGameFilterChange}
+        placeholder={'Filter by game'}
+      />
+    </div>
     {filter !== '' &&
       <div className='results'>Results for <span>{filter}</span></div>}
     {(fetching && schedulers.length === 0) &&
@@ -41,8 +39,6 @@ const Schedulers = ({
 )
 
 const filterStyles = css({
-  display: 'flex',
-  flexDirection: 'column',
   marginBottom: '16px'
 })
 

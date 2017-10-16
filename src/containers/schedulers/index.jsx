@@ -8,7 +8,7 @@ import { reduceRoomsStatuses } from 'helpers/common'
 const sortSchedulers = schedulers =>
   schedulers
     .sort((a, b) => {
-      return reduceRoomsStatuses(a.status) < reduceRoomsStatuses(b) ? -1 : 1
+      return reduceRoomsStatuses(a.status) < reduceRoomsStatuses(b.status) ? -1 : 1
     })
     .sort((a, b) => a.name < b.name ? -1 : 1)
     .sort((a, b) => a.autoscaling.min === 0 ? 1 : -1)
@@ -24,9 +24,7 @@ class Schedulers extends React.Component {
 
   handleGameFilterChange = e => this.setState({ gameFilter: e.target.value })
 
-  componentDidMount = async () => {
-    this.props.dispatch(getSchedulers())
-  }
+  componentDidMount = () => this.props.dispatch(getSchedulers())
 
   applyFilter = (filter, field, schedulers) =>
     fuzzy
