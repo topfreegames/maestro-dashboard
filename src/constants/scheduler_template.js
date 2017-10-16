@@ -183,5 +183,49 @@ export default {
     _format: {
       _type: 'string'
     }
+  },
+  forwarders: {
+    _type: 'compose',
+    grpc: {
+      _type: 'compose',
+      matchmaking: {
+        _type: 'compose',
+        enabled: {
+          _type: 'string',
+          _default: 'false'
+        },
+        metadata: {
+          _type: 'compose',
+          matchmakingScript: {
+            _type: 'string',
+            _label: 'Matchmaking Script',
+            _default: 'default'
+          },
+          minimumNumberOfPlayers: {
+            _type: 'integer',
+            _label: 'Minimum Number of Players'
+          },
+          numberOfTeams: {
+            _type: 'integer',
+            _label: 'Number of Teams'
+          },
+          playersPerTeam: {
+            _type: 'integer',
+            _label: 'Players Per Team'
+          },
+          roomType: {
+            _type: 'string',
+            _label: 'Room Type'
+          },
+          metadata: {
+            _type: 'compose',
+            authTimeout: {
+              _type: 'integer',
+              _label: 'Auth Timeout'
+            }
+          }
+        }
+      }
+    }
   }
 }

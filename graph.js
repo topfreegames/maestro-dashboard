@@ -7,7 +7,7 @@ const credentials = () => {
   return `api_key=${apiKey}&application_key=${applicationKey}`
 }
 
-const graphDef = (scheduler, region) => `%7B%22viz%22%3A%22timeseries%22%2C%22status%22%3A%22done%22%2C%22requests%22%3A%5B%7B%22q%22%3A%22max%3Amaestro.gru.ready%7Bscheduler%3A${scheduler}%2Cregion%3A${region}%7D+%2B+max%3Amaestro.gru.occupied%7Bscheduler%3A${scheduler}%2Cregion%3A${region}%7D%22%2C%22aggregator%22%3A%22avg%22%2C%22conditional_formats%22%3A%5B%5D%2C%22type%22%3A%22line%22%2C%22style%22%3A%7B%22palette%22%3A%22cool%22%7D%7D%2C%7B%22q%22%3A%22max%3Amaestro.gru.occupied%7Bscheduler%3A${scheduler}%2Cregion%3A${region}%7D%22%2C%22style%22%3A%7B%22palette%22%3A%22warm%22%7D%2C%22type%22%3A%22line%22%7D%5D%2C%22autoscale%22%3Atrue%7D`
+const graphDef = (scheduler, region) => `%7B%22viz%22%3A%22timeseries%22%2C%22status%22%3A%22done%22%2C%22requests%22%3A%5B%7B%22q%22%3A%22max%3Amaestro.gru.ready%7Bmaestro-scheduler%3A${scheduler}%2Cmaestro-region%3A${region}%7D+%2B+max%3Amaestro.gru.occupied%7Bmaestro-scheduler%3A${scheduler}%2Cmaestro-region%3A${region}%7D%22%2C%22aggregator%22%3A%22avg%22%2C%22conditional_formats%22%3A%5B%5D%2C%22type%22%3A%22line%22%2C%22style%22%3A%7B%22palette%22%3A%22cool%22%7D%7D%2C%7B%22q%22%3A%22max%3Amaestro.gru.occupied%7Bmaestro-scheduler%3A${scheduler}%2Cmaestro-region%3A${region}%7D%22%2C%22style%22%3A%7B%22palette%22%3A%22warm%22%7D%2C%22type%22%3A%22line%22%7D%5D%2C%22autoscale%22%3Atrue%7D`
 
 const delay = time =>
   new Promise(resolve => {
