@@ -10,7 +10,6 @@ const sortSchedulers = schedulers =>
     .sort((a, b) => {
       return reduceRoomsStatuses(a.status) < reduceRoomsStatuses(b.status) ? -1 : 1
     })
-    .sort((a, b) => a.name < b.name ? -1 : 1)
     .sort((a, b) => a.autoscaling.min === 0 ? 1 : -1)
 
 class Schedulers extends React.Component {
