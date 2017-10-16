@@ -16,7 +16,7 @@ const getField = (template, path) =>
 const makePath = (prefix, name) => `${prefix}${name}`
 
 const getValue = (path, origin) => {
-  return path.split('.').reduce((acc, x) => acc[x], origin)
+  return path.split('.').reduce((acc, x) => acc && acc[x], origin)
 }
 
 export const render = (template, object, errors, handleChange, handleAdd, handleRemove) => {
