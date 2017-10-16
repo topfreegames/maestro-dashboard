@@ -1,7 +1,9 @@
 import React from 'react'
 import { css } from 'glamor'
-import { Header as CommonHeader, Logo, AutoComplete } from 'components/common'
+import { Header as CommonHeader, Logo } from 'components/common'
+import HeaderClusters from './header_clusters'
 import styles from 'constants/styles'
+import { signOut } from 'helpers/common'
 
 const Left = ({
   clusterName,
@@ -9,31 +11,25 @@ const Left = ({
 }) => (
   <div {...Left.styles}>
     <Logo />
-    <AutoComplete
-      value={clusterName}
-      handleChange={handleClusterNameChange}
-      placeholder='Select a Cluster'
-      options={['North America', 'Europe']}
-    />
+    <HeaderClusters />
   </div>
 )
 
 Left.styles = css({
   '& input': {
-    fontSize: styles.fontSizes['4'],
+    fontSize: styles.fontSizes['4']
   },
 
   '> div + div': { marginLeft: '30px' }
 })
 
 const Right = ({
-
 }) => (
   <div {...Right.styles}>
     <button>
       <i className='fa fa-television' />
     </button>
-    <button>
+    <button onClick={signOut}>
       <i className='fa fa-sign-out' />
     </button>
   </div>
@@ -51,25 +47,10 @@ Right.styles = css({
 })
 
 class Header extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      clusterName: ''
-    }
-  }
-
-  handleClusterNameChange = e => {
-    this.setState({ clusterName: e.target.value })
-  }
-
   render = () => (
     <CommonHeader
       left={
-        <Left
-          clusterName={this.state.clusterName}
-          handleClusterNameChange={this.handleClusterNameChange}
-        />
+        <Left />
       }
       right={
         <Right />

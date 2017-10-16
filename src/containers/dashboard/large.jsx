@@ -6,6 +6,15 @@ import Header from './large/header'
 import Schedulers from 'containers/schedulers'
 
 class Dashboard extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      gameFilter: '',
+      schedulerFilter: ''
+    }
+  }
+
   render = () => (
     <Large>
       <Header />

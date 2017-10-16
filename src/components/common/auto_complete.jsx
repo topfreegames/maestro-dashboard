@@ -55,12 +55,16 @@ class AutoComplete extends React.Component {
             transitionAppearTimeout={transitionDelayMs}
           >
             <ul>
-              <li
-                className={this.props.value === '' && 'active'}
-                onClick={e => this.handleClick(e, '')}
-              >
-                <i className='fa fa-asterisk' aria-hidden='true' />
-              </li>
+              {!this.props.disableDefault &&
+                <li
+                  className={
+                    this.props.value === '' ? 'active default' : 'default'
+                  }
+                  onClick={e => this.handleClick(e, '')}
+                >
+                  <i className='fa fa-asterisk' aria-hidden='true' />
+                </li>
+              }
               {
                 this.props.options
                   .sort((a, b) => a > b ? 1 : -1)
@@ -115,7 +119,7 @@ AutoComplete.styles = css({
     boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)',
     listStyle: 'none',
 
-    '> li:nth-of-type(1)': {
+    '> li.default': {
       fontSize: styles.fontSizes['1']
     },
 

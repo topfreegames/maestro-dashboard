@@ -4,14 +4,7 @@ import { css } from 'glamor'
 import Clusters from 'containers/clusters'
 import { Button } from 'components/common'
 import styles from 'constants/styles'
-import { navigate } from 'actions/common'
-
-const signOut = (event, dispatch) => {
-  event.preventDefault()
-  dispatch({ type: 'PURGE' })
-  window.localStorage.clear()
-  navigate('/')
-}
+import { signOut } from 'helpers/common'
 
 const Settings = ({ switchToSchedulers, dispatch }) => (
   <div {...Settings.styles}>
@@ -19,7 +12,7 @@ const Settings = ({ switchToSchedulers, dispatch }) => (
     <Clusters switchToSchedulers={switchToSchedulers} />
     <label>More</label>
     <Button
-      handleClick={e => signOut(e, dispatch)}
+      handleClick={signOut}
       customStyles={buttonCustomStyles}
     >
       Sign out

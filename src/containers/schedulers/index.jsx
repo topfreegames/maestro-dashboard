@@ -23,7 +23,16 @@ class Schedulers extends React.Component {
 
   handleGameFilterChange = e => this.setState({ gameFilter: e.target.value })
 
-  componentDidMount = () => this.props.dispatch(getSchedulers())
+  doGetSchedulers = () => this.props.dispatch(getSchedulers())
+
+  componentDidMount = () => this.doGetSchedulers()
+
+  componentWillReceiveProps = nextProps => {
+    if (this.props.cluster && nextProps.cluster &&
+      nextProps.cluster.name !== this.props.cluster.name) {
+      this.doGetSchedulers()
+    }
+  }
 
   applyFilter = (filter, field, schedulers) =>
     fuzzy
@@ -55,6 +64,7 @@ class Schedulers extends React.Component {
 }
 
 export default connect(state => ({
+  cluster: state.clusters[state.clusters.current],
   schedulers: state.schedulers.index.schedulers,
   fetching: state.schedulers.index.fetching
 }))(Schedulers)
