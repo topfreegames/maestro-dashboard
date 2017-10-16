@@ -152,6 +152,7 @@ Scheduler.styles = css({
     color: styles.colors.brandSecondary,
 
     '> button': {
+      padding: '0 8px',
       color: styles.colors.gray_75,
       fontSize: styles.fontSizes['3']
     }

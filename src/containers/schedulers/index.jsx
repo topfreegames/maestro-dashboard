@@ -3,9 +3,13 @@ import { connect } from 'react-redux'
 import fuzzy from 'fuzzy'
 import SchedulersComponent from 'components/schedulers'
 import { getSchedulers } from 'actions/schedulers'
+import { reduceRoomsStatuses } from 'helpers/common'
 
 const sortSchedulers = schedulers =>
   schedulers
+    .sort((a, b) => {
+      return reduceRoomsStatuses(a.status) < reduceRoomsStatuses(b) ? -1 : 1
+    })
     .sort((a, b) => a.name < b.name ? -1 : 1)
     .sort((a, b) => a.autoscaling.min === 0 ? 1 : -1)
 
@@ -54,12 +58,6 @@ class Schedulers extends React.Component {
 }
 
 export default connect(state => ({
-  schedulers: [
-    ...state.schedulers.index.schedulers,
-    ...state.schedulers.index.schedulers,
-    ...state.schedulers.index.schedulers,
-    ...state.schedulers.index.schedulers,
-    ...state.schedulers.index.schedulers
-  ],
+  schedulers: state.schedulers.index.schedulers,
   fetching: state.schedulers.index.fetching
 }))(Schedulers)
