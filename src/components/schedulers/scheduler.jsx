@@ -12,8 +12,13 @@ const wrapperStyles = css({
   height: '100%',
   boxSizing: 'border-box',
 
-  '& + div': {
-    marginTop: '16px'
+  [`@media(max-width: ${styles.sizes.maxSmall})`]: {
+    '& + div': { marginTop: '16px' }
+  },
+
+  [`@media(min-width: ${styles.sizes.minLarge})`]: {
+    margin: '15px',
+    width: '350px'
   }
 })
 
@@ -103,6 +108,7 @@ Scheduler.styles = css({
   boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.2)',
   padding: '10px',
   overflow: 'hidden',
+  background: styles.colors.background,
 
   '&.disabled, &.disabled input': {
     background: `${styles.colors.gray_0} !important`

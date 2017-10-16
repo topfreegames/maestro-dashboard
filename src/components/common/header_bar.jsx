@@ -53,13 +53,29 @@ const commonStyles = css({
 
 const smallStyles = css({
   [`@media(max-width: ${styles.sizes.maxSmall})`]: {
-    height: '48px'
+    height: '48px',
+
+    '> div:nth-of-type(2)': {
+      height: '48px'
+    },
+
+    '& + div': {
+      marginTop: '48px'
+    }
   }
 })
 
 const largeStyles = css({
   [`@media(min-width: ${styles.sizes.minLarge})`]: {
-    height: '56px'
+    height: '56px',
+
+    '> div:nth-of-type(2)': {
+      height: '56px'
+    },
+
+    '& + div': {
+      marginTop: '56px'
+    }
   }
 })
 

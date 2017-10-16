@@ -54,6 +54,12 @@ class Schedulers extends React.Component {
 }
 
 export default connect(state => ({
-  schedulers: state.schedulers.index.schedulers,
+  schedulers: [
+    ...state.schedulers.index.schedulers,
+    ...state.schedulers.index.schedulers,
+    ...state.schedulers.index.schedulers,
+    ...state.schedulers.index.schedulers,
+    ...state.schedulers.index.schedulers
+  ],
   fetching: state.schedulers.index.fetching
 }))(Schedulers)
