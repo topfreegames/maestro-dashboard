@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import { Large } from 'components/common/responsive'
-import { AddButton } from 'components/common'
+import { AddButton, YamlEditor } from 'components/common'
 import Header from './large/header'
 import Schedulers from 'containers/schedulers'
 import styles from 'constants/styles'

@@ -1,7 +1,6 @@
 import React from 'react'
 import { css } from 'glamor'
-import Header from 'components/common/header'
-import { Button, Form, Loading } from 'components/common'
+import { Header, Button, Form, Loading } from 'components/common'
 import styles from 'constants/styles'
 import schedulerTemplate from 'constants/scheduler_template'
 

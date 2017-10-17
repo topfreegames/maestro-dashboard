@@ -39,6 +39,7 @@
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "client-oauth2": "^4.1.0",
+    "codemirror": "^5.30.0",
     "cors": "^2.8.4",
     "deep-diff": "^0.3.8",
     "es6-promise": "^4.1.1",
@@ -47,9 +48,11 @@
     "glamor": "^2.20.40",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",
+    "js-yaml": "^3.10.0",
     "memory-cache": "^0.2.0",
     "polished": "^1.7.0",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-codemirror": "^1.0.0",
     "react-facebook-login": "^3.6.2",
     "react-google-button": "^0.3.0",
     "react-redux": "^5.0.6",
@@ -58,7 +61,6 @@
     "redux": "^3.7.2",
     "redux-persist": "^4.9.1",
     "redux-thunk": "^2.2.0",
-    "uniloc": "^0.3.0",
-    "yamljs": "^0.3.0"
+    "uniloc": "^0.3.0"
   }
 }

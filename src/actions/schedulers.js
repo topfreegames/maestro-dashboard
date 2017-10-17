@@ -1,12 +1,17 @@
-import YAML from 'yamljs'
+import YAML from 'js-yaml'
 import actions from 'constants/actions'
 import { client } from './common'
 
-const getSchedulerConfig = async scheduler => {
+export const getSchedulerConfigYaml = async scheduler => {
   const response = await client.get(`scheduler/${scheduler}?config`)
   if (response.status !== 200) return {}
   const json = await response.json()
-  return YAML.parse(json.yaml)
+  return json.yaml
+}
+
+const getSchedulerConfig = async scheduler => {
+  const yaml = await getSchedulerConfigYaml(scheduler)
+  return YAML.safeLoad(yaml)
 }
 
 const getSchedulerStatus = async scheduler => {
@@ -83,9 +88,16 @@ const removeEmptyFields = payload =>
     }
   }, {})
 
-export const updateScheduler = async payload => {
+const updateSchedulerCommon = (name, payload) =>
+  client.put(`scheduler/${name}?maxsurge=25`, payload)
+
+export const updateScheduler = payload => {
   const normalizedPayload = removeEmptyFields(payload)
-  return client.put(`scheduler/${payload.name}?maxsurge=25`, normalizedPayload)
+  return updateSchedulerCommon(payload.name, normalizedPayload)
+}
+
+export const updateSchedulerYaml = (name, yaml) => {
+  return updateSchedulerCommon(name, YAML.safeLoad(yaml))
 }
 
 export const createScheduler = async payload => {

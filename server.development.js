@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
+const express = require('express')
 const config = require('./webpack.config.js')
 
 module.exports = app => {
@@ -13,6 +14,7 @@ module.exports = app => {
 
   app.use(middleware)
   app.use(webpackHotMiddleware(compiler))
+  app.use(express.static('build'))
 
   app.use('/bundle.js', function (req, res, next) {
     const filename = path.join(compiler.outputPath, 'bundle.js')
