@@ -1,12 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { css } from 'glamor'
 import { Large } from 'components/common/responsive'
-import { AddButton, AutoComplete, TextInput } from 'components/common'
+import { AddButton } from 'components/common'
 import Header from './large/header'
 import Schedulers from 'containers/schedulers'
 import styles from 'constants/styles'
-import { gamesFromSchedulers } from 'helpers/common'
 
 class Dashboard extends React.Component {
   constructor (props) {
@@ -23,24 +21,11 @@ class Dashboard extends React.Component {
   render = () => (
     <Large>
       <div {...Dashboard.styles}>
-        <Header />
-        <div className='filters'>
-          <AutoComplete
-            id='gameFilter'
-            label='Game Filter'
-            options={this.props.schedulersGames}
-            value={this.state.gameFilter}
-            handleChange={this.handleChange}
-            placeholder={'Filter by game'}
-          />
-          <TextInput
-            id='schedulerFilter'
-            label='Scheduler Filter'
-            placeholder='Search schedulers'
-            value={this.state.schedulerFilter}
-            handleChange={this.handleChange}
-          />
-        </div>
+        <Header
+          schedulerFilter={this.state.schedulerFilter}
+          gameFilter={this.state.gameFilter}
+          handleChange={this.handleChange}
+        />
         <Schedulers
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
@@ -65,6 +50,4 @@ Dashboard.styles = css({
   }
 })
 
-export default connect(state => ({
-  schedulersGames: gamesFromSchedulers(state.schedulers.index.schedulers)
-}))(Dashboard)
+export default Dashboard

@@ -1,28 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
-import { Header as CommonHeader, Logo } from 'components/common'
+import {
+  Header as CommonHeader,
+  Logo,
+  AutoComplete,
+  TextInput
+} from 'components/common'
 import HeaderClusters from './header_clusters'
 import styles from 'constants/styles'
-import { signOut } from 'helpers/common'
-
-const Left = ({
-  clusterName,
-  handleClusterNameChange
-}) => (
-  <div {...Left.styles}>
-    <Logo />
-    <HeaderClusters />
-  </div>
-)
-
-Left.styles = css({
-  '& input': {
-    fontSize: styles.fontSizes['4']
-  },
-
-  '> div + div': { marginLeft: '30px' }
-})
+import { signOut, gamesFromSchedulers } from 'helpers/common'
 
 const Right = ({
 }) => (
@@ -47,12 +34,52 @@ Right.styles = css({
   }
 })
 
+const Left = ({
+  gameFilter,
+  schedulerFilter,
+  schedulerGames,
+  handleChange
+}) => (
+  <div {...Left.styles}>
+    <Logo />
+    <HeaderClusters />
+    <AutoComplete
+      id='gameFilter'
+      options={schedulerGames}
+      value={gameFilter}
+      handleChange={handleChange}
+      placeholder={'Filter by game'}
+    />
+    <TextInput
+      id='schedulerFilter'
+      placeholder='Search schedulers'
+      value={schedulerFilter}
+      handleChange={handleChange}
+    />
+  </div>
+)
+
+Left.styles = css({
+  '& input': {
+    fontSize: styles.fontSizes['4']
+  },
+
+  '> div + div': { marginLeft: '30px' }
+})
+
 class Header extends React.Component {
   render = () => (
     <div {...Header.styles}>
       {!this.props.cluster && <div className='overlay' />}
       <CommonHeader
-        left={<Left />}
+        left={
+          <Left
+            gameFilter={this.props.gameFilter}
+            schedulerFilter={this.props.schedulerFilter}
+            schedulerGames={this.props.schedulersGames}
+            handleChange={this.props.handleChange}
+          />
+        }
         right={<Right />}
       />
     </div>
@@ -72,5 +99,6 @@ Header.styles = css({
 })
 
 export default connect(state => ({
-  cluster: state.clusters.current
+  cluster: state.clusters.current,
+  schedulersGames: gamesFromSchedulers(state.schedulers.index.schedulers)
 }))(Header)
