@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
-import { Header, Logo } from 'components/common'
+import { Header, Logo, AutoComplete } from 'components/common'
 import Schedulers from 'containers/schedulers'
 import Settings from 'components/settings'
 import { Small } from 'components/common/responsive'
 import styles from 'constants/styles'
+import { gamesFromSchedulers } from 'helpers/common'
 
 class SearchTextInput extends React.Component {
   componentDidMount = () => this.input.focus()
@@ -13,6 +14,7 @@ class SearchTextInput extends React.Component {
   render = () => (
     <input
       {...SearchTextInput.styles}
+      id={this.props.id}
       ref={e => (this.input = e)}
       type='text'
       placeholder='Search schedulers'
@@ -30,6 +32,7 @@ class Dashboard extends React.Component {
 
     this.state = {
       activeTab,
+      gameFilter: '',
       schedulerFilter: '',
       header: this.headerNormal
     }
@@ -40,10 +43,7 @@ class Dashboard extends React.Component {
 
     if (!this.props.session.token) return
 
-    this.setState({
-      ...this.state,
-      activeTab: tab
-    })
+    this.setState({ activeTab: tab })
   }
 
   switchToSchedulers = () => this.switchTab(null, 'Schedulers')
@@ -53,7 +53,7 @@ class Dashboard extends React.Component {
     title: this.props.cluster.name,
     right: (
       <i
-        onClick={() => this.setState({ ...this.state, header: this.headerSearch })}
+        onClick={() => this.setState({ header: this.headerSearch })}
         className='fa fa-search'
         aria-hidden='true'
         {...headerRightStyles}
@@ -66,7 +66,6 @@ class Dashboard extends React.Component {
       <div>
         <i
           onClick={() => this.setState({
-            ...this.state,
             schedulerFilter: '',
             header: this.headerNormal
           })}
@@ -74,8 +73,9 @@ class Dashboard extends React.Component {
           aria-hidden='true'
         />
         <SearchTextInput
+          id='schedulerFilter'
           value={this.state.schedulerFilter}
-          handleChange={this.handleChangeSchedulerFilter}
+          handleChange={this.handleChange}
         />
       </div>
     ),
@@ -83,14 +83,7 @@ class Dashboard extends React.Component {
     right: <i className='fa fa-search' aria-hidden='true' {...headerRightStyles} />
   })
 
-  handleChangeSchedulerFilter = event => {
-    event.preventDefault()
-
-    this.setState({
-      ...this.state,
-      schedulerFilter: event.target.value
-    })
-  }
+  handleChange = e => this.setState({ [e.target.id]: e.target.value })
 
   render = () => {
     const { activeTab } = this.state
@@ -108,7 +101,24 @@ class Dashboard extends React.Component {
             activeTab={activeTab}
           />
           {activeTab === 'Schedulers' &&
-            <Schedulers schedulerFilter={this.state.schedulerFilter} />
+            <div className='schedulers-wrapper'>
+              <AutoComplete
+                id='gameFilter'
+                options={this.props.schedulersGames}
+                value={this.state.gameFilter}
+                handleChange={this.handleChange}
+                placeholder={'Filter by game'}
+              />
+              {this.state.schedulerFilter !== '' &&
+                <div className='results'>
+                  Results for <span>{this.state.schedulerFilter}</span>
+                </div>
+              }
+              <Schedulers
+                schedulerFilter={this.state.schedulerFilter}
+                gameFilter={this.state.gameFilter}
+              />
+            </div>
           }
           {activeTab === 'Settings' &&
             <Settings switchToSchedulers={this.switchToSchedulers} />
@@ -139,11 +149,31 @@ Dashboard.styles = css({
     width: '100%'
   },
 
-  paddingBottom: '88px'
+  paddingBottom: '88px',
+
+  '> .schedulers-wrapper': {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '16px',
+
+    '> * + *': {
+      marginTop: '16px'
+    },
+
+    '> .results': {
+      fontSize: styles.fontSizes['3'],
+      color: styles.colors.gray_75,
+
+      '> span': {
+        color: styles.colors.brandPrimary
+      }
+    }
+  }
 })
 
 export default connect(state => ({
   cluster: (state.clusters.current && state.clusters[state.clusters.current]) ||
   {},
+  schedulersGames: gamesFromSchedulers(state.schedulers.index.schedulers),
   session: state.session
 }))(Dashboard)

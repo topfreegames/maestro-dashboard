@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { css } from 'glamor'
 import { Header as CommonHeader, Logo } from 'components/common'
 import HeaderClusters from './header_clusters'
@@ -48,15 +49,28 @@ Right.styles = css({
 
 class Header extends React.Component {
   render = () => (
-    <CommonHeader
-      left={
-        <Left />
-      }
-      right={
-        <Right />
-      }
-    />
+    <div {...Header.styles}>
+      {!this.props.cluster && <div className='overlay' />}
+      <CommonHeader
+        left={<Left />}
+        right={<Right />}
+      />
+    </div>
   )
 }
 
-export default Header
+Header.styles = css({
+  '> .overlay': {
+    position: 'absolute',
+    zIndex: 999,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)'
+  }
+})
+
+export default connect(state => ({
+  cluster: state.clusters.current
+}))(Header)

@@ -2,10 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
 import { Large } from 'components/common/responsive'
-import { AddButton, AutoComplete } from 'components/common'
+import { AddButton, AutoComplete, TextInput } from 'components/common'
 import Header from './large/header'
 import Schedulers from 'containers/schedulers'
 import styles from 'constants/styles'
+import { gamesFromSchedulers } from 'helpers/common'
 
 class Dashboard extends React.Component {
   constructor (props) {
@@ -17,7 +18,7 @@ class Dashboard extends React.Component {
     }
   }
 
-  handleGameFilterChange = e => this.setState({ gameFilter: e.target.value })
+  handleChange = e => this.setState({ [e.target.id]: e.target.value })
 
   render = () => (
     <Large>
@@ -25,10 +26,19 @@ class Dashboard extends React.Component {
         <Header />
         <div className='filters'>
           <AutoComplete
+            id='gameFilter'
+            label='Game Filter'
             options={this.props.schedulersGames}
             value={this.state.gameFilter}
-            handleChange={this.handleGameFilterChange}
+            handleChange={this.handleChange}
             placeholder={'Filter by game'}
+          />
+          <TextInput
+            id='schedulerFilter'
+            label='Scheduler Filter'
+            placeholder='Search schedulers'
+            value={this.state.schedulerFilter}
+            handleChange={this.handleChange}
           />
         </div>
         <Schedulers
@@ -43,14 +53,18 @@ class Dashboard extends React.Component {
 
 Dashboard.styles = css({
   '> .filters': {
-    padding: '24px'
+    display: 'flex',
+    flexDirection: 'row',
+    margin: '24px',
+    marginBottom: 0,
+    padding: '16px',
+    backgroundColor: styles.colors.background,
+    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.2)',
+
+    '> * + *': { marginLeft: '30px' }
   }
 })
 
 export default connect(state => ({
-  schedulersGames: (state.schedulers.index.schedulers &&
-    state.schedulers.index.schedulers
-    .map(s => s.game)
-    .filter((e, i, self) => (i === self.indexOf(e)))
-  ) || ''
+  schedulersGames: gamesFromSchedulers(state.schedulers.index.schedulers)
 }))(Dashboard)

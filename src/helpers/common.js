@@ -19,3 +19,9 @@ export const signOut = event => {
   window.localStorage.clear()
   navigate('/')
 }
+
+export const gamesFromSchedulers = schedulers =>
+  (schedulers && schedulers
+    .map(s => s.game)
+    .filter((e, i, self) => (i === self.indexOf(e)))
+  ) || []

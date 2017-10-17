@@ -15,10 +15,15 @@ const sortSchedulers = schedulers =>
 class Schedulers extends React.Component {
   doGetSchedulers = () => this.props.dispatch(getSchedulers())
 
-  componentDidMount = () => this.doGetSchedulers()
+  componentDidMount = () => {
+    if (!this.props.cluster) return
+    this.doGetSchedulers()
+  }
 
   componentWillReceiveProps = nextProps => {
-    if (this.props.cluster && nextProps.cluster &&
+    if (!this.props.cluster && nextProps.cluster) {
+      this.doGetSchedulers()
+    } else if (this.props.cluster && nextProps.cluster &&
       nextProps.cluster.name !== this.props.cluster.name) {
       this.doGetSchedulers()
     }

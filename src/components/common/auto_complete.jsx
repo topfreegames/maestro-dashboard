@@ -30,7 +30,7 @@ class AutoComplete extends React.Component {
   handleClick = (e, o) => {
     e.stopPropagation()
     e.preventDefault()
-    this.props.handleChange({ target: { value: o } })
+    this.props.handleChange({ target: { id: this.props.id, value: o } })
     this.toggleOptions()
   }
 
@@ -41,10 +41,8 @@ class AutoComplete extends React.Component {
       }
       <div {...AutoComplete.styles} {...AutoComplete.transitionStyles(transitionDelayMs)}>
         <TextInput
-          placeholder={this.props.placeholder}
-          value={this.props.value}
+          {...this.props}
           handleFocus={this.toggleOptions}
-          handleChange={this.props.handleChange}
         />
         {this.state.showOptions &&
           <ReactCSSTransitionGroup
