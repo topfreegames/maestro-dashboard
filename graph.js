@@ -42,7 +42,10 @@ const startPollingSnapshot = (scheduler, region) => {
   const key = cacheKey(scheduler, region)
   const cached = cache.get(key)
 
-  if (cached && (timeNow() - cached.lastRequestAt > maxInterval)) return
+  if (cached && (timeNow() - cached.lastRequestAt > maxInterval)) {
+    cache.del(key)
+    return
+  }
 
   setTimeout(() => startPollingSnapshot(scheduler, region), pollingInterval)
 
