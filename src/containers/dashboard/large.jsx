@@ -1,10 +1,16 @@
 import React from 'react'
 import { css } from 'glamor'
 import { Large } from 'components/common/responsive'
-import { AddButton, YamlEditor } from 'components/common'
+import { AddButton } from 'components/common'
 import Header from './large/header'
 import Schedulers from 'containers/schedulers'
 import styles from 'constants/styles'
+import { navigate } from 'actions/common'
+
+const newScheduler = event => {
+  event.preventDefault()
+  navigate('/schedulers/new')
+}
 
 class Dashboard extends React.Component {
   constructor (props) {
@@ -34,7 +40,7 @@ class Dashboard extends React.Component {
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
         />
-        <AddButton />
+        <AddButton handleClick={newScheduler} />
       </div>
     </Large>
   )

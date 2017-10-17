@@ -1,15 +1,9 @@
 import React from 'react'
 import { css } from 'glamor'
 import Scheduler from 'containers/schedulers/scheduler'
-import { Spinner, AddButton } from 'components/common'
+import { Spinner } from 'components/common'
 import styles from 'constants/styles'
-import { navigate } from 'actions/common'
 import { randomString } from 'helpers/common'
-
-const newScheduler = event => {
-  event.preventDefault()
-  navigate('/schedulers/new')
-}
 
 const Schedulers = ({
   tvMode,
@@ -26,7 +20,6 @@ const Schedulers = ({
         tvMode={tvMode}
       />)
     }
-    <AddButton handleClick={newScheduler} />
   </div>
 )
 

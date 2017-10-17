@@ -24,6 +24,7 @@ AddButton.styles = css({
   position: 'fixed',
   bottom: '16px',
   right: '16px',
+  cursor: 'pointer',
   boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.3)'
 })
 
