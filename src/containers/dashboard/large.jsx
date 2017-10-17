@@ -11,22 +11,26 @@ class Dashboard extends React.Component {
     super(props)
 
     this.state = {
+      tvMode: false,
       gameFilter: '',
       schedulerFilter: ''
     }
   }
 
+  toggleTvMode = e => this.setState({ tvMode: !this.state.tvMode })
   handleChange = e => this.setState({ [e.target.id]: e.target.value })
 
   render = () => (
     <Large>
       <div {...Dashboard.styles}>
         <Header
+          toggleTvMode={this.toggleTvMode}
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
           handleChange={this.handleChange}
         />
         <Schedulers
+          tvMode={this.state.tvMode}
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
         />

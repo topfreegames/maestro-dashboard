@@ -38,6 +38,7 @@ class Schedulers extends React.Component {
 
   render = () => (
     <SchedulersComponent
+      tvMode={this.props.tvMode}
       schedulerFilter={this.props.schedulerFilter}
       schedulers={
         sortSchedulers(

@@ -32,20 +32,21 @@ const Scheduler = ({
   threshold,
   minimum,
   replicas,
-  showGraphs,
+  showGraph,
   fetching,
   handleChange,
   handleSubmit,
-  toggleGraphs
+  toggleGraphs,
+  tvMode
 }) => (
   <div {...wrapperStyles}>
     {fetching && <Loading />}
     <div className={minimum === 0 && 'disabled'} {...Scheduler.styles}>
       <div>
         {name}
-        <button onClick={() => navigate(`schedulers/${name}/edit`)}>
+        {!tvMode && <button onClick={() => navigate(`schedulers/${name}/edit`)}>
           <i className='fa fa-ellipsis-v' aria-hidden='true' />
-        </button>
+        </button>}
       </div>
       <div>
         <div>
@@ -71,16 +72,16 @@ const Scheduler = ({
           </div>
           <div className={(occupancy > threshold) && 'critical'}>{(occupancy * 100).toPrecision(3)}%</div>
         </div>
-        <Button
-          variant={showGraphs ? 'inverse' : 'ghost'}
+        {!tvMode && <Button
+          variant={showGraph ? 'inverse' : 'ghost'}
           size='small'
           handleClick={toggleGraphs}
         >
           <i className='fa fa-area-chart' aria-hidden='true' />
-        </Button>
+        </Button>}
       </div>
-      {showGraphs && <Graph scheduler={name} />}
-      <div className='footer'>
+      {(showGraph || tvMode) && <Graph scheduler={name} />}
+      {!tvMode && <div className='footer'>
         <Form
           formFor={{ minimum, replicas }}
           handleSubmit={handleSubmit}
@@ -94,7 +95,7 @@ const Scheduler = ({
             </Button>
           }
         />
-      </div>
+      </div>}
     </div>
   </div>
 )

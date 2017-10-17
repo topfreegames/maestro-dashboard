@@ -44,9 +44,9 @@ Left.styles = css({
   '> div + div': { marginLeft: '30px' }
 })
 
-const Right = () => (
+const Right = ({ toggleTvMode }) => (
   <div {...Right.styles}>
-    <button>
+    <button onClick={toggleTvMode}>
       <i className='fa fa-television' />
     </button>
     <button onClick={signOut}>
@@ -79,7 +79,11 @@ class Header extends React.Component {
             handleChange={this.props.handleChange}
           />
         }
-        right={<Right />}
+        right={
+          <Right
+            toggleTvMode={this.props.toggleTvMode}
+          />
+        }
       />
     </div>
   )

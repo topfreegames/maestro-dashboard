@@ -10,7 +10,7 @@ class Scheduler extends React.Component {
     super(props)
 
     this.state = {
-      showGraphs: false,
+      showGraph: false,
       fetching: false
     }
   }
@@ -22,7 +22,7 @@ class Scheduler extends React.Component {
 
   toggleGraphs = event => {
     event.preventDefault()
-    this.setState({ showGraphs: !this.state.showGraphs })
+    this.setState({ showGraph: !this.state.showGraph })
   }
 
   handleSubmit = async ({ minimum, replicas }) => {
@@ -81,11 +81,12 @@ class Scheduler extends React.Component {
         threshold={this.props.autoscaling.up.trigger.threshold}
         minimum={this.props.autoscaling.min}
         replicas={this.reduceRoomsStatuses()}
-        showGraphs={this.state.showGraphs}
+        showGraph={this.state.showGraph}
         fetching={this.state.fetching}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
         toggleGraphs={this.toggleGraphs}
+        tvMode={this.props.tvMode}
       />
     )
   }

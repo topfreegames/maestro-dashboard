@@ -12,6 +12,7 @@ const newScheduler = event => {
 }
 
 const Schedulers = ({
+  tvMode,
   schedulerFilter,
   schedulers,
   fetching
@@ -20,7 +21,11 @@ const Schedulers = ({
     {(fetching && schedulers.length === 0) &&
       <Spinner r={0} g={0} b={0} />}
     {(!fetching || schedulers.length > 0) &&
-      schedulers.map(s => <Scheduler key={`${s.name}${randomString(4)}`} {...s} />)}
+      schedulers.map(s => <Scheduler
+        key={`${s.name}${randomString(4)}`} {...s}
+        tvMode={tvMode}
+      />)
+    }
     <AddButton handleClick={newScheduler} />
   </div>
 )
