@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import ReactTimeout from 'react-timeout'
 import { css } from 'glamor'
 import { Spinner } from 'components/common'
+import Timeframes from 'components/schedulers/graph/timeframes'
 import styles from 'constants/styles'
 
 const getEmbedId = async argsObj => {
@@ -18,22 +19,37 @@ const getEmbedId = async argsObj => {
 class Graph extends React.Component {
   constructor () {
     super()
-    this.state = { embedId: null }
+
+    this.state = {
+      activeTimeframe: '1_hour',
+      embedId: null
+    }
   }
 
-  componentDidMount = async () => {
+  getEmbedId = async () => {
     const { scheduler, region, upUsage, downUsage } = this.props
     const { embedId } = await getEmbedId({
       scheduler,
       region,
       upUsage,
-      downUsage
+      downUsage,
+      timeframe: this.state.activeTimeframe
     })
     this.setState({ embedId })
   }
 
+  componentDidMount = () => this.getEmbedId()
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.activeTimeframe !== this.state.activeTimeframe) {
+      this.getEmbedId()
+    }
+  }
+
+  changeTimeframe = activeTimeframe => this.setState({ activeTimeframe })
+
   render = () => {
-    const { embedId } = this.state
+    const { embedId, activeTimeframe } = this.state
 
     return (
       <div
@@ -42,6 +58,12 @@ class Graph extends React.Component {
         ref={e => (this.wrapper = e)}
       >
         {!embedId && <Spinner r={0} g={0} b={0} />}
+        {embedId &&
+          <Timeframes
+            changeTimeframe={this.changeTimeframe}
+            activeTimeframe={activeTimeframe}
+          />
+        }
         {embedId &&
           <iframe
             src={`https://app.datadoghq.com/graph/embed?token=${embedId}&amp;width=${this.wrapper.offsetWidth}&amp;height=200&amp;legend=false`}
@@ -64,16 +86,16 @@ Graph.styles = css({
 Graph.stylesWithEmbed = ({ isActive } = { isActive: false }) =>
   isActive ? css({
     paddingTop: '16px',
-    paddingBottom: 'calc(180px)',
+
+    '> ul': {
+      marginBottom: '12px'
+    },
 
     '> iframe': {
       display: 'flex',
       flex: '1 1 auto',
       width: '100%',
-      height: '100%',
-      position: 'absolute',
-      top: '16px',
-      left: 0,
+      height: '180px',
       border: 'none',
 
       '& .graph_embed': {

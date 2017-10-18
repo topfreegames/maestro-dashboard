@@ -48,7 +48,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
     "autoscale": true
   }`
 
-const cacheKey = ({ scheduler, region }) => `${scheduler}//${region}`
+const cacheKey = ({ scheduler, region, timeframe }) => `${scheduler}//${region}//${timeframe}`
 
 const requestEmbed = argsObj => {
   const host = 'https://app.datadoghq.com/api/v1/graph/embed'
@@ -60,7 +60,7 @@ const requestEmbed = argsObj => {
       application_key: process.env.DATADOG_APPLICATION_KEY,
       graph_json: graphDef(argsObj),
       size: 'small',
-      timeframe: '1_hour',
+      timeframe: argsObj.timeframe,
       title: 'Occupancy'
     })
     .then(response => ({
