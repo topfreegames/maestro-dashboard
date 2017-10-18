@@ -30,6 +30,7 @@ class Dashboard extends React.Component {
     <Large>
       <div {...Dashboard.styles}>
         <Header
+          tvMode={this.state.tvMode}
           toggleTvMode={this.toggleTvMode}
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}

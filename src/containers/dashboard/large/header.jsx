@@ -44,9 +44,9 @@ Left.styles = css({
   '> div + div': { marginLeft: '30px' }
 })
 
-const Right = ({ toggleTvMode }) => (
-  <div {...Right.styles}>
-    <button onClick={toggleTvMode}>
+const Right = ({ toggleTvMode, tvMode }) => (
+  <div {...Right.styles} {...Right.stylesWithTvMode({ isActive: tvMode })}>
+    <button onClick={toggleTvMode} className='tv-mode-button'>
       <i className='fa fa-television' />
     </button>
     <button onClick={signOut}>
@@ -55,9 +55,27 @@ const Right = ({ toggleTvMode }) => (
   </div>
 )
 
+Right.stylesWithTvMode = ({ isActive } = { isActive: false }) =>
+  isActive ? css({
+    '> .tv-mode-button': {
+      borderRadius: '6px',
+      padding: '5px 10px 5px 12px',
+      background: styles.colors.gray_75,
+      transform: 'scale(1.2)',
+      transition: 'all 100ms ease-in',
+
+      '> i': { color: styles.colors.background }
+    }
+  }) : {}
+
 Right.styles = css({
+  '> .tv-mode-button': {
+    padding: '5px 10px 5px 12px',
+    transition: 'all 100ms ease-in'
+  },
+
   '> button + button': {
-    marginLeft: '30px'
+    marginLeft: '20px'
   },
 
   '& i': {
@@ -81,6 +99,7 @@ class Header extends React.Component {
         }
         right={
           <Right
+            tvMode={this.props.tvMode}
             toggleTvMode={this.props.toggleTvMode}
           />
         }
