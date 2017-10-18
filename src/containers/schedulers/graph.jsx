@@ -11,7 +11,6 @@ const getEmbedId = async argsObj => {
       (acc, [k, v]) => `${acc}${k}=${v}&`,
       `${process.env.GRAPH_HOST}/graph?`
     )
-  console.log(url)
   const res = await fetch(url)
   return res.json()
 }
