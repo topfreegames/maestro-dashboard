@@ -39,7 +39,7 @@ class SchedulersNew extends React.Component {
     })
   }
 
-  updateScheduler = async () => {
+  createScheduler = async () => {
     this.toggleLoading()
 
     const scheduler = YAML.safeLoad(this.state.yaml)
