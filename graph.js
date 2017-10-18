@@ -16,7 +16,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
         }
       },
       {
-        "q": "${upUsage} * ( max:maestro.gru.ready{maestro-scheduler:${scheduler},maestro-region:${region}} + max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}} )",
+        "q": "${upUsage / 100} * ( max:maestro.gru.ready{maestro-scheduler:${scheduler},maestro-region:${region}} + max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}} )",
         "aggregator": "avg",
         "conditional_formats": [],
         "type": "line",
@@ -27,7 +27,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
         }
       },
       {
-        "q": "${downUsage} * ( max:maestro.gru.ready{maestro-scheduler:${scheduler},maestro-region:${region}} + max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}} )",
+        "q": "${downUsage / 100} * ( max:maestro.gru.ready{maestro-scheduler:${scheduler},maestro-region:${region}} + max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}} )",
         "aggregator": "avg",
         "conditional_formats": [],
         "type": "line",
