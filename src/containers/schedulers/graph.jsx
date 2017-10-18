@@ -5,9 +5,14 @@ import { css } from 'glamor'
 import { Spinner } from 'components/common'
 import styles from 'constants/styles'
 
-const getEmbedId = async (scheduler, region) => {
-  const res =
-    await fetch(`${process.env.GRAPH_HOST}/graph?scheduler=${scheduler}&region=${region}`)
+const getEmbedId = async argsObj => {
+  const url = Object.entries(argsObj)
+    .reduce(
+      (acc, [k, v]) => `${acc}${k}=${v}&`,
+      `${process.env.GRAPH_HOST}/graph?`
+    )
+  console.log(url)
+  const res = await fetch(url)
   return res.json()
 }
 
@@ -18,8 +23,13 @@ class Graph extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { scheduler, region } = this.props
-    const { embedId } = await getEmbedId(scheduler, region)
+    const { scheduler, region, upUsage, downUsage } = this.props
+    const { embedId } = await getEmbedId({
+      scheduler,
+      region,
+      upUsage,
+      downUsage
+    })
     this.setState({ embedId })
   }
 

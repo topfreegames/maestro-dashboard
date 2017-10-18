@@ -37,7 +37,9 @@ const Scheduler = ({
   handleChange,
   handleSubmit,
   toggleGraphs,
-  tvMode
+  tvMode,
+  upUsage,
+  downUsage
 }) => (
   <div {...wrapperStyles}>
     {fetching && <Loading />}
@@ -80,7 +82,9 @@ const Scheduler = ({
           <i className='fa fa-area-chart' aria-hidden='true' />
         </Button>}
       </div>
-      {(showGraph || tvMode) && minimum !== 0 && <Graph scheduler={name} />}
+      {(showGraph || tvMode) && minimum !== 0 &&
+        <Graph scheduler={name} upUsage={upUsage} downUsage={downUsage} />
+      }
       {!tvMode && <div className='footer'>
         <Form
           formFor={{ minimum, replicas }}
