@@ -11,7 +11,7 @@ const Schedulers = ({
   schedulers,
   fetching
 }) => (
-  <div {...Schedulers.styles}>
+  <div {...Schedulers.styles} {...Schedulers.stylesWithTvMode({ isActive: !!tvMode })}>
     {(fetching && schedulers.length === 0) &&
       <Spinner r={0} g={0} b={0} />}
     {(!fetching || schedulers.length > 0) &&
@@ -35,5 +35,11 @@ Schedulers.styles = css({
     padding: '15px'
   }
 })
+
+Schedulers.stylesWithTvMode = ({ isActive } = { isActive: false }) =>
+  isActive ? css({
+    transformOrigin: 'top',
+    transform: 'scale(1.2)'
+  }) : {}
 
 export default Schedulers

@@ -22,12 +22,6 @@ const wrapperStyles = css({
   }
 })
 
-const tvModeStyles = ({ tvModeOn } = { tvModeOn: false }) =>
-  tvModeOn ? css({
-    transformOrigin: 'top',
-    transform: 'scale(1.2)'
-  }) : {}
-
 const Scheduler = ({
   name,
   state,
@@ -45,7 +39,7 @@ const Scheduler = ({
   toggleGraphs,
   tvMode
 }) => (
-  <div {...wrapperStyles} {...tvModeStyles({ tvModeOn: tvMode })}>
+  <div {...wrapperStyles}>
     {fetching && <Loading />}
     <div className={minimum === 0 && 'disabled'} {...Scheduler.styles}>
       <div>
