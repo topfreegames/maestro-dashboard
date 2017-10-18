@@ -8,7 +8,7 @@ import { reduceRoomsStatuses } from 'helpers/common'
 const sortSchedulers = schedulers =>
   schedulers
     .sort((a, b) => {
-      return reduceRoomsStatuses(a.status) < reduceRoomsStatuses(b.status) ? -1 : 1
+      return reduceRoomsStatuses(a.status) < reduceRoomsStatuses(b.status) ? 1 : -1
     })
 
 class Schedulers extends React.Component {
