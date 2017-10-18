@@ -80,7 +80,7 @@ const Scheduler = ({
           <i className='fa fa-area-chart' aria-hidden='true' />
         </Button>}
       </div>
-      {(showGraph || tvMode) && <Graph scheduler={name} />}
+      {(showGraph || tvMode) && minimum !== 0 && <Graph scheduler={name} />}
       {!tvMode && <div className='footer'>
         <Form
           formFor={{ minimum, replicas }}
