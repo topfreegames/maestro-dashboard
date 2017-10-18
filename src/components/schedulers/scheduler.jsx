@@ -38,6 +38,7 @@ const Scheduler = ({
   handleSubmit,
   toggleGraphs,
   tvMode,
+  activeTimeframe,
   upUsage,
   downUsage
 }) => (
@@ -83,7 +84,13 @@ const Scheduler = ({
         </Button>}
       </div>
       {(showGraph || tvMode) && minimum !== 0 &&
-        <Graph scheduler={name} upUsage={upUsage} downUsage={downUsage} />
+        <Graph
+          scheduler={name}
+          upUsage={upUsage}
+          downUsage={downUsage}
+          tvMode={tvMode}
+          activeTimeframe={activeTimeframe}
+        />
       }
       {!tvMode && <div className='footer'>
         <Form

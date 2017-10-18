@@ -6,6 +6,7 @@ import styles from 'constants/styles'
 import { randomString } from 'helpers/common'
 
 const Schedulers = ({
+  activeTimeframe,
   tvMode,
   schedulerFilter,
   schedulers,
@@ -17,6 +18,7 @@ const Schedulers = ({
     {(!fetching || schedulers.length > 0) &&
       schedulers.map(s => <Scheduler
         key={`${s.name}${randomString(4)}`} {...s}
+        activeTimeframe={activeTimeframe}
         tvMode={tvMode}
       />)
     }

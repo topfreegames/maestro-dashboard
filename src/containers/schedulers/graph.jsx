@@ -33,7 +33,7 @@ class Graph extends React.Component {
       region,
       upUsage,
       downUsage,
-      timeframe: this.state.activeTimeframe
+      timeframe: this.props.activeTimeframe || this.state.activeTimeframe
     })
     this.setState({ embedId })
   }
@@ -49,6 +49,7 @@ class Graph extends React.Component {
   changeTimeframe = activeTimeframe => this.setState({ activeTimeframe })
 
   render = () => {
+    const { tvMode } = this.props
     const { embedId, activeTimeframe } = this.state
 
     return (
@@ -58,7 +59,7 @@ class Graph extends React.Component {
         ref={e => (this.wrapper = e)}
       >
         {!embedId && <Spinner r={0} g={0} b={0} />}
-        {embedId &&
+        {embedId && !tvMode &&
           <Timeframes
             changeTimeframe={this.changeTimeframe}
             activeTimeframe={activeTimeframe}

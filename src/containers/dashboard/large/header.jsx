@@ -7,6 +7,7 @@ import {
   AutoComplete,
   TextInput
 } from 'components/common'
+import Timeframes from 'components/schedulers/graph/timeframes'
 import HeaderClusters from './header_clusters'
 import styles from 'constants/styles'
 import { signOut, gamesFromSchedulers } from 'helpers/common'
@@ -44,8 +45,14 @@ Left.styles = css({
   '> div + div': { marginLeft: '30px' }
 })
 
-const Right = ({ toggleTvMode, tvMode }) => (
+const Right = ({ changeTimeframe, activeTimeframe, toggleTvMode, tvMode }) => (
   <div {...Right.styles} {...Right.stylesWithTvMode({ isActive: tvMode })}>
+    {tvMode &&
+      <Timeframes
+        changeTimeframe={changeTimeframe}
+        activeTimeframe={activeTimeframe}
+      />
+    }
     <button onClick={toggleTvMode} className='tv-mode-button'>
       <i className='fa fa-television' />
     </button>
@@ -74,6 +81,10 @@ Right.styles = css({
     transition: 'all 100ms ease-in'
   },
 
+  '> ul': {
+    marginRight: '10px'
+  },
+
   '> button + button': {
     marginLeft: '20px'
   },
@@ -99,6 +110,8 @@ class Header extends React.Component {
         }
         right={
           <Right
+            activeTimeframe={this.props.activeTimeframe}
+            changeTimeframe={this.props.changeTimeframe}
             tvMode={this.props.tvMode}
             toggleTvMode={this.props.toggleTvMode}
           />
