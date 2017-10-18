@@ -50,7 +50,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
 
 const cacheKey = ({ scheduler, region }) => `${scheduler}//${region}`
 
-const requestEmbed = argsObj => scaleDown{
+const requestEmbed = argsObj => {
   const host = 'https://app.datadoghq.com/api/v1/graph/embed'
 
   return request
