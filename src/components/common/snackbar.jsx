@@ -44,6 +44,7 @@ Snackbar.styles = css({
   fontWeight: 400,
   fontSize: styles.fontSizes['3'],
   lineHeight: `calc(${styles.fontSizes['3']} + 8px)`,
+  zIndex: 1001,
 
   '> div:nth-of-type(1)': {
     display: 'flex',
