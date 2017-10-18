@@ -36,7 +36,6 @@
     "webpack-hot-middleware": "^2.19.1"
   },
   "dependencies": {
-    "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "client-oauth2": "^4.1.0",
     "codemirror": "^5.30.0",
@@ -61,6 +60,8 @@
     "redux": "^3.7.2",
     "redux-persist": "^4.9.1",
     "redux-thunk": "^2.2.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "uniloc": "^0.3.0"
   }
 }
