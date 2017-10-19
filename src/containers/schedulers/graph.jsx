@@ -28,12 +28,13 @@ class Graph extends React.Component {
 
   getEmbedId = async () => {
     const { scheduler, region, upUsage, downUsage } = this.props
+    const { tvMode, activeTimeframe } = this.props
     const { embedId } = await getEmbedId({
       scheduler,
       region,
       upUsage,
       downUsage,
-      timeframe: this.props.activeTimeframe || this.state.activeTimeframe
+      timeframe: (tvMode && activeTimeframe) || this.state.activeTimeframe
     })
     this.setState({ embedId })
   }
