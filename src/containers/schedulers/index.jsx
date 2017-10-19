@@ -9,7 +9,17 @@ import ReactTimeout from 'react-timeout'
 const sortSchedulers = schedulers =>
   schedulers
     .sort((a, b) => {
-      return reduceRoomsStatuses(a.status) < reduceRoomsStatuses(b.status) ? 1 : -1
+      const nRoomsA = reduceRoomsStatuses(a.status)
+      const nRoomsB = reduceRoomsStatuses(b.status)
+      if (a.status.state === 'in-sync') {
+        return 1
+      } else {
+        if (nRoomsA === nRoomsB) {
+          return 0
+        } else {
+          return nRoomsA < nRoomsB ? 1 : -1
+        }
+      }
     })
 
 class Schedulers extends React.Component {
