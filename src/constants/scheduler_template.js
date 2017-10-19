@@ -116,10 +116,7 @@ export default {
           ]
         },
         threshold: {
-          _type: 'integer',
-          _validations: [
-            validations.required
-          ]
+          _type: 'integer'
         }
       }
     },
@@ -152,10 +149,7 @@ export default {
           ]
         },
         threshold: {
-          _type: 'integer',
-          _validations: [
-            validations.required
-          ]
+          _type: 'integer'
         }
       }
     }
