@@ -39,17 +39,6 @@ class Graph extends React.Component {
     this.setState({ embedId })
   }
 
-  shouldComponentUpdate = (nextProps, nextState) => {
-    const should =
-    ['region', 'upUsage', 'downUsage', 'timeframe']
-      .reduce((acc, e) => this.props[e] !== nextProps[e] || acc, false) ||
-    ['activeTimeframe', 'embedId']
-      .reduce((acc, e) => this.state[e] !== nextState[e] || acc, false)
-
-    console.log('shouldUpdate', should)
-    return should
-  }
-
   componentDidMount = () => this.getEmbedId()
 
   componentDidUpdate = (prevProps, prevState) => {
