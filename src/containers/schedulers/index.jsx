@@ -11,8 +11,8 @@ const sortSchedulers = schedulers =>
     .sort((a, b) => {
       const nRoomsA = reduceRoomsStatuses(a.status)
       const nRoomsB = reduceRoomsStatuses(b.status)
-      if (a.status.state === 'in-sync') {
-        return 1
+      if (a.status.state !== 'in-sync') {
+        return -1
       } else {
         if (nRoomsA === nRoomsB) {
           return 0
