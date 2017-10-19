@@ -44,7 +44,7 @@ const Scheduler = ({
 }) => (
   <div {...wrapperStyles}>
     {fetching && <Loading />}
-    <div className={minimum === 0 && 'disabled'} {...Scheduler.styles}>
+    <div className={minimum === 0 && 'disabled'} {...Scheduler.styles} {...Scheduler.stylesByState(state)}>
       <div>
         {name}
         {!tvMode && <button onClick={() => navigate(`schedulers/${name}/edit`)}>
@@ -110,6 +110,12 @@ const Scheduler = ({
     </div>
   </div>
 )
+
+Scheduler.stylesByState = state =>
+  state !== 'in-sync'
+    ? css({
+      boxShadow: `0 1px 4px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 2px ${styles.colors.brandInverse}`
+    }) : {}
 
 Scheduler.styles = css({
   display: 'flex',
