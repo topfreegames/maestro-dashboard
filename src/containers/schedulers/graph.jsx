@@ -39,12 +39,16 @@ class Graph extends React.Component {
     this.setState({ embedId })
   }
 
-  shouldComponentUpdate = (nextProps, nextState) => (
+  shouldComponentUpdate = (nextProps, nextState) => {
+    const should =
     ['region', 'upUsage', 'downUsage', 'timeframe']
       .reduce((acc, e) => this.props[e] !== nextProps[e] || acc, false) ||
     ['activeTimeframe', 'embedId']
       .reduce((acc, e) => this.state[e] !== nextState[e] || acc, false)
-  )
+
+    console.log('shouldUpdate', should)
+    return should
+  }
 
   componentDidMount = () => this.getEmbedId()
 
@@ -57,7 +61,7 @@ class Graph extends React.Component {
   changeTimeframe = activeTimeframe => this.setState({ activeTimeframe })
 
   render = () => {
-    const { tvMode } = this.props
+    const { tvMode, scheduler } = this.props
     const { embedId, activeTimeframe } = this.state
 
     return (
@@ -65,6 +69,7 @@ class Graph extends React.Component {
         {...Graph.styles}
         {...Graph.stylesWithEmbed({ isActive: !!embedId })}
         ref={e => (this.wrapper = e)}
+        key={`${scheduler}-graph`}
       >
         {!embedId && <Spinner r={0} g={0} b={0} />}
         {embedId && !tvMode &&
