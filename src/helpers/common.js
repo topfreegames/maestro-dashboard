@@ -13,8 +13,7 @@ export const reduceRoomsStatuses = status => {
   return statuses.reduce((acc, x) => acc + status[`roomsAt${x}`], 0)
 }
 
-export const signOut = event => {
-  event.preventDefault()
+export const signOut = () => {
   store.dispatch({ type: 'PURGE' })
   window.localStorage.clear()
   navigate('/')

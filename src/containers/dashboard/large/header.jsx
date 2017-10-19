@@ -10,7 +10,8 @@ import {
 import Timeframes from 'components/schedulers/graph/timeframes'
 import HeaderClusters from './header_clusters'
 import styles from 'constants/styles'
-import { signOut, gamesFromSchedulers } from 'helpers/common'
+import { gamesFromSchedulers } from 'helpers/common'
+import { navigate } from 'actions/common'
 
 const Left = ({
   gameFilter,
@@ -56,7 +57,7 @@ const Right = ({ changeTimeframe, activeTimeframe, toggleTvMode, tvMode }) => (
     <button onClick={toggleTvMode} className='tv-mode-button'>
       <i className='fa fa-television' />
     </button>
-    <button onClick={signOut}>
+    <button onClick={() => navigate('/sign_out')}>
       <i className='fa fa-sign-out' />
     </button>
   </div>

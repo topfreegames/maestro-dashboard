@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { css } from 'glamor'
 import Clusters from 'containers/clusters'
 import { Button } from 'components/common'
+import { navigate } from 'actions/common'
 import styles from 'constants/styles'
-import { signOut } from 'helpers/common'
 
 const Settings = ({ switchToSchedulers, dispatch }) => (
   <div {...Settings.styles}>
@@ -12,7 +12,7 @@ const Settings = ({ switchToSchedulers, dispatch }) => (
     <Clusters switchToSchedulers={switchToSchedulers} />
     <label>More</label>
     <Button
-      handleClick={signOut}
+      handleClick={() => navigate('/sign_out')}
       customStyles={buttonCustomStyles}
     >
       Sign out
