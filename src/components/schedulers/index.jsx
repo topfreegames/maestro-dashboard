@@ -40,7 +40,9 @@ Schedulers.styles = css({
 Schedulers.stylesWithTvMode = ({ isActive } = { isActive: false }) =>
   isActive ? css({
     transformOrigin: 'top',
-    transform: 'scale(1.2)'
+    transform: 'scale(1.2)',
+    margin: '0 100px'
+
   }) : {}
 
 export default Schedulers
