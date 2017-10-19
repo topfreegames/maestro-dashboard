@@ -4,6 +4,7 @@ import fuzzy from 'fuzzy'
 import SchedulersComponent from 'components/schedulers'
 import { getSchedulers } from 'actions/schedulers'
 import { reduceRoomsStatuses } from 'helpers/common'
+import ReactTimeout from 'react-timeout'
 
 const sortSchedulers = schedulers =>
   schedulers
@@ -14,10 +15,12 @@ const sortSchedulers = schedulers =>
 class Schedulers extends React.Component {
   doGetSchedulers = () => this.props.dispatch(getSchedulers())
 
-  componentDidMount = () => {
-    if (!this.props.cluster) return
-    this.doGetSchedulers()
+  updateSchedulersLoop = () => {
+    if (this.props.cluster) this.doGetSchedulers()
+    this.props.setTimeout(() => this.updateSchedulersLoop(), 1000 * 60)
   }
+
+  componentDidMount = () => this.updateSchedulersLoop()
 
   componentWillReceiveProps = nextProps => {
     if (!this.props.cluster && nextProps.cluster) {
@@ -56,4 +59,4 @@ export default connect(state => ({
   cluster: state.clusters[state.clusters.current],
   schedulers: state.schedulers.index.schedulers,
   fetching: state.schedulers.index.fetching
-}))(Schedulers)
+}))(ReactTimeout(Schedulers))
