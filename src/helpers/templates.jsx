@@ -10,6 +10,7 @@ export const validations = {
 
 const getField = (template, path) =>
   path.split('.').reduce((acc, x) => {
+    if (!acc || !acc[x]) return {}
     return acc._format || acc[x]
   }, template)
 
@@ -26,12 +27,15 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
     return (f._label ? f._label : name) + suffix
   }
 
+  const getValueH = (name, prefix) =>
+    object && getValue(makePath(prefix, name), object)
+
   const renderSimple = ([name, _], prefix, showLabel = true) => (
     <TextInput
       key={makePath(prefix, name)}
       id={makePath(prefix, name)}
       label={showLabel && makeLabel(prefix, name)}
-      value={getValue(makePath(prefix, name), object)}
+      value={getValueH(name, prefix)}
       handleChange={handleChange}
       error={errors[makePath(prefix, name)]}
     />
@@ -82,6 +86,44 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
     </div>
   )
 
+  const renderDictionary = ([name], prefix, isOdd) => {
+    const objectToTemplate = obj => {
+      const parseKey = k => {
+        switch (Object.prototype.toString(obj[k])) {
+          case '[object Array]':
+            return {
+              _type: 'array',
+              _format: objectToTemplate(obj[k])
+            }
+          case '[object Object]':
+            return {
+              _type: 'compose',
+              ...objectToTemplate(obj[k])
+            }
+          default:
+            return {
+              _type: 'string'
+            }
+        }
+      }
+
+      if (typeof obj !== 'object') {
+        return {
+          _type: 'string'
+        }
+      }
+
+      return Object.keys(obj).reduce((acc, k) => ({
+        ...acc,
+        [k]: parseKey(k)
+      }), {})
+    }
+
+    const obj = getValueH(name, prefix)
+    const template = objectToTemplate(obj)
+    return renderCompose([name, template], prefix, isOdd)
+  }
+
   const renderEntry = (e, prefix = '', isOdd) => {
     switch (e[1]._type) {
       case 'compose':
@@ -90,6 +132,8 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
         return renderArray(e, prefix, isOdd)
       case 'array_of_simples':
         return renderArray(e, prefix, isOdd, true)
+      case 'dictionary':
+        return renderDictionary(e, prefix, isOdd)
       default:
         return renderSimple(e, prefix)
     }
@@ -104,13 +148,21 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
 }
 
 export const parse = (template, object) => {
-  const parseSimple = ([name, _], prefix) => ({
-    [name]: (object && getValue(makePath(prefix, name), object)) || ''
+  const getValueH = (name, prefix) =>
+    object && getValue(makePath(prefix, name), object)
+
+  const parseCommon = (name, prefix, def) => ({
+    [name]: getValueH(name, prefix) || def
   })
 
-  const parseArray = ([name, _], prefix) => ({
-    [name]: (object && getValue(makePath(prefix, name), object)) || []
-  })
+  const parseSimple = ([name, _], prefix) =>
+    parseCommon(name, prefix, '')
+
+  const parseArray = ([name, _], prefix) =>
+    parseCommon(name, prefix, [])
+
+  const parseDictionary = ([name], prefix) =>
+    parseCommon(name, prefix, {})
 
   const parseCompose = ([name, children], prefix) => ({
     [name]: parseObject(children, `${makePath(prefix, name)}.`)
@@ -124,6 +176,8 @@ export const parse = (template, object) => {
         return parseArray(e, prefix)
       case 'array_of_simples':
         return parseArray(e, prefix)
+      case 'dictionary':
+        return parseDictionary(e, prefix)
       default:
         return parseSimple(e, prefix)
     }
