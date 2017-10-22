@@ -34,8 +34,6 @@ const sortSchedulers = schedulers =>
           const iA = states.findIndex(e => e === aState)
           const iB = states.findIndex(e => e === bState)
 
-          console.log(iA, iB)
-
           return iA < iB ? 1 : -1
         }
       } else {
