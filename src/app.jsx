@@ -7,12 +7,15 @@ import store from 'reducers'
 import { navigate } from 'actions/common'
 
 class App extends React.Component {
-  componentWillReceiveProps = nextProps => {
-    if (!(nextProps.session.code || nextProps.session.token) &&
-      !nextProps.routeElement.public) {
+  checkSession = props => {
+    if (!(props.session.code || props.session.token) &&
+      !props.routeElement.public) {
       navigate('/')
     }
   }
+
+  componentWillReceiveProps = nextProps => this.checkSession(nextProps)
+  componentDidMount = () => this.checkSession(this.props)
 
   render () {
     const { route, routeElement, snackbar } = this.props

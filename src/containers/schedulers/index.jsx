@@ -3,22 +3,43 @@ import { connect } from 'react-redux'
 import fuzzy from 'fuzzy'
 import SchedulersComponent from 'components/schedulers'
 import { getSchedulers } from 'actions/schedulers'
-import { reduceRoomsStatuses } from 'helpers/common'
 import ReactTimeout from 'react-timeout'
 
 const sortSchedulers = schedulers =>
   schedulers
     .sort((a, b) => {
-      const nRoomsA = reduceRoomsStatuses(a.status)
-      const nRoomsB = reduceRoomsStatuses(b.status)
-      if (a.status.state !== 'in-sync') {
-        return -1
-      } else {
-        if (nRoomsA === nRoomsB) {
-          return 0
+      const aMin = a.autoscaling.min
+      const bMin = b.autoscaling.min
+
+      if (aMin !== 0 && bMin !== 0) {
+        const aState = a.status.state
+        const bState = b.status.state
+
+        if (aState === bState) {
+          const calcOcc = x =>
+            x.roomsAtOccupied / (x.roomsAtOccupied + x.roomsAtReady)
+
+          const occA = calcOcc(a.status)
+          const occB = calcOcc(b.status)
+
+          if (occA === occB) {
+            return 0
+          } else {
+            return occA < occB ? 1 : -1
+          }
         } else {
-          return nRoomsA < nRoomsB ? 1 : -1
+          const states =
+            ['in-sync', 'creating', 'terminating', 'overdimensioned', 'subdimensioned']
+
+          const iA = states.findIndex(e => e === aState)
+          const iB = states.findIndex(e => e === bState)
+
+          console.log(iA, iB)
+
+          return iA < iB ? 1 : -1
         }
+      } else {
+        return aMin < bMin ? 1 : -1
       }
     })
 
