@@ -43,17 +43,38 @@ class Dashboard extends React.Component {
 
     if (!this.props.session.token) return
 
-    this.setState({ activeTab: tab })
+    const { header } = this.state
+    const nextHeader = tab === 'Settings' ? this.headerNormal : header
+
+    this.setState({
+      activeTab: tab,
+      header: nextHeader
+    })
   }
 
   switchToSchedulers = () => this.switchTab(null, 'Schedulers')
+
+  toggleHeader = e => {
+    e.preventDefault()
+    if (!this.props.session.token) return
+    const { header, activeTab } = this.state
+    const { headerSearch, headerNormal } = this
+    const nextHeader = header === headerSearch ? headerNormal : headerSearch
+    const nextActiveTab = nextHeader === headerSearch ? 'Schedulers' : activeTab
+
+    this.setState({
+      schedulerFilter: '',
+      header: nextHeader,
+      activeTab: nextActiveTab
+    })
+  }
 
   headerNormal = () => ({
     left: <Logo />,
     title: this.props.cluster.name,
     right: (
       <i
-        onClick={() => this.setState({ header: this.headerSearch })}
+        onClick={this.toggleHeader}
         className='fa fa-search'
         aria-hidden='true'
         {...headerRightStyles}
@@ -65,10 +86,7 @@ class Dashboard extends React.Component {
     left: (
       <div>
         <i
-          onClick={() => this.setState({
-            schedulerFilter: '',
-            header: this.headerNormal
-          })}
+          onClick={this.toggleHeader}
           className='fa fa-arrow-left'
           aria-hidden='true'
         />
