@@ -111,11 +111,16 @@ const Scheduler = ({
   </div>
 )
 
-Scheduler.stylesByState = state =>
-  state !== 'in-sync'
-    ? css({
-      boxShadow: `0 1px 4px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 2px ${styles.colors.brandInverse}`
-    }) : {}
+Scheduler.stylesByState = state => {
+  let color
+  if (state === 'overdimensioned') color = styles.colors.brandInverse
+  else if (state === 'subdimensioned') color = styles.colors.brandSecondary
+  else color = styles.colors.background
+
+  return css({
+    boxShadow: `0 1px 4px 0 rgba(0, 0, 0, 0.2), inset 0 0px 0 2px ${color}, inset 0 3px 0 2px ${color}`
+  })
+}
 
 Scheduler.styles = css({
   display: 'flex',

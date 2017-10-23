@@ -8,14 +8,14 @@ import { navigate } from 'actions/common'
 
 class App extends React.Component {
   checkSession = props => {
-    if (!(props.session.code || props.session.token) &&
+    if (props.route.name !== 'gACallback' &&
+      !(props.session.code || props.session.token) &&
       !props.routeElement.public) {
       navigate('/')
     }
   }
 
   componentWillReceiveProps = nextProps => this.checkSession(nextProps)
-  componentDidMount = () => this.checkSession(this.props)
 
   render () {
     const { route, routeElement, snackbar } = this.props
