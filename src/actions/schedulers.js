@@ -25,15 +25,9 @@ export const getSchedulers = () => {
   return async dispatch => {
     dispatch({ type: actions.schedulers.indexFetch })
 
-    const response = await client.get('scheduler')
+    const response = await client.get('scheduler?info')
     if (response.status !== 200) throw new Error('bad request')
-    const json = await response.json()
-
-    const schedulers = await Promise.all(json.schedulers.map(async s => {
-      const config = await getSchedulerConfig(s)
-      config.status = await getSchedulerStatus(s)
-      return config
-    }))
+    const schedulers = await response.json()
 
     dispatch({ type: actions.schedulers.indexFetchSuccess, schedulers })
   }

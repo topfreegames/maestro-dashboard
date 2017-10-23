@@ -17,7 +17,7 @@ class Scheduler extends React.Component {
 
   reduceRoomsStatuses = () => {
     const statuses = ['Creating', 'Occupied', 'Ready', 'Terminating']
-    return statuses.reduce((acc, x) => acc + this.props.status[`roomsAt${x}`], 0)
+    return statuses.reduce((acc, x) => acc + this.props[`rooms${x}`], 0)
   }
 
   toggleGraphs = event => {
@@ -65,21 +65,21 @@ class Scheduler extends React.Component {
   }
 
   render = () => {
-    const ready = this.props.status.roomsAtReady
-    const occupied = this.props.status.roomsAtOccupied
+    const ready = this.props.roomsReady
+    const occupied = this.props.roomsOccupied
     const sum = ready + occupied
     const occupancy = sum > 0 ? occupied / sum : 0
 
     return (
       <SchedulerComponent
         name={this.props.name}
-        state={this.props.status.state}
+        state={this.props.state}
         game={this.props.game}
         ready={ready}
         occupied={occupied}
         occupancy={occupancy}
-        threshold={this.props.autoscaling.up.trigger.threshold}
-        minimum={this.props.autoscaling.min}
+        threshold={80}
+        minimum={this.props.autoscalingMin}
         replicas={this.reduceRoomsStatuses()}
         showGraph={this.state.showGraph}
         fetching={this.state.fetching}
@@ -88,8 +88,8 @@ class Scheduler extends React.Component {
         toggleGraphs={this.toggleGraphs}
         tvMode={this.props.tvMode}
         activeTimeframe={this.props.activeTimeframe}
-        upUsage={this.props.autoscaling.up.trigger.usage}
-        downUsage={this.props.autoscaling.down.trigger.usage}
+        upUsage={this.props.autoscalingUpTriggerUsage}
+        downUsage={this.props.autoscalingDownTriggerUsage}
       />
     )
   }
