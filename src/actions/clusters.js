@@ -4,8 +4,12 @@ import snackbar from 'actions/snackbar'
 
 export const exchangeCodeForCluster = (code, cluster) =>
   async dispatch => {
-    const token = await exchangeCode(code, cluster.host)
-    dispatch(selectClusterWithToken({ ...cluster, token }))
+    try {
+      const token = await exchangeCode(code, cluster.host)
+      dispatch(selectClusterWithToken({ ...cluster, token }))
+    } catch (err) {
+      console.log(err.Error())
+    }
   }
 
 const selectClusterWithToken = cluster =>

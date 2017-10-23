@@ -6,8 +6,10 @@ import { getCode } from 'actions/session'
 import { navigate } from 'actions/common'
 import styles from 'constants/styles'
 
-const signIn = event => {
+const signIn = (event, dispatch) => {
   event.preventDefault()
+  dispatch({ type: 'PURGE' })
+  window.localStorage.clear()
   getCode()
 }
 
@@ -23,7 +25,7 @@ class Home extends React.Component {
       <div>M</div>
       <GoogleButton
         type='light'
-        onClick={signIn}
+        onClick={e => signIn(e, this.props.dispatch)}
       />
     </div>
   )

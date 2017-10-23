@@ -103,6 +103,16 @@ class Dashboard extends React.Component {
 
   handleChange = e => this.setState({ [e.target.id]: e.target.value })
 
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.cluster && this.props.cluster &&
+      nextProps.cluster.name !== this.props.cluster.name) {
+      this.setState({
+        gameFilter: '',
+        schedulerFilter: ''
+      })
+    }
+  }
+
   render = () => {
     const { activeTab } = this.state
     const header = this.state.header()

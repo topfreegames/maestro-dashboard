@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { css } from 'glamor'
 import { Large } from 'components/common/responsive'
 import { AddButton } from 'components/common'
@@ -27,6 +28,16 @@ class Dashboard extends React.Component {
   toggleTvMode = e => this.setState({ tvMode: !this.state.tvMode })
   changeTvTimeframe = tvTimeframe => this.setState({ tvTimeframe })
   handleChange = e => this.setState({ [e.target.id]: e.target.value })
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.cluster && this.props.cluster &&
+      nextProps.cluster.name !== this.props.cluster.name) {
+      this.setState({
+        gameFilter: '',
+        schedulerFilter: ''
+      })
+    }
+  }
 
   render = () => (
     <Large>
@@ -66,4 +77,7 @@ Dashboard.styles = css({
   }
 })
 
-export default Dashboard
+export default connect(state => ({
+  cluster: (state.clusters.current && state.clusters[state.clusters.current]) ||
+  {},
+}))(Dashboard)

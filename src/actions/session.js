@@ -23,7 +23,7 @@ export const exchangeCode = async (code, host) => {
     await fetch(`${host}/access?code=${code}&redirect_uri=${redirectUri}`)
 
   if (response.status !== 200) {
-    // handle error
+    throw new Error('couldn\'t exchange code')
   }
 
   const { token } = await response.json()
