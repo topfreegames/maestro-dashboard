@@ -8,19 +8,19 @@ import ReactTimeout from 'react-timeout'
 const sortSchedulers = schedulers =>
   schedulers
     .sort((a, b) => {
-      const aMin = a.autoscaling.min
-      const bMin = b.autoscaling.min
+      const aMin = a.autoscalingMin
+      const bMin = b.autoscalingMin
 
       if (aMin !== 0 && bMin !== 0) {
-        const aState = a.status.state
-        const bState = b.status.state
+        const aState = a.state
+        const bState = b.state
 
         if (aState === bState) {
           const calcOcc = x =>
-            x.roomsAtOccupied / (x.roomsAtOccupied + x.roomsAtReady)
+            x.roomsOccupied / (x.roomsOccupied + x.roomsReady)
 
-          const occA = calcOcc(a.status)
-          const occB = calcOcc(b.status)
+          const occA = calcOcc(a)
+          const occB = calcOcc(b)
 
           if (occA === occB) {
             return 0
