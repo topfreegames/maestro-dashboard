@@ -47,7 +47,10 @@ class Schedulers extends React.Component {
   constructor (props) {
     super(props)
 
-    this.state = { scaleFactor: 1 }
+    this.state = {
+      scaleFactor: 1,
+      cardsPerRow: 3
+    }
   }
 
   doGetSchedulers = () => this.props.dispatch(getSchedulers())
@@ -77,16 +80,22 @@ class Schedulers extends React.Component {
 
   handleResize = ({ width }) => {
     const minWidth = 350 + 40
-    const fits = width / minWidth
+    let fits = width / minWidth
     let iFits = parseInt(fits)
-    if (iFits > 3) iFits = 3
+    if (iFits > 3) {
+      iFits = 3
+    }
     const scaleFactor = 1 + (fits - iFits) / iFits
-    if (scaleFactor !== Infinity) this.setState({ scaleFactor })
+    if (scaleFactor !== Infinity) {
+      console.log(iFits)
+      this.setState({ scaleFactor, cardsPerRow: iFits })
+    }
   }
 
   scaleCss = () => css({
-    transformOrigin: 'top',
-    transform: `scale(${this.state.scaleFactor})`
+    transformOrigin: 'top left',
+    transform: `scale(${this.state.scaleFactor})`,
+    maxWidth: `calc(390px * ${this.state.cardsPerRow})`
   })
 
   render = () => (

@@ -33,7 +33,7 @@ Schedulers.styles = css({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    padding: '15px'
+    padding: '15px 0'
   }
 })
 
