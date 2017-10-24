@@ -78,7 +78,6 @@ class Scheduler extends React.Component {
         ready={ready}
         occupied={occupied}
         occupancy={occupancy}
-        threshold={80}
         minimum={this.props.autoscalingMin}
         replicas={this.reduceRoomsStatuses()}
         showGraph={this.state.showGraph}

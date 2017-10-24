@@ -29,7 +29,6 @@ const Scheduler = ({
   ready,
   occupied,
   occupancy,
-  threshold,
   minimum,
   replicas,
   showGraph,
@@ -73,7 +72,7 @@ const Scheduler = ({
             <i className='fa fa-ban' aria-hidden='true' />
             {occupied}
           </div>
-          <div className={(occupancy > threshold) && 'critical'}>{(occupancy * 100).toPrecision(3)}%</div>
+          <div className={(occupancy > upUsage) && 'critical'}>{(occupancy * 100).toPrecision(3)}%</div>
         </div>
         {!tvMode && <Button
           variant={showGraph ? 'inverse' : 'ghost'}

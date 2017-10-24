@@ -100,22 +100,20 @@ class SchedulersEdit extends React.Component {
     />
   )
 
-  render = () => {
-    return (
-      <Small>
-        {this.state.showConfirmation && this.confirmation()}
-        <Form
-          header={{
-            left: headerLeft(this.props.schedulerName),
-            right: headerRight(this.toggleConfirmation)
-          }}
-          scheduler={this.props.scheduler}
-          handleSubmit={this.handleSubmit}
-          loading={this.state.loading}
-        />
-      </Small>
-    )
-  }
+  render = () => (
+    <Small>
+      {this.state.showConfirmation && this.confirmation()}
+      <Form
+        header={{
+          left: headerLeft(this.props.schedulerName),
+          right: headerRight(this.toggleConfirmation)
+        }}
+        scheduler={this.props.scheduler}
+        handleSubmit={this.handleSubmit}
+        loading={this.state.loading}
+      />
+    </Small>
+  )
 }
 
 export default connect((state, ownProps) => ({

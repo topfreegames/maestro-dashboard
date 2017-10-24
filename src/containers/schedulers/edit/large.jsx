@@ -109,32 +109,31 @@ class SchedulersEdit extends React.Component {
     />
   )
 
-  render = () => {
-    return (
-      <Large>
-        {this.state.showConfirmation && this.confirmation()}
-        <Header
-          left={<HeaderLeft schedulerName={this.props.schedulerName} />}
-          right={
-            <HeaderRight
-              confirmDeletion={this.toggleConfirmation}
-              updateScheduler={this.updateScheduler}
-            />
-          }
-        />
-        {(this.state.loading || !this.state.yaml) &&
-          <Loading position='fixed' />}
-        <div {...SchedulersEdit.styles}>
-          {this.state.yaml &&
-            <YamlEditor
-              value={this.state.yaml}
-              handleChange={this.handleYamlChange}
-            />
-          }
-        </div>
-      </Large>
-    )
-  }
+  render = () => (
+    <Large>
+      {this.state.showConfirmation && this.confirmation()}
+      <Header
+        left={<HeaderLeft schedulerName={this.props.schedulerName} />}
+        right={
+          <HeaderRight
+            confirmDeletion={this.toggleConfirmation}
+            updateScheduler={this.updateScheduler}
+          />
+        }
+      />
+      {(this.state.loading || !this.state.yaml) &&
+        <Loading position='fixed' />
+      }
+      <div {...SchedulersEdit.styles}>
+        {this.state.yaml &&
+          <YamlEditor
+            value={this.state.yaml}
+            handleChange={this.handleYamlChange}
+          />
+        }
+      </div>
+    </Large>
+  )
 }
 
 SchedulersEdit.styles = css({
