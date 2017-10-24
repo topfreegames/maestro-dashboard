@@ -91,21 +91,30 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
   const renderDictionary = ([name], prefix, isOdd) => {
     const objectToTemplate = obj => {
       const parseKey = k => {
-        switch (Object.prototype.toString(obj[k])) {
-          case '[object Array]':
+        if (Array.isArray(obj[k])) {
+          console.log(obj[k])
+          if (obj[k].length > 0 && (typeof obj[k][0] !== 'object')) {
             return {
-              _type: 'array',
-              _format: objectToTemplate(obj[k])
+              _type: 'array_of_simples',
+              _format: {
+                _type: 'string'
+              }
             }
-          case '[object Object]':
-            return {
-              _type: 'compose',
-              ...objectToTemplate(obj[k])
-            }
-          default:
-            return {
-              _type: 'string'
-            }
+          }
+
+          return {
+            _type: 'array',
+            _format: objectToTemplate(obj[k])
+          }
+        } else if (typeof obj[k] === 'object') {
+          return {
+            _type: 'compose',
+            ...objectToTemplate(obj[k])
+          }
+        } else {
+          return {
+            _type: 'string'
+          }
         }
       }
 
