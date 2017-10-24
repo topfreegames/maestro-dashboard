@@ -1,4 +1,6 @@
 import React from 'react'
+import ResizeAware from 'react-resize-aware'
+import { css } from 'glamor'
 import { connect } from 'react-redux'
 import fuzzy from 'fuzzy'
 import SchedulersComponent from 'components/schedulers'
@@ -42,6 +44,12 @@ const sortSchedulers = schedulers =>
     })
 
 class Schedulers extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = { scaleFactor: 1 }
+  }
+
   doGetSchedulers = () => this.props.dispatch(getSchedulers())
 
   updateSchedulersLoop = () => {
@@ -67,20 +75,42 @@ class Schedulers extends React.Component {
       })
       .map(el => el.original)
 
+  handleResize = ({ width }) => {
+    const minWidth = 350 + 40
+    const fits = width / minWidth
+    let iFits = parseInt(fits)
+    if (iFits > 3) iFits = 3
+    const scaleFactor = 1 + (fits - iFits) / iFits
+    if (scaleFactor !== Infinity) this.setState({ scaleFactor })
+  }
+
+  scaleCss = () => css({
+    transformOrigin: 'top',
+    transform: `scale(${this.state.scaleFactor})`
+  })
+
   render = () => (
-    <SchedulersComponent
-      activeTimeframe={this.props.activeTimeframe}
-      tvMode={this.props.tvMode}
-      schedulerFilter={this.props.schedulerFilter}
-      schedulers={
-        sortSchedulers(
-          this.applyFilter(this.props.schedulerFilter, 'name',
-            this.applyFilter(this.props.gameFilter, 'game', this.props.schedulers)
-          )
-        )
-      }
-      fetching={this.props.fetching}
-    />
+    <ResizeAware
+      style={{ position: 'relative' }}
+      onlyEvent
+      onResize={this.handleResize}
+    >
+      <div {...this.scaleCss()}>
+        <SchedulersComponent
+          activeTimeframe={this.props.activeTimeframe}
+          tvMode={this.props.tvMode}
+          schedulerFilter={this.props.schedulerFilter}
+          schedulers={
+            sortSchedulers(
+              this.applyFilter(this.props.schedulerFilter, 'name',
+                this.applyFilter(this.props.gameFilter, 'game', this.props.schedulers)
+              )
+            )
+          }
+          fetching={this.props.fetching}
+        />
+      </div>
+    </ResizeAware>
   )
 }
 

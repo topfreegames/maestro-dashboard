@@ -55,6 +55,7 @@
     "react-facebook-login": "^3.6.2",
     "react-google-button": "^0.3.0",
     "react-redux": "^5.0.6",
+    "react-resize-aware": "^2.7.0",
     "react-responsive": "^2.0.0",
     "react-timeout": "^1.0.1",
     "redux": "^3.7.2",
