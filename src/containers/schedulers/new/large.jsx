@@ -6,6 +6,7 @@ import { createScheduler } from 'actions/schedulers'
 import snackbar from 'helpers/snackbar'
 import YAML from 'js-yaml'
 import exampleSchedulerYaml from 'constants/example_scheduler_yaml'
+import { navigate } from 'actions/common'
 
 const HeaderLeft = () =>
   <div>
@@ -54,6 +55,8 @@ class SchedulersNew extends React.Component {
         isFalse: `Error creating ${scheduler.name}`
       }
     )
+
+    navigate('/')
   }
 
   handleYamlChange = yaml => this.setState({ yaml })

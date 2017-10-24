@@ -68,19 +68,62 @@ export const updateSchedulerMinimumAndReplicas = async (name, payload) => {
   }
 }
 
-const removeEmptyFields = payload =>
-  Object.keys(payload).reduce((acc, key) => {
-    if (payload[key] === null ||
-      payload[key] === undefined ||
-      payload[key] === '') {
-      return acc
-    } else {
-      return {
-        ...acc,
-        [key]: payload[key]
+const removeEmptyFields = payload => {
+  const removeFromArray = payload => {
+    const filtered = payload.filter(x => {
+      if (x === null || x === undefined || x === '') {
+        return false
+      } else if (typeof x === 'object') {
+        if ((Array.isArray(x) && x.length === 0) ||
+          Object.keys(x).length === 0) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
       }
+    })
+
+    return filtered.map(x => removeEmptyFields(x))
+  }
+
+  const removeFromObject = payload =>
+    Object.keys(payload).reduce((acc, key) => {
+      if (payload[key] === null ||
+        payload[key] === undefined ||
+        payload[key] === '') {
+        return acc
+      } else if (typeof payload[key] === 'object') {
+        if (Array.isArray(payload[key])) {
+          return {
+            ...acc,
+            [key]: removeFromArray(payload[key])
+          }
+        } else {
+          return {
+            ...acc,
+            [key]: removeFromObject(payload[key])
+          }
+        }
+      } else {
+        return {
+          ...acc,
+          [key]: payload[key]
+        }
+      }
+    }, {})
+
+  if (typeof payload === 'object') {
+    if (Array.isArray(payload)) {
+      return removeFromArray(payload)
+    } else {
+      return removeFromObject(payload)
     }
-  }, {})
+  } else {
+    return payload
+  }
+}
 
 const updateSchedulerCommon = (name, payload) =>
   client.put(`scheduler/${name}?maxsurge=25`, payload)
@@ -90,14 +133,13 @@ export const updateScheduler = payload => {
   return updateSchedulerCommon(payload.name, normalizedPayload)
 }
 
-export const updateSchedulerYaml = (name, yaml) => {
-  return updateSchedulerCommon(name, YAML.safeLoad(yaml))
+export const createScheduler = payload => {
+  const normalizedPayload = removeEmptyFields(payload)
+  console.log(payload)
+  console.log(normalizedPayload)
+  return client.post('scheduler', normalizedPayload)
 }
 
-export const createScheduler = async payload => {
-  return client.post('scheduler', payload)
-}
-
-export const deleteScheduler = async name => {
+export const deleteScheduler = name => {
   return client.delete(`scheduler/${name}`)
 }

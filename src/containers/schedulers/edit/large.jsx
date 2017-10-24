@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
+import YAML from 'js-yaml'
 import { Loading, YamlEditor, Header, Button, BackButton, Confirmation } from 'components/common'
 import { Large } from 'components/common/responsive'
-import { getSchedulerConfigYaml, updateSchedulerYaml, deleteScheduler } from 'actions/schedulers'
+import { getSchedulerConfigYaml, updateScheduler, deleteScheduler } from 'actions/schedulers'
 import { navigate } from 'actions/common'
 import snackbar from 'helpers/snackbar'
 
@@ -54,7 +55,8 @@ class SchedulersEdit extends React.Component {
   updateScheduler = async () => {
     this.toggleLoading()
 
-    const res = await updateSchedulerYaml(this.props.schedulerName, this.state.yaml)
+    const scheduler = YAML.safeLoad(this.state.yaml)
+    const res = await updateScheduler(scheduler)
 
     this.toggleLoading()
 

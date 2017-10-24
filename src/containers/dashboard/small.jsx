@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { css } from 'glamor'
-import { Header, Logo, AutoComplete } from 'components/common'
+import { Header, Logo, AutoComplete, AddButton } from 'components/common'
 import Schedulers from 'containers/schedulers'
 import Settings from 'components/settings'
 import { Small } from 'components/common/responsive'
 import styles from 'constants/styles'
 import { gamesFromSchedulers } from 'helpers/common'
+import { navigate } from 'actions/common'
 
 class SearchTextInput extends React.Component {
   componentDidMount = () => this.input.focus()
@@ -22,6 +23,11 @@ class SearchTextInput extends React.Component {
       onChange={this.props.handleChange}
     />
   )
+}
+
+const newScheduler = event => {
+  event.preventDefault()
+  navigate('/schedulers/new')
 }
 
 class Dashboard extends React.Component {
@@ -146,6 +152,7 @@ class Dashboard extends React.Component {
                 schedulerFilter={this.state.schedulerFilter}
                 gameFilter={this.state.gameFilter}
               />
+              <AddButton handleClick={newScheduler} />
             </div>
           }
           {activeTab === 'Settings' &&

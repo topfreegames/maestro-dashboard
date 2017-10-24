@@ -29,7 +29,7 @@ class Scheduler extends React.Component {
     const updatePayload = {}
 
     const shouldUpdateMinimum =
-      this.props.autoscaling.min !== minimum
+      this.props.autoscalingMin !== minimum
 
     if (shouldUpdateMinimum) {
       updatePayload.newMinimum = parseInt(minimum)
