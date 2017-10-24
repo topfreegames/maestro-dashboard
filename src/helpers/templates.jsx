@@ -22,9 +22,11 @@ const getValue = (path, origin) => {
 
 export const render = (template, object, errors, handleChange, handleAdd, handleRemove) => {
   const makeLabel = (prefix, name) => {
+    const splitCamelCase = str => str.split(/[\s_\b]|(?=[A-Z])/).join(' ').toLowerCase()
+
     const f = getField(template, makePath(prefix, name))
-    const suffix = f.optional ? ' (OPTIONAL)' : ''
-    return (f._label ? f._label : name) + suffix
+    const suffix = f._optional ? ' (OPTIONAL)' : ''
+    return (f._label ? f._label : splitCamelCase(name)) + suffix
   }
 
   const getValueH = (name, prefix) =>

@@ -21,21 +21,21 @@ export default {
     ]
   },
   affinity: {
-    _type: 'string'
+    _type: 'string',
+    _optional: true
   },
   toleration: {
-    _type: 'string'
+    _type: 'string',
+    _optional: true
   },
   shutdownTimeout: {
     _type: 'integer',
-    _label: 'shutdown timeout',
     _validations: [
       validations.required
     ]
   },
   occupiedTimeout: {
     _type: 'integer',
-    _label: 'occupied timeout',
     _validations: [
       validations.required
     ]
@@ -116,7 +116,8 @@ export default {
           ]
         },
         threshold: {
-          _type: 'integer'
+          _type: 'integer',
+          _optional: true
         }
       }
     },
@@ -149,7 +150,8 @@ export default {
           ]
         },
         threshold: {
-          _type: 'integer'
+          _type: 'integer',
+          _optional: true
         }
       }
     }
