@@ -7,6 +7,7 @@ import styles from 'constants/styles'
 const Schedulers = ({
   activeTimeframe,
   tvMode,
+  globalMode,
   schedulerFilter,
   schedulers,
   fetching
@@ -20,6 +21,7 @@ const Schedulers = ({
         {...s}
         activeTimeframe={activeTimeframe}
         tvMode={tvMode}
+        globalMode={globalMode}
       />)
     }
   </div>

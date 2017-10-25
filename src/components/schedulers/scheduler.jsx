@@ -37,6 +37,7 @@ const Scheduler = ({
   handleSubmit,
   toggleGraphs,
   tvMode,
+  globalMode,
   activeTimeframe,
   upUsage,
   downUsage,
@@ -47,6 +48,7 @@ const Scheduler = ({
     <div className={minimum === 0 && 'disabled'} {...Scheduler.styles} {...Scheduler.stylesByState(state)}>
       <div>
         {name}
+        {globalMode && <span>{region}</span>}
         {!tvMode && <button onClick={() => navigate(`schedulers/${name}/edit`)}>
           <i className='fa fa-ellipsis-v' aria-hidden='true' />
         </button>}
@@ -175,6 +177,10 @@ Scheduler.styles = css({
     fontWeight: 500,
     color: styles.colors.brandSecondary,
 
+    '> span': {
+      color: styles.colors.gray_100
+    },
+
     '> button': {
       padding: '0 8px',
       color: styles.colors.gray_75,
@@ -210,7 +216,7 @@ Scheduler.styles = css({
       },
 
       '> div:nth-of-type(3)': {
-        color: styles.colors.gray_75,
+        color: styles.colors.gray_100,
 
         '&.critical': {
           color: styles.colors.brandSecondary

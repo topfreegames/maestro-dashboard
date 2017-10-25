@@ -86,6 +86,7 @@ class Scheduler extends React.Component {
         handleSubmit={this.handleSubmit}
         toggleGraphs={this.toggleGraphs}
         tvMode={this.props.tvMode}
+        globalMode={this.props.globalMode}
         activeTimeframe={this.props.activeTimeframe}
         upUsage={this.props.autoscalingUpTriggerUsage}
         downUsage={this.props.autoscalingDownTriggerUsage}

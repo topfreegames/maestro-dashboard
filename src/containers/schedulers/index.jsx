@@ -129,6 +129,7 @@ class Schedulers extends React.Component {
         <SchedulersComponent
           activeTimeframe={this.props.activeTimeframe}
           tvMode={this.props.tvMode}
+          globalMode={this.props.globalMode}
           schedulerFilter={this.props.schedulerFilter}
           schedulers={
             sortSchedulers(
