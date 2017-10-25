@@ -209,6 +209,9 @@ Dashboard.styles = css({
 export default connect(state => ({
   cluster: (state.clusters.current && state.clusters[state.clusters.current]) ||
   {},
-  schedulersGames: gamesFromSchedulers(state.schedulers.index.schedulers),
+  schedulersGames: gamesFromSchedulers(
+    state.schedulers.index[state.clusters.current] &&
+    state.schedulers.index[state.clusters.current].schedulers
+  ),
   session: state.session
 }))(Dashboard)

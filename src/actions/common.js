@@ -3,22 +3,26 @@ import history from 'constants/history'
 
 export const client = {}
 
-client.host = () => {
+client.host = cluster => {
+  if (cluster) return cluster.host
+
   const clusters = store.getState().clusters
   return clusters[clusters.current].host
 }
 
-client.headers = () => {
+client.headers = cluster => {
   const state = store.getState()
+  const token = ((cluster && cluster.token) || state.session.token)
+
   return {
-    'Authorization': `Bearer ${state.session && state.session.token}`
+    'Authorization': `Bearer ${token}`
   }
 }
 
-client.makeFetchOpts = (method, payload) => {
+client.makeFetchOpts = (method, { payload, cluster }) => {
   const opts = {
     method,
-    headers: client.headers()
+    headers: client.headers(cluster)
   }
 
   if (payload) opts.body = JSON.stringify(payload)
@@ -29,12 +33,12 @@ client.makeFetchOpts = (method, payload) => {
 const timeout = time =>
   new Promise((resolve) => setTimeout(resolve, time, { status: 400 }))
 
-client.fetch = async (method, endpoint, payload) => {
+client.fetch = async (method, endpoint, { payload, cluster }) => {
   try {
     const resolve = await Promise.race([
       timeout(30000),
-      fetch(`${client.host()}/${endpoint}`,
-        client.makeFetchOpts(method, payload))
+      fetch(`${client.host(cluster)}/${endpoint}`,
+        client.makeFetchOpts(method, { payload, cluster }))
     ])
     return resolve
   } catch (err) {
@@ -42,14 +46,14 @@ client.fetch = async (method, endpoint, payload) => {
   }
 }
 
-client.get = async endpoint =>
-  client.fetch('GET', endpoint)
+client.get = async (endpoint, cluster) =>
+  client.fetch('GET', endpoint, { cluster })
 
 client.put = async (endpoint, payload) =>
-  client.fetch('PUT', endpoint, payload)
+  client.fetch('PUT', endpoint, { payload })
 
 client.post = async (endpoint, payload) =>
-  client.fetch('POST', endpoint, payload)
+  client.fetch('POST', endpoint, { payload })
 
 client.delete = async (endpoint) =>
   client.fetch('DELETE', endpoint)

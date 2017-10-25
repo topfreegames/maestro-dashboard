@@ -21,15 +21,21 @@ const getSchedulerStatus = async scheduler => {
   return json
 }
 
-export const getSchedulers = () => {
+export const getSchedulers = cluster => {
   return async dispatch => {
-    dispatch({ type: actions.schedulers.indexFetch })
+    dispatch({ type: actions.schedulers.indexFetch, cluster: cluster.name })
 
-    const response = await client.get('scheduler?info')
+    const response = await client.get('scheduler?info', cluster)
     if (response.status !== 200) throw new Error('bad request')
     const schedulers = await response.json()
+    const schedulersWithRegion =
+      schedulers.map(s => ({ ...s, region: cluster.region }))
 
-    dispatch({ type: actions.schedulers.indexFetchSuccess, schedulers })
+    dispatch({
+      type: actions.schedulers.indexFetchSuccess,
+      cluster: cluster.name,
+      schedulers: schedulersWithRegion
+    })
   }
 }
 

@@ -20,12 +20,24 @@ class Dashboard extends React.Component {
     this.state = {
       tvTimeframe: '1_hour',
       tvMode: false,
+      globalMode: false,
       gameFilter: '',
       schedulerFilter: ''
     }
   }
 
-  toggleTvMode = e => this.setState({ tvMode: !this.state.tvMode })
+  toggleTvMode = e =>
+    this.setState({
+      tvMode: !this.state.tvMode,
+      globalMode: false
+    })
+
+  toggleGlobalMode = e =>
+    this.setState({
+      globalMode: !this.state.globalMode,
+      tvMode: !this.state.globalMode
+    })
+
   changeTvTimeframe = tvTimeframe => this.setState({ tvTimeframe })
   handleChange = e => this.setState({ [e.target.id]: e.target.value })
 
@@ -46,6 +58,8 @@ class Dashboard extends React.Component {
           activeTimeframe={this.state.tvTimeframe}
           changeTimeframe={this.changeTvTimeframe}
           tvMode={this.state.tvMode}
+          globalMode={this.state.globalMode}
+          toggleGlobalMode={this.toggleGlobalMode}
           toggleTvMode={this.toggleTvMode}
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
@@ -54,6 +68,7 @@ class Dashboard extends React.Component {
         <Schedulers
           activeTimeframe={this.state.tvTimeframe}
           tvMode={this.state.tvMode}
+          globalMode={this.state.globalMode}
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
         />

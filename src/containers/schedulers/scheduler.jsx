@@ -89,6 +89,7 @@ class Scheduler extends React.Component {
         activeTimeframe={this.props.activeTimeframe}
         upUsage={this.props.autoscalingUpTriggerUsage}
         downUsage={this.props.autoscalingDownTriggerUsage}
+        region={this.props.region}
       />
     )
   }

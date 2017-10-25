@@ -24,3 +24,17 @@ export const gamesFromSchedulers = schedulers =>
     .map(s => s.game)
     .filter((e, i, self) => (i === self.indexOf(e)))
   ) || []
+
+export const getSchedulersFromState = (state, ownProps) => {
+  const clusters = JSON.parse(process.env.CLUSTERS)
+
+  if (ownProps.globalMode) {
+    return clusters.reduce((acc, c) => (
+      acc.concat((state.schedulers.index[c.name] &&
+        state.schedulers.index[c.name].schedulers) || [])
+    ), [])
+  } else {
+    const clusterPath = state.schedulers.index[state.clusters.current]
+    return (clusterPath && clusterPath.schedulers)
+  }
+}

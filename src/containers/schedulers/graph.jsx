@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import ReactTimeout from 'react-timeout'
 import { css } from 'glamor'
 import { Spinner } from 'components/common'
@@ -108,6 +107,4 @@ Graph.stylesWithEmbed = ({ isActive } = { isActive: false }) =>
     }
   }) : {}
 
-export default connect(state => ({
-  region: state.clusters[state.clusters.current].region
-}))(ReactTimeout(Graph))
+export default ReactTimeout(Graph)

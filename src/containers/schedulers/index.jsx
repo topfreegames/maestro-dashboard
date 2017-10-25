@@ -2,10 +2,11 @@ import React from 'react'
 import ResizeAware from 'react-resize-aware'
 import { css } from 'glamor'
 import { connect } from 'react-redux'
+import ReactTimeout from 'react-timeout'
 import fuzzy from 'fuzzy'
 import SchedulersComponent from 'components/schedulers'
 import { getSchedulers } from 'actions/schedulers'
-import ReactTimeout from 'react-timeout'
+import { getSchedulersFromState } from 'helpers/common'
 
 const sortSchedulers = schedulers =>
   schedulers
@@ -27,6 +28,8 @@ const sortSchedulers = schedulers =>
           if (occA === occB) {
             return 0
           } else {
+            if (isNaN(occA)) return 1
+            if (isNaN(occB)) return -1
             return occA < occB ? 1 : -1
           }
         } else {
@@ -53,7 +56,25 @@ class Schedulers extends React.Component {
     }
   }
 
-  doGetSchedulers = () => this.props.dispatch(getSchedulers())
+  doGetSchedulers = () => {
+    return this._doGetSchedulersGlobal()
+    this.props.globalMode
+      ? this._doGetSchedulersGlobal() : this._doGetSchedulersFromCluster()
+  }
+
+  _doGetSchedulersFromCluster = () => {
+    this.props.dispatch(getSchedulers(this.props.cluster))
+  }
+
+  _doGetSchedulersGlobal = () => {
+    const clusters = JSON.parse(process.env.CLUSTERS)
+
+    clusters.forEach(c => {
+      if (this.props.clusters[c.name] && this.props.clusters[c.name].token) {
+        this.props.dispatch(getSchedulers(this.props.clusters[c.name]))
+      }
+    })
+  }
 
   updateSchedulersLoop = () => {
     if (this.props.cluster) this.doGetSchedulers()
@@ -123,8 +144,9 @@ class Schedulers extends React.Component {
   )
 }
 
-export default connect(state => ({
+export default connect((state, ownProps) => ({
+  clusters: state.clusters,
   cluster: state.clusters[state.clusters.current],
-  schedulers: state.schedulers.index.schedulers,
+  schedulers: getSchedulersFromState(state, ownProps),
   fetching: state.schedulers.index.fetching
 }))(ReactTimeout(Schedulers))

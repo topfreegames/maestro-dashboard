@@ -10,10 +10,11 @@ import {
 import Timeframes from 'components/schedulers/graph/timeframes'
 import HeaderClusters from './header_clusters'
 import styles from 'constants/styles'
-import { gamesFromSchedulers } from 'helpers/common'
+import { gamesFromSchedulers, getSchedulersFromState } from 'helpers/common'
 import { navigate } from 'actions/common'
 
 const Left = ({
+  globalMode,
   gameFilter,
   schedulerFilter,
   schedulerGames,
@@ -21,7 +22,7 @@ const Left = ({
 }) => (
   <div {...Left.styles}>
     <Logo />
-    <HeaderClusters />
+    {!globalMode && <HeaderClusters />}
     <AutoComplete
       id='gameFilter'
       options={schedulerGames}
@@ -46,14 +47,28 @@ Left.styles = css({
   '> div + div': { marginLeft: '30px' }
 })
 
-const Right = ({ changeTimeframe, activeTimeframe, toggleTvMode, tvMode }) => (
-  <div {...Right.styles} {...Right.stylesWithTvMode({ isActive: tvMode })}>
+const Right = ({
+  changeTimeframe,
+  activeTimeframe,
+  toggleTvMode,
+  tvMode,
+  toggleGlobalMode,
+  globalMode
+}) => (
+  <div
+    {...Right.styles}
+    {...Right.stylesWithTvMode({ isActive: tvMode })}
+    {...Right.stylesWithGlobalMode({ isActive: globalMode })}
+  >
     {tvMode &&
       <Timeframes
         changeTimeframe={changeTimeframe}
         activeTimeframe={activeTimeframe}
       />
     }
+    <button onClick={toggleGlobalMode} className='global-mode-button'>
+      <i className='fa fa-globe' />
+    </button>
     <button onClick={toggleTvMode} className='tv-mode-button'>
       <i className='fa fa-television' />
     </button>
@@ -63,11 +78,11 @@ const Right = ({ changeTimeframe, activeTimeframe, toggleTvMode, tvMode }) => (
   </div>
 )
 
-Right.stylesWithTvMode = ({ isActive } = { isActive: false }) =>
+Right.stylesWithMode = ({ isActive, className }) =>
   isActive ? css({
-    '> .tv-mode-button': {
+    [`> .${className}`]: {
       borderRadius: '6px',
-      padding: '5px 10px 5px 12px',
+      padding: '5px 10px',
       background: styles.colors.gray_75,
       transform: 'scale(1.2)',
       transition: 'all 100ms ease-in',
@@ -76,8 +91,14 @@ Right.stylesWithTvMode = ({ isActive } = { isActive: false }) =>
     }
   }) : {}
 
+Right.stylesWithTvMode = ({ isActive } = { isActive: false }) =>
+  Right.stylesWithMode({ isActive, className: 'tv-mode-button' })
+
+Right.stylesWithGlobalMode = ({ isActive } = { isActive: false }) =>
+  Right.stylesWithMode({ isActive, className: 'global-mode-button' })
+
 Right.styles = css({
-  '> .tv-mode-button': {
+  '> .tv-mode-button, > .global-mode-button': {
     padding: '5px 10px 5px 12px',
     transition: 'all 100ms ease-in'
   },
@@ -103,6 +124,7 @@ class Header extends React.Component {
       <CommonHeader
         left={
           <Left
+            globalMode={this.props.globalMode}
             gameFilter={this.props.gameFilter}
             schedulerFilter={this.props.schedulerFilter}
             schedulerGames={this.props.schedulersGames}
@@ -115,6 +137,8 @@ class Header extends React.Component {
             changeTimeframe={this.props.changeTimeframe}
             tvMode={this.props.tvMode}
             toggleTvMode={this.props.toggleTvMode}
+            globalMode={this.props.globalMode}
+            toggleGlobalMode={this.props.toggleGlobalMode}
           />
         }
       />
@@ -134,7 +158,9 @@ Header.styles = css({
   }
 })
 
-export default connect(state => ({
+export default connect((state, ownProps) => ({
   cluster: state.clusters.current,
-  schedulersGames: gamesFromSchedulers(state.schedulers.index.schedulers)
+  schedulersGames: gamesFromSchedulers(
+    getSchedulersFromState(state, ownProps)
+  )
 }))(Header)

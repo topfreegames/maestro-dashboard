@@ -2,7 +2,6 @@ import { schedulers } from 'constants/actions'
 
 const initialState = {
   index: {
-    schedulers: [],
     fetching: false
   },
   show: {}
@@ -15,8 +14,11 @@ const schedulersReducer = (state = initialState, action) => {
         ...state,
         index: {
           ...state.index,
-          error: {},
-          fetching: true
+          [action.cluster]: {
+            ...state.index[action.cluster],
+            error: {},
+            fetching: true
+          }
         }
       }
     case schedulers.indexFetchSuccess:
@@ -24,8 +26,11 @@ const schedulersReducer = (state = initialState, action) => {
         ...state,
         index: {
           ...state.index,
-          schedulers: action.schedulers,
-          fetching: false
+          [action.cluster]: {
+            ...state.index[action.cluster],
+            schedulers: action.schedulers,
+            fetching: false
+          }
         }
       }
     case schedulers.showFetch:

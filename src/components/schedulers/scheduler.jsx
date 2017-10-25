@@ -39,7 +39,8 @@ const Scheduler = ({
   tvMode,
   activeTimeframe,
   upUsage,
-  downUsage
+  downUsage,
+  region
 }) => (
   <div {...wrapperStyles}>
     {fetching && <Loading />}
@@ -87,6 +88,7 @@ const Scheduler = ({
           scheduler={name}
           upUsage={upUsage}
           downUsage={downUsage}
+          region={region}
           tvMode={tvMode}
           activeTimeframe={activeTimeframe}
         />
