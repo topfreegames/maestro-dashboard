@@ -82,12 +82,12 @@ class Schedulers extends React.Component {
     const minWidth = 350 + 40
     let fits = width / minWidth
     let iFits = parseInt(fits)
-    if (iFits > 3) {
-      iFits = 3
+    const cardsPerRow = process.env.CARDS_PER_ROW
+    if (iFits > cardsPerRow) {
+      iFits = cardsPerRow
     }
     const scaleFactor = 1 + (fits - iFits) / iFits
     if (scaleFactor !== Infinity) {
-      console.log(iFits)
       this.setState({ scaleFactor, cardsPerRow: iFits })
     }
   }

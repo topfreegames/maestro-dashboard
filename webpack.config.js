@@ -12,7 +12,7 @@ const htmlWebpackPluginConfig = new HtmlWebpackPlugin({
   inject: false
 })
 
-const envVars = ['GA_CALLBACK', 'GA_CLIENT_ID', 'CLUSTERS', 'GRAPH_HOST']
+const envVars = ['GA_CALLBACK', 'GA_CLIENT_ID', 'CLUSTERS', 'GRAPH_HOST', 'CARDS_PER_ROW']
 
 const definePluginMap = envVars.reduce((acc, x) => ({
   ...acc,
