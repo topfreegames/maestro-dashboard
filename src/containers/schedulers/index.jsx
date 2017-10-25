@@ -57,7 +57,6 @@ class Schedulers extends React.Component {
   }
 
   doGetSchedulers = () => {
-    return this._doGetSchedulersGlobal()
     this.props.globalMode
       ? this._doGetSchedulersGlobal() : this._doGetSchedulersFromCluster()
   }
