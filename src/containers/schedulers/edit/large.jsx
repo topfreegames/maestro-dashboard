@@ -34,9 +34,9 @@ class SchedulersEdit extends React.Component {
     super()
 
     this.state = {
-      showConfirmation: false,
-      loading: true,
-      yaml: null
+      confirmationScreen: null,
+      yaml: null,
+      loading: true
     }
   }
 
@@ -88,19 +88,17 @@ class SchedulersEdit extends React.Component {
     )
   }
 
-  toggleConfirmation = event => {
-    event.preventDefault()
-    this.setState({ showConfirmation: !this.state.showConfirmation })
-  }
+  toggleConfirmation = confirmationScreen =>
+    this.setState({ confirmationScreen })
 
-  confirmation = () => (
+  deleteConfirmation = () => (
     <Confirmation
       title='Delete Scheduler?'
       description={`
         ${this.props.schedulerName} will be permanently deleted from 
         [${this.props.cluster}] cluster
       `}
-      close={this.toggleConfirmation}
+      close={() => this.toggleConfirmation()}
       actions={[
         { name: 'Cancel' },
         {
@@ -111,15 +109,37 @@ class SchedulersEdit extends React.Component {
     />
   )
 
+  updateConfirmation = () => (
+    <Confirmation
+      title='Update Scheduler?'
+      description={`
+        ${this.props.schedulerName} will be updated in
+        [${this.props.cluster}] cluster
+      `}
+      close={() => this.toggleConfirmation()}
+      actions={[
+        { name: 'Cancel' },
+        {
+          name: 'Update',
+          func: () => this.updateScheduler()
+        }
+      ]}
+    />
+  )
+
   render = () => (
     <Large>
-      {this.state.showConfirmation && this.confirmation()}
+      {this.state.confirmationScreen && <this.state.confirmationScreen />}
       <Header
         left={<HeaderLeft schedulerName={this.props.schedulerName} />}
         right={
           <HeaderRight
-            confirmDeletion={this.toggleConfirmation}
-            updateScheduler={this.updateScheduler}
+            confirmDeletion={() =>
+              this.toggleConfirmation(this.deleteConfirmation)
+            }
+            updateScheduler={() =>
+              this.toggleConfirmation(this.updateConfirmation)
+            }
           />
         }
       />

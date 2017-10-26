@@ -11,7 +11,9 @@ class Scheduler extends React.Component {
 
     this.state = {
       showGraph: false,
-      fetching: false
+      fetching: false,
+      updateMinimum: this.props.autoscalingMin,
+      updateReplicas: this.reduceRoomsStatuses()
     }
   }
 
@@ -64,6 +66,13 @@ class Scheduler extends React.Component {
     this.setState({ fetching: false })
   }
 
+  toggleConfirmation = ({ minimum, replicas }) => {
+    this.props.toggleConfirmation(
+      () => this.handleSubmit({ minimum, replicas }),
+      this.props.name
+    )
+  }
+
   render = () => {
     const ready = this.props.roomsReady
     const occupied = this.props.roomsOccupied
@@ -83,7 +92,7 @@ class Scheduler extends React.Component {
         showGraph={this.state.showGraph}
         fetching={this.state.fetching}
         handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
+        handleSubmit={this.toggleConfirmation}
         toggleGraphs={this.toggleGraphs}
         tvMode={this.props.tvMode}
         globalMode={this.props.globalMode}
@@ -96,4 +105,6 @@ class Scheduler extends React.Component {
   }
 }
 
-export default connect()(Scheduler)
+export default connect(state => ({
+  cluster: state.clusters.current
+}))(Scheduler)

@@ -27,7 +27,8 @@ class SchedulersEdit extends React.Component {
     super()
 
     this.state = {
-      showConfirmation: false,
+      confirmationScreen: null,
+      scheduler: null,
       loading: false
     }
   }
@@ -77,19 +78,21 @@ class SchedulersEdit extends React.Component {
     )
   }
 
-  toggleConfirmation = event => {
-    event.preventDefault()
-    this.setState({ showConfirmation: !this.state.showConfirmation })
+  toggleConfirmation = (confirmationScreen, scheduler) => {
+    this.setState({
+      confirmationScreen,
+      scheduler
+    })
   }
 
-  confirmation = () => (
+  deleteConfirmation = () => (
     <Confirmation
       title='Delete Scheduler?'
       description={`
         ${this.props.scheduler.name} will be permanently deleted from 
         [${this.props.cluster}] cluster
       `}
-      close={this.toggleConfirmation}
+      close={() => this.toggleConfirmation()}
       actions={[
         { name: 'Cancel' },
         {
@@ -100,16 +103,38 @@ class SchedulersEdit extends React.Component {
     />
   )
 
+  updateConfirmation = () => (
+    <Confirmation
+      title='Update Scheduler?'
+      description={`
+        ${this.props.scheduler.name} will be updated in
+        [${this.props.cluster}] cluster
+      `}
+      close={() => this.toggleConfirmation()}
+      actions={[
+        { name: 'Cancel' },
+        {
+          name: 'Update',
+          func: () => this.handleSubmit(this.state.scheduler)
+        }
+      ]}
+    />
+  )
+
   render = () => (
     <Small>
-      {this.state.showConfirmation && this.confirmation()}
+      {this.state.confirmationScreen && <this.state.confirmationScreen />}
       <Form
         header={{
           left: headerLeft(this.props.schedulerName),
-          right: headerRight(this.toggleConfirmation)
+          right: headerRight(
+            () => this.toggleConfirmation(this.deleteConfirmation)
+          )
         }}
         scheduler={this.props.scheduler}
-        handleSubmit={this.handleSubmit}
+        handleSubmit={scheduler =>
+          this.toggleConfirmation(this.updateConfirmation, scheduler)
+        }
         loading={this.state.loading}
       />
     </Small>

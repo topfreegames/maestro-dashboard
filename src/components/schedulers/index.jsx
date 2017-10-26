@@ -9,6 +9,7 @@ const Schedulers = ({
   tvMode,
   globalMode,
   schedulerFilter,
+  toggleUpdateSchedulerConfirmation,
   schedulers,
   fetching
 }) => (
@@ -22,6 +23,7 @@ const Schedulers = ({
         activeTimeframe={activeTimeframe}
         tvMode={tvMode}
         globalMode={globalMode}
+        toggleConfirmation={toggleUpdateSchedulerConfirmation}
       />)
     }
   </div>

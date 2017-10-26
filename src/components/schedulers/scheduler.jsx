@@ -9,7 +9,6 @@ import basicSchedulerTemplate from 'constants/basic_scheduler_template'
 const wrapperStyles = css({
   position: 'relative',
   width: '100%',
-  height: '100%',
   boxSizing: 'border-box',
 
   [`@media(max-width: ${styles.sizes.maxSmall})`]: {

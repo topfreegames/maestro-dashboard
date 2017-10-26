@@ -7,6 +7,7 @@ import fuzzy from 'fuzzy'
 import SchedulersComponent from 'components/schedulers'
 import { getSchedulers } from 'actions/schedulers'
 import { getSchedulersFromState } from 'helpers/common'
+import { Confirmation } from 'components/common'
 
 const sortSchedulers = schedulers =>
   schedulers
@@ -52,7 +53,9 @@ class Schedulers extends React.Component {
 
     this.state = {
       scaleFactor: 1,
-      cardsPerRow: 3
+      cardsPerRow: 3,
+      updateSchedulerFunc: null,
+      updateSchedulerName: null
     }
   }
 
@@ -123,18 +126,47 @@ class Schedulers extends React.Component {
     maxWidth: `calc(390px * ${this.state.cardsPerRow})`
   })
 
+  toggleUpdateSchedulerConfirmation =
+    (updateSchedulerFunc, updateSchedulerName) => {
+      this.setState({
+        showUpdateConfirmation: !this.state.showUpdateConfirmation,
+        updateSchedulerFunc,
+        updateSchedulerName
+      })
+    }
+
+  updateSchedulerConfirmation = () => (
+    <Confirmation
+      title='Update Scheduler?'
+      description={`
+        ${this.state.updateSchedulerName} will be updated in
+        [${this.props.cluster.name}] cluster
+      `}
+      close={this.toggleUpdateSchedulerConfirmation}
+      actions={[
+        { name: 'Cancel' },
+        {
+          name: 'Update',
+          func: this.state.updateSchedulerFunc
+        }
+      ]}
+    />
+  )
+
   render = () => (
     <ResizeAware
       style={{ position: 'relative' }}
       onlyEvent
       onResize={this.handleResize}
     >
+      {this.state.showUpdateConfirmation && <this.updateSchedulerConfirmation />}
       <div {...this.scaleCss()}>
         <SchedulersComponent
           activeTimeframe={this.props.activeTimeframe}
           tvMode={this.props.tvMode}
           globalMode={this.props.globalMode}
           schedulerFilter={this.props.schedulerFilter}
+          toggleUpdateSchedulerConfirmation={this.toggleUpdateSchedulerConfirmation}
           schedulers={
             sortSchedulers(
               this.applyFilter(this.props.schedulerFilter, 'name',
