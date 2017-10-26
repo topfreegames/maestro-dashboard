@@ -140,6 +140,7 @@ class SchedulersEdit extends React.Component {
 
 SchedulersEdit.styles = css({
   '& .CodeMirror': {
+    position: 'relative',
     height: 'auto'
   }
 })
