@@ -56,38 +56,43 @@ class Schedulers extends React.Component {
     }
   }
 
-  doGetSchedulers = () => {
+  doGetSchedulers = props => {
     this.props.globalMode
-      ? this._doGetSchedulersGlobal() : this._doGetSchedulersFromCluster()
+      ? this._doGetSchedulersGlobal(props)
+      : this._doGetSchedulersFromCluster(props)
   }
 
-  _doGetSchedulersFromCluster = () => {
-    this.props.dispatch(getSchedulers(this.props.cluster))
+  _doGetSchedulersFromCluster = props => {
+    props.dispatch(getSchedulers(props.cluster))
   }
 
-  _doGetSchedulersGlobal = () => {
+  _doGetSchedulersGlobal = props => {
     const clusters = JSON.parse(process.env.CLUSTERS)
 
     clusters.forEach(c => {
-      if (this.props.clusters[c.name] && this.props.clusters[c.name].token) {
-        this.props.dispatch(getSchedulers(this.props.clusters[c.name]))
+      if (props.clusters[c.name] && props.clusters[c.name].token) {
+        props.dispatch(getSchedulers(props.clusters[c.name]))
       }
     })
   }
 
   updateSchedulersLoop = () => {
-    if (this.props.cluster) this.doGetSchedulers()
-    this.props.setTimeout(() => this.updateSchedulersLoop(), 1000 * 60)
+    if (this.props.cluster) this.doGetSchedulers(this.props)
+    const cardsUpdateInterval = process.env.CARDS_UPDATE_INTERVAL
+    this.props.setTimeout(
+      () => this.updateSchedulersLoop(),
+      1000 * cardsUpdateInterval
+    )
   }
 
   componentDidMount = () => this.updateSchedulersLoop()
 
   componentWillReceiveProps = nextProps => {
     if (!this.props.cluster && nextProps.cluster) {
-      this.doGetSchedulers()
+      this.doGetSchedulers(nextProps)
     } else if (this.props.cluster && nextProps.cluster &&
       nextProps.cluster.name !== this.props.cluster.name) {
-      this.doGetSchedulers()
+      this.doGetSchedulers(nextProps)
     }
   }
 
