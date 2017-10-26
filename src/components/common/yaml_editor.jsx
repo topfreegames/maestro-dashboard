@@ -27,6 +27,10 @@ YamlEditor.styles = css({
   '& *': {
     fontFamily: `'Roboto Mono', monospace !important`,
     fontSize: styles.fontSizes['3']
+  },
+
+  '> .ReactCodeMirror': {
+    position: 'relative'
   }
 })
 
