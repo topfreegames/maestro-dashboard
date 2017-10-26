@@ -41,7 +41,10 @@ class Graph extends React.Component {
   componentDidMount = () => this.getEmbedId()
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevState.activeTimeframe !== this.state.activeTimeframe) {
+    if (
+      (prevState.activeTimeframe !== this.state.activeTimeframe) ||
+      (prevProps.activeTimeframe !== this.props.activeTimeframe)
+    ) {
       this.getEmbedId()
     }
   }
