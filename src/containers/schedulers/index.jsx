@@ -140,7 +140,13 @@ class Schedulers extends React.Component {
               this.applyFilter(this.props.schedulerFilter, 'name',
                 this.applyFilter(this.props.gameFilter, 'game', this.props.schedulers)
               )
-            )
+            ).filter((x, i) => {
+              if (this.props.tvMode) {
+                return i < (this.state.cardsPerRow * 2)
+              } else {
+                return true
+              }
+            })
           }
           fetching={this.props.fetching}
         />
