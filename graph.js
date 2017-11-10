@@ -7,7 +7,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
     "status": "done",
     "requests": [
       {
-        "q": "max:maestro.gru.ready{maestro-scheduler:${scheduler},maestro-region:${region}}.rollup(max, 60).fill(null) + max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.rollup(max, 60).fill(null)",
+        "q": "max:maestro.gru.ready_or_occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.fill(null)",
         "aggregator": "avg",
         "conditional_formats": [],
         "type": "line",
@@ -16,7 +16,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
         }
       },
       {
-        "q": "${upUsage / 100} * ( max:maestro.gru.ready{maestro-scheduler:${scheduler},maestro-region:${region}}.rollup(max, 60).fill(null) + max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.rollup(max, 60).fill(null) )",
+        "q": "${upUsage / 100} * max:maestro.gru.ready_or_occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.fill(null)",
         "aggregator": "avg",
         "conditional_formats": [],
         "type": "line",
@@ -27,7 +27,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
         }
       },
       {
-        "q": "${downUsage / 100} * ( max:maestro.gru.ready{maestro-scheduler:${scheduler},maestro-region:${region}}.rollup(max, 60).fill(null) + max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.rollup(max, 60).fill(null) )",
+        "q": "${downUsage / 100} * max:maestro.gru.ready_or_occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.fill(null)",
         "aggregator": "avg",
         "conditional_formats": [],
         "type": "line",
@@ -38,7 +38,7 @@ const graphDef = ({ scheduler, region, upUsage, downUsage }) =>
         }
       },
       {
-        "q": "max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.rollup(max, 60).fill(null)",
+        "q": "max:maestro.gru.occupied{maestro-scheduler:${scheduler},maestro-region:${region}}.fill(null)",
         "style": {
           "palette": "warm"
         },
