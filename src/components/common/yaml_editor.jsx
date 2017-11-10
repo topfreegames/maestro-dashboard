@@ -14,6 +14,7 @@ const baseOptions = {
 const YamlEditor = ({ value, handleChange, options = {} }) =>
   <div {...YamlEditor.styles}>
     <Codemirror
+      autoFocus
       value={value}
       onChange={handleChange}
       options={{
