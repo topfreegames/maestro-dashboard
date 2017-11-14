@@ -92,7 +92,6 @@ export const render = (template, object, errors, handleChange, handleAdd, handle
     const objectToTemplate = obj => {
       const parseKey = k => {
         if (Array.isArray(obj[k])) {
-          console.log(obj[k])
           if (obj[k].length > 0 && (typeof obj[k][0] !== 'object')) {
             return {
               _type: 'array_of_simples',
@@ -210,7 +209,7 @@ export const setInPath = (template, object, path, value) =>
     if (i === arr.length - 1) {
       const field = getField(template, path)
       acc[x] = field._type === 'integer'
-        ? (parseInt(value) || '')
+        ? (parseInt(value) === 0 ? 0 : (parseInt(value) || ''))
         : (typeof value === 'object'
           ? (Object.entries(value).length === 0 ? '' : value)
           : value)
