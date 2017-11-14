@@ -30,16 +30,12 @@ client.makeFetchOpts = (method, { payload, cluster }) => {
   return opts
 }
 
-const timeout = time =>
-  new Promise((resolve) => setTimeout(resolve, time, { status: 400 }))
-
 client.fetch = async (method, endpoint, { payload, cluster } = {}) => {
   try {
-    const resolve = await Promise.race([
-      timeout(30000),
-      fetch(`${client.host(cluster)}/${endpoint}`,
-        client.makeFetchOpts(method, { payload, cluster }))
-    ])
+    const resolve = await fetch(
+      `${client.host(cluster)}/${endpoint}`,
+      client.makeFetchOpts(method, { payload, cluster })
+    )
     return resolve
   } catch (err) {
     return { status: 400 }
