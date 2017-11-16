@@ -19,11 +19,6 @@ const rootReducer = (state = {}, action) => {
 
   if (action.type === 'PURGE') {
     statePrime = {}
-  } else if (action.type === actions.clusters.selectSuccess) {
-    statePrime = {
-      ...state,
-      schedulers: undefined
-    }
   }
 
   return appReducer(statePrime, action)
