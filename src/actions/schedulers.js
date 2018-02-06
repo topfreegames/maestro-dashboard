@@ -66,8 +66,12 @@ const updateSchedulerReplicas = async (name, payload) => {
 
 export const updateSchedulerMinimumAndReplicas = async (name, payload) => {
   try {
-    if (payload.newMinimum) await updateSchedulerMinimum(name, payload)
-    if (payload.replicas) await updateSchedulerReplicas(name, payload)
+    if (payload.newMinimum || payload.newMinimum === 0) {
+      await updateSchedulerMinimum(name, payload)
+    }
+    if (payload.replicas || payload.replicas === 0) {
+      await updateSchedulerReplicas(name, payload)
+    }
     return { status: 200 }
   } catch (err) {
     return { status: 400 }
@@ -141,8 +145,6 @@ export const updateScheduler = payload => {
 
 export const createScheduler = payload => {
   const normalizedPayload = removeEmptyFields(payload)
-  console.log(payload)
-  console.log(normalizedPayload)
   return client.post('scheduler', normalizedPayload)
 }
 

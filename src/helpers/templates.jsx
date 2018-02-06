@@ -233,7 +233,10 @@ export const removeInPath = (object, path, index) =>
 export const validate = (object, template) => {
   const doValidations = (validations, prefix, name) => {
     if (!validations) return {}
-    const value = getValue(makePath(prefix, name), object) || ''
+    let value = getValue(makePath(prefix, name), object)
+    if (!value && value !== 0) {
+      value = ''
+    }
 
     const errors = validations.reduce((acc, v) => {
       const pass = v.func(value)
