@@ -51,14 +51,17 @@ const Right = ({
   changeTimeframe,
   activeTimeframe,
   toggleTvMode,
-  tvMode,
   toggleGlobalMode,
-  globalMode
+  toggleAscSortMode,
+  globalMode,
+  tvMode,
+  ascSortMode
 }) => (
   <div
     {...Right.styles}
     {...Right.stylesWithTvMode({ isActive: tvMode })}
     {...Right.stylesWithGlobalMode({ isActive: globalMode })}
+    {...Right.stylesWithAscSortMode({ isActive: ascSortMode })}
   >
     {tvMode &&
       <Timeframes
@@ -66,6 +69,9 @@ const Right = ({
         activeTimeframe={activeTimeframe}
       />
     }
+    <button onClick={toggleAscSortMode} className='asc-sort-mode-button'>
+      <i className='fa fa-sort-alpha-asc' />
+    </button>
     <button onClick={toggleGlobalMode} className='global-mode-button'>
       <i className='fa fa-globe' />
     </button>
@@ -97,8 +103,11 @@ Right.stylesWithTvMode = ({ isActive } = { isActive: false }) =>
 Right.stylesWithGlobalMode = ({ isActive } = { isActive: false }) =>
   Right.stylesWithMode({ isActive, className: 'global-mode-button' })
 
+Right.stylesWithAscSortMode = ({ isActive } = { isActive: false }) =>
+  Right.stylesWithMode({ isActive, className: 'asc-sort-mode-button' })
+
 Right.styles = css({
-  '> .tv-mode-button, > .global-mode-button': {
+  '> .tv-mode-button, > .global-mode-button, > .asc-sort-mode-button': {
     padding: '5px 10px 5px 12px',
     transition: 'all 100ms ease-in'
   },
@@ -136,9 +145,11 @@ class Header extends React.Component {
             activeTimeframe={this.props.activeTimeframe}
             changeTimeframe={this.props.changeTimeframe}
             tvMode={this.props.tvMode}
-            toggleTvMode={this.props.toggleTvMode}
             globalMode={this.props.globalMode}
+            ascSortMode={this.props.ascSortMode}
+            toggleTvMode={this.props.toggleTvMode}
             toggleGlobalMode={this.props.toggleGlobalMode}
+            toggleAscSortMode={this.props.toggleAscSortMode}
           />
         }
       />

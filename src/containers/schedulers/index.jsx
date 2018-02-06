@@ -9,43 +9,47 @@ import { getSchedulers } from 'actions/schedulers'
 import { getSchedulersFromState } from 'helpers/common'
 import { Confirmation } from 'components/common'
 
-const sortSchedulers = schedulers =>
-  schedulers
-    .sort((a, b) => {
-      const aMin = a.autoscalingMin
-      const bMin = b.autoscalingMin
+const sortStrategyDefault = (a, b) => {
+  const aMin = a.autoscalingMin
+  const bMin = b.autoscalingMin
 
-      if (aMin !== 0 && bMin !== 0) {
-        const aState = a.state
-        const bState = b.state
+  if (aMin !== 0 && bMin !== 0) {
+    const aState = a.state
+    const bState = b.state
 
-        if (aState === bState) {
-          const calcOcc = x =>
-            x.roomsOccupied / (x.roomsOccupied + x.roomsReady)
+    if (aState === bState) {
+      const calcOcc = x =>
+        x.roomsOccupied / (x.roomsOccupied + x.roomsReady)
 
-          const occA = calcOcc(a)
-          const occB = calcOcc(b)
+      const occA = calcOcc(a)
+      const occB = calcOcc(b)
 
-          if (occA === occB) {
-            return 0
-          } else {
-            if (isNaN(occA)) return 1
-            if (isNaN(occB)) return -1
-            return occA < occB ? 1 : -1
-          }
-        } else {
-          const states =
-            ['in-sync', 'creating', 'terminating', 'overdimensioned', 'subdimensioned']
-
-          const iA = states.findIndex(e => e === aState)
-          const iB = states.findIndex(e => e === bState)
-
-          return iA < iB ? 1 : -1
-        }
+      if (occA === occB) {
+        return 0
       } else {
-        return aMin < bMin ? 1 : -1
+        if (isNaN(occA)) return 1
+        if (isNaN(occB)) return -1
+        return occA < occB ? 1 : -1
       }
-    })
+    } else {
+      const states =
+        ['in-sync', 'creating', 'terminating', 'overdimensioned', 'subdimensioned']
+
+      const iA = states.findIndex(e => e === aState)
+      const iB = states.findIndex(e => e === bState)
+
+      return iA < iB ? 1 : -1
+    }
+  } else {
+    return aMin < bMin ? 1 : -1
+  }
+}
+
+const sortStrategyAsc = (a, b) => {
+  return a.name === b.name ? 0 : (a.name > b.name ? 1 : -1)
+}
+
+const sortSchedulers = (schedulers, strategy) => schedulers.sort(strategy)
 
 class Schedulers extends React.Component {
   constructor (props) {
@@ -153,6 +157,21 @@ class Schedulers extends React.Component {
     />
   )
 
+  _sortSchedulersWithStrategy = () => {
+    let strategy = sortStrategyDefault
+
+    if (this.props.ascSortMode) {
+      strategy = sortStrategyAsc
+    }
+
+    return sortSchedulers(
+      this.applyFilter(this.props.schedulerFilter, 'name',
+        this.applyFilter(this.props.gameFilter, 'game', this.props.schedulers)
+      ),
+      strategy
+    )
+  }
+
   render = () => (
     <ResizeAware
       style={{ position: 'relative' }}
@@ -168,11 +187,8 @@ class Schedulers extends React.Component {
           schedulerFilter={this.props.schedulerFilter}
           toggleUpdateSchedulerConfirmation={this.toggleUpdateSchedulerConfirmation}
           schedulers={
-            sortSchedulers(
-              this.applyFilter(this.props.schedulerFilter, 'name',
-                this.applyFilter(this.props.gameFilter, 'game', this.props.schedulers)
-              )
-            ).filter((x, i) => {
+            this._sortSchedulersWithStrategy()
+            .filter((_x, i) => {
               if (this.props.tvMode) {
                 return i < (this.state.cardsPerRow * 2)
               } else {

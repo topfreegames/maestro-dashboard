@@ -21,6 +21,7 @@ class Dashboard extends React.Component {
       tvTimeframe: '1_hour',
       tvMode: false,
       globalMode: false,
+      ascSortMode: false,
       gameFilter: '',
       schedulerFilter: ''
     }
@@ -36,6 +37,11 @@ class Dashboard extends React.Component {
     this.setState({
       globalMode: !this.state.globalMode,
       tvMode: !this.state.globalMode
+    })
+
+  toggleAscSortMode = e =>
+    this.setState({
+      ascSortMode: !this.state.ascSortMode
     })
 
   changeTvTimeframe = tvTimeframe => this.setState({ tvTimeframe })
@@ -59,8 +65,10 @@ class Dashboard extends React.Component {
           changeTimeframe={this.changeTvTimeframe}
           tvMode={this.state.tvMode}
           globalMode={this.state.globalMode}
+          ascSortMode={this.state.ascSortMode}
           toggleGlobalMode={this.toggleGlobalMode}
           toggleTvMode={this.toggleTvMode}
+          toggleAscSortMode={this.toggleAscSortMode}
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
           handleChange={this.handleChange}
@@ -69,6 +77,7 @@ class Dashboard extends React.Component {
           activeTimeframe={this.state.tvTimeframe}
           tvMode={this.state.tvMode}
           globalMode={this.state.globalMode}
+          ascSortMode={this.state.ascSortMode}
           schedulerFilter={this.state.schedulerFilter}
           gameFilter={this.state.gameFilter}
         />
@@ -94,5 +103,5 @@ Dashboard.styles = css({
 
 export default connect(state => ({
   cluster: (state.clusters.current && state.clusters[state.clusters.current]) ||
-  {},
+  {}
 }))(Dashboard)
